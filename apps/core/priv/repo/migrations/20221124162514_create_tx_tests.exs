@@ -9,6 +9,8 @@ defmodule Core.Repo.Migrations.CreateTxTests do
       add :id, :binary_id, primary_key: true
       add :tx_table, :string
       add :reference, :string
+      add :in, :string
+      add :out, :string
       add :ammount, :numeric
       add :way, :string
       add :owner, :string

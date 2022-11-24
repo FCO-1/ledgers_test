@@ -8,6 +8,8 @@ defmodule Core.Transaccions.TxTest do
   schema "tx_tests" do
     field :ammount, :decimal
     field :owner, :string
+    field :in, :string
+    field :out, :string
     field :reference, :string
     field :tx_table, :string
     field :way, :string
@@ -18,7 +20,7 @@ defmodule Core.Transaccions.TxTest do
   @doc false
   def changeset(tx_test, attrs) do
     tx_test
-    |> cast(attrs, [:tx_table, :reference, :ammount, :way, :owner])
+    |> cast(attrs, [:tx_table, :reference, :ammount, :way, :owner, :in, :out])
     |> validate_required([:tx_table, :reference, :ammount, :way, :owner])
   end
 end
