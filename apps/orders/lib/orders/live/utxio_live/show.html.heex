@@ -1,0 +1,41 @@
+<h1>Show Utxio</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.utxio_show_path(@socket, :show, @utxio)}>
+    <.live_component
+      module={Orders.UtxioLive.FormComponent}
+      id={@utxio.id}
+      title={@page_title}
+      action={@live_action}
+      utxio={@utxio}
+      return_to={Routes.utxio_show_path(@socket, :show, @utxio)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Object:</strong>
+    <%= @utxio.object_id %>
+  </li>
+
+  <li>
+    <strong>Tx reference:</strong>
+    <%= @utxio.tx_reference_id %>
+  </li>
+
+  <li>
+    <strong>Size:</strong>
+    <%= @utxio.size %>
+  </li>
+
+  <li>
+    <strong>Assetmedio:</strong>
+    <%= @utxio.assetmedio %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.utxio_show_path(@socket, :edit, @utxio), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.utxio_index_path(@socket, :index) %></span>

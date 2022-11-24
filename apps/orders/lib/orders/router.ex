@@ -25,6 +25,13 @@ defmodule Orders.Router do
 
     live "/tx_tests/:id", TxTestLive.Show, :show
     live "/tx_tests/:id/show/edit", TxTestLive.Show, :edit
+
+    live "/utxio", UtxioLive.Index, :index
+    live "/utxio/new", UtxioLive.Index, :new
+    live "/utxio/:id/edit", UtxioLive.Index, :edit
+
+    live "/utxio/:id", UtxioLive.Show, :show
+    live "/utxio/:id/show/edit", UtxioLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

@@ -1,0 +1,45 @@
+<h1>Listing Utxio</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.utxio_index_path(@socket, :index)}>
+    <.live_component
+      module={Orders.UtxioLive.FormComponent}
+      id={@utxio.id || :new}
+      title={@page_title}
+      action={@live_action}
+      utxio={@utxio}
+      return_to={Routes.utxio_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Object</th>
+      <th>Tx reference</th>
+      <th>Size</th>
+      <th>Assetmedio</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="utxio">
+    <%= for utxio <- @utxio_collection do %>
+      <tr id={"utxio-#{utxio.id}"}>
+        <td><%= utxio.object_id %></td>
+        <td><%= utxio.tx_reference_id %></td>
+        <td><%= utxio.size %></td>
+        <td><%= utxio.assetmedio %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.utxio_show_path(@socket, :show, utxio) %></span>
+          <span><%= live_patch "Edit", to: Routes.utxio_index_path(@socket, :edit, utxio) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: utxio.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Utxio", to: Routes.utxio_index_path(@socket, :new) %></span>
