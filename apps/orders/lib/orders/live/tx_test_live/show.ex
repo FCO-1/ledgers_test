@@ -1,7 +1,7 @@
 defmodule Orders.TxTestLive.Show do
   use Orders, :live_view
 
-  alias Core.Transaccions
+  alias Core.Transactions
 
   @impl true
   def mount(_params, _session, socket) do

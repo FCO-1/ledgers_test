@@ -1,7 +1,7 @@
 defmodule Orders.TxTestLive.FormComponent do
   use Orders, :live_component
 
-  alias Core.Transaccions
+  alias Core.Transactions
 
   @impl true
   def update(%{tx_test: tx_test} = assigns, socket) do

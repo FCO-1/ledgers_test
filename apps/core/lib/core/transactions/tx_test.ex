@@ -1,4 +1,4 @@
-defmodule Core.Transaccions.TxTest do
+defmodule Core.Transactions.TxTest do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,8 +1,8 @@
 defmodule Orders.TxTestLive.Index do
   use Orders, :live_view
 
-  alias Core.Transaccions
-  alias Core.Transaccions.TxTest
+  alias Core.Transactions
+  alias Core.Transactions.TxTest
 
   @impl true
   def mount(_params, _session, socket) do

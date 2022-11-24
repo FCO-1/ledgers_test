@@ -2,7 +2,7 @@ defmodule Orders.TxTestLiveTest do
   use Orders.ConnCase
 
   import Phoenix.LiveViewTest
-  import Core.TransaccionsFixtures
+  import Core.TransactionsFixtures
 
   @create_attrs %{ammount: "some ammount", owner: "some owner", reference: "some reference", tx_table: "some tx_table", way: "some way"}
   @update_attrs %{ammount: "some updated ammount", owner: "some updated owner", reference: "some updated reference", tx_table: "some updated tx_table", way: "some updated way"}

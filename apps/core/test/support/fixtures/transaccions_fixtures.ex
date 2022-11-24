@@ -1,7 +1,7 @@
-defmodule Core.TransaccionsFixtures do
+defmodule Core.TransactionsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Core.Transaccions` context.
+  entities via the `Core.Transactions` context.
   """
 
   @doc """
@@ -17,7 +17,7 @@ defmodule Core.TransaccionsFixtures do
         tx_table: "some tx_table",
         way: "some way"
       })
-      |> Core.Transaccions.create_tx_test()
+      |> Core.Transactions.create_tx_test()
 
     tx_test
   end

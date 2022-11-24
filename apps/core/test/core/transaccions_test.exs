@@ -1,12 +1,12 @@
-defmodule Core.TransaccionsTest do
+defmodule Core.TransactionsTest do
   use Core.DataCase
 
-  alias Core.Transaccions
+  alias Core.Transactions
 
   describe "tx_tests" do
-    alias Core.Transaccions.TxTest
+    alias Core.Transactions.TxTest
 
-    import Core.TransaccionsFixtures
+    import Core.TransactionsFixtures
 
     @invalid_attrs %{ammount: nil, owner: nil, reference: nil, tx_table: nil, way: nil}
 
