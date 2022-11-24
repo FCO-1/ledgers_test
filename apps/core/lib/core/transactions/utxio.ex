@@ -2,6 +2,7 @@ defmodule Core.Transactions.Utxio do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @schema_prefix "transactions"
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "utxio" do
@@ -10,7 +11,7 @@ defmodule Core.Transactions.Utxio do
     field :size, :decimal
     field :tx_reference_id, :string
 
-    timestamps()
+    timestamps(type: :integer, autogenerate: {:erlang,:system_time,[:millisecond]})
   end
 
   @doc false
