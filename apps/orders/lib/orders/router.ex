@@ -18,6 +18,13 @@ defmodule Orders.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    live "/tx_tests", TxTestLive.Index, :index
+    live "/tx_tests/new", TxTestLive.Index, :new
+    live "/tx_tests/:id/edit", TxTestLive.Index, :edit
+
+    live "/tx_tests/:id", TxTestLive.Show, :show
+    live "/tx_tests/:id/show/edit", TxTestLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

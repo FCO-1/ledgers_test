@@ -1,0 +1,47 @@
+<h1>Listing Tx tests</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.tx_test_index_path(@socket, :index)}>
+    <.live_component
+      module={Orders.TxTestLive.FormComponent}
+      id={@tx_test.id || :new}
+      title={@page_title}
+      action={@live_action}
+      tx_test={@tx_test}
+      return_to={Routes.tx_test_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tx table</th>
+      <th>Reference</th>
+      <th>Ammount</th>
+      <th>Way</th>
+      <th>Owner</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="tx_tests">
+    <%= for tx_test <- @tx_tests do %>
+      <tr id={"tx_test-#{tx_test.id}"}>
+        <td><%= tx_test.tx_table %></td>
+        <td><%= tx_test.reference %></td>
+        <td><%= tx_test.ammount %></td>
+        <td><%= tx_test.way %></td>
+        <td><%= tx_test.owner %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.tx_test_show_path(@socket, :show, tx_test) %></span>
+          <span><%= live_patch "Edit", to: Routes.tx_test_index_path(@socket, :edit, tx_test) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: tx_test.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Tx test", to: Routes.tx_test_index_path(@socket, :new) %></span>

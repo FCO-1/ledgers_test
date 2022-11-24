@@ -1,0 +1,46 @@
+<h1>Show Tx test</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.tx_test_show_path(@socket, :show, @tx_test)}>
+    <.live_component
+      module={Orders.TxTestLive.FormComponent}
+      id={@tx_test.id}
+      title={@page_title}
+      action={@live_action}
+      tx_test={@tx_test}
+      return_to={Routes.tx_test_show_path(@socket, :show, @tx_test)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Tx table:</strong>
+    <%= @tx_test.tx_table %>
+  </li>
+
+  <li>
+    <strong>Reference:</strong>
+    <%= @tx_test.reference %>
+  </li>
+
+  <li>
+    <strong>Ammount:</strong>
+    <%= @tx_test.ammount %>
+  </li>
+
+  <li>
+    <strong>Way:</strong>
+    <%= @tx_test.way %>
+  </li>
+
+  <li>
+    <strong>Owner:</strong>
+    <%= @tx_test.owner %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.tx_test_show_path(@socket, :edit, @tx_test), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.tx_test_index_path(@socket, :index) %></span>
