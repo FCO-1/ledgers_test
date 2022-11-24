@@ -2,16 +2,17 @@ defmodule Core.Transaccions.TxTest do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @schema_prefix "transactions"
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "tx_tests" do
-    field :ammount, :string
+    field :ammount, :decimal
     field :owner, :string
     field :reference, :string
     field :tx_table, :string
     field :way, :string
 
-    timestamps()
+    timestamps(type: :integer, autogenerate: {:erlang,:system_time,[:millisecond]})
   end
 
   @doc false
