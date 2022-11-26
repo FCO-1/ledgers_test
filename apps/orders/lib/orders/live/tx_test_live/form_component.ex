@@ -5,7 +5,7 @@ defmodule Orders.TxTestLive.FormComponent do
 
   @impl true
   def update(%{tx_test: tx_test} = assigns, socket) do
-    changeset = Transaccions.change_tx_test(tx_test)
+    changeset = Transactions.change_tx_test(tx_test)
 
     {:ok,
      socket
@@ -17,7 +17,7 @@ defmodule Orders.TxTestLive.FormComponent do
   def handle_event("validate", %{"tx_test" => tx_test_params}, socket) do
     changeset =
       socket.assigns.tx_test
-      |> Transaccions.change_tx_test(tx_test_params)
+      |> Transactions.change_tx_test(tx_test_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -28,7 +28,7 @@ defmodule Orders.TxTestLive.FormComponent do
   end
 
   defp save_tx_test(socket, :edit, tx_test_params) do
-    case Transaccions.update_tx_test(socket.assigns.tx_test, tx_test_params) do
+    case Transactions.update_tx_test(socket.assigns.tx_test, tx_test_params) do
       {:ok, _tx_test} ->
         {:noreply,
          socket
@@ -41,7 +41,7 @@ defmodule Orders.TxTestLive.FormComponent do
   end
 
   defp save_tx_test(socket, :new, tx_test_params) do
-    case Transaccions.create_tx_test(tx_test_params) do
+    case Transactions.create_tx_test(tx_test_params) do
       {:ok, _tx_test} ->
         {:noreply,
          socket

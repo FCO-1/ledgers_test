@@ -1,0 +1,61 @@
+<h1>Show Bucket table</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.bucket_table_show_path(@socket, :show, @bucket_table)}>
+    <.live_component
+      module={Orders.BucketTableLive.FormComponent}
+      id={@bucket_table.id}
+      title={@page_title}
+      action={@live_action}
+      bucket_table={@bucket_table}
+      return_to={Routes.bucket_table_show_path(@socket, :show, @bucket_table)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Bucket:</strong>
+    <%= @bucket_table.bucket_id %>
+  </li>
+
+  <li>
+    <strong>Ammount:</strong>
+    <%= @bucket_table.ammount %>
+  </li>
+
+  <li>
+    <strong>Asset:</strong>
+    <%= @bucket_table.asset %>
+  </li>
+
+  <li>
+    <strong>Owner:</strong>
+    <%= @bucket_table.owner %>
+  </li>
+
+  <li>
+    <strong>State spent:</strong>
+    <%= @bucket_table.state_spent %>
+  </li>
+
+  <li>
+    <strong>State locked:</strong>
+    <%= @bucket_table.state_locked %>
+  </li>
+
+  <li>
+    <strong>Locked by:</strong>
+    <%= @bucket_table.locked_by %>
+  </li>
+
+  <li>
+    <strong>Hash:</strong>
+    <%= @bucket_table.hash %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.bucket_table_show_path(@socket, :edit, @bucket_table), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.bucket_table_index_path(@socket, :index) %></span>

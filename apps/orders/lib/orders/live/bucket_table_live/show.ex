@@ -1,7 +1,7 @@
-defmodule Orders.TxTestLive.Show do
+defmodule Orders.BucketTableLive.Show do
   use Orders, :live_view
 
-  alias Core.Transactions
+  alias Core.Buckets
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,9 +13,9 @@ defmodule Orders.TxTestLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:tx_test, Transactions.get_tx_test!(id))}
+     |> assign(:bucket_table, Buckets.get_bucket_table!(id))}
   end
 
-  defp page_title(:show), do: "Show Tx test"
-  defp page_title(:edit), do: "Edit Tx test"
+  defp page_title(:show), do: "Show Bucket table"
+  defp page_title(:edit), do: "Edit Bucket table"
 end

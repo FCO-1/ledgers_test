@@ -1,0 +1,53 @@
+<h1>Listing Bucket table</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.bucket_table_index_path(@socket, :index)}>
+    <.live_component
+      module={Orders.BucketTableLive.FormComponent}
+      id={@bucket_table.id || :new}
+      title={@page_title}
+      action={@live_action}
+      bucket_table={@bucket_table}
+      return_to={Routes.bucket_table_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bucket</th>
+      <th>Ammount</th>
+      <th>Asset</th>
+      <th>Owner</th>
+      <th>State spent</th>
+      <th>State locked</th>
+      <th>Locked by</th>
+      <th>Hash</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="bucket_table">
+    <%= for bucket_table <- @bucket_table_collection do %>
+      <tr id={"bucket_table-#{bucket_table.id}"}>
+        <td><%= bucket_table.bucket_id %></td>
+        <td><%= bucket_table.ammount %></td>
+        <td><%= bucket_table.asset %></td>
+        <td><%= bucket_table.owner %></td>
+        <td><%= bucket_table.state_spent %></td>
+        <td><%= bucket_table.state_locked %></td>
+        <td><%= bucket_table.locked_by %></td>
+        <td><%= bucket_table.hash %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.bucket_table_show_path(@socket, :show, bucket_table) %></span>
+          <span><%= live_patch "Edit", to: Routes.bucket_table_index_path(@socket, :edit, bucket_table) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: bucket_table.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Bucket table", to: Routes.bucket_table_index_path(@socket, :new) %></span>

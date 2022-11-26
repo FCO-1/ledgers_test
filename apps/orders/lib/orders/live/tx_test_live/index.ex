@@ -17,7 +17,7 @@ defmodule Orders.TxTestLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Tx test")
-    |> assign(:tx_test, Transaccions.get_tx_test!(id))
+    |> assign(:tx_test, Transactions.get_tx_test!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -34,13 +34,13 @@ defmodule Orders.TxTestLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    tx_test = Transaccions.get_tx_test!(id)
-    {:ok, _} = Transaccions.delete_tx_test(tx_test)
+    tx_test = Transactions.get_tx_test!(id)
+    {:ok, _} = Transactions.delete_tx_test(tx_test)
 
     {:noreply, assign(socket, :tx_tests, list_tx_tests())}
   end
 
   defp list_tx_tests do
-    Transaccions.list_tx_tests()
+    Transactions.list_tx_tests()
   end
 end

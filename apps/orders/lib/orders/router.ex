@@ -32,6 +32,13 @@ defmodule Orders.Router do
 
     live "/utxio/:id", UtxioLive.Show, :show
     live "/utxio/:id/show/edit", UtxioLive.Show, :edit
+
+    live "/bucket_table", BucketTableLive.Index, :index
+    live "/bucket_table/new", BucketTableLive.Index, :new
+    live "/bucket_table/:id/edit", BucketTableLive.Index, :edit
+
+    live "/bucket_table/:id", BucketTableLive.Show, :show
+    live "/bucket_table/:id/show/edit", BucketTableLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
