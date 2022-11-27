@@ -2,6 +2,7 @@ defmodule Core.Buckets.BucketTable do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @schema_prefix "transactions"
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "bucket_table" do
