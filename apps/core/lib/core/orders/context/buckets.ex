@@ -49,6 +49,29 @@ defmodule Core.Buckets do
       {:error, %Ecto.Changeset{}}
 
   """
+  def create_new_repo_acta(attrs) do
+    result = Repo.transaction(fn ->
+      with {:ok, buckekt} <- build_bucket_table(attrs) |> create_bucket_table() do
+        buckekt
+      end
+    end)
+
+    {:ok, result}
+  end
+
+  def build_bucket_table(params) do
+    %{
+      ammount: params["ammount"],
+      asset: params["asset"],
+      bucket_id: params["bucket_id"],
+      hash: params["hash"],
+      locked_by: params["locked_by"],
+      owner: params["owner"],
+      state_locked: params["state_locked"],
+      state_spent: params["state_spent"],
+    }
+  end
+
   def create_bucket_table(attrs \\ %{}) do
     %BucketTable{}
     |> BucketTable.changeset(attrs)
