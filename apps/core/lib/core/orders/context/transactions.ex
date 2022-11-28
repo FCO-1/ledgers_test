@@ -154,7 +154,8 @@ defmodule Core.Transactions do
 
   def create_tx(attrs) do
     result = Repo.transaction(fn ->
-      with {:ok, _tx} <- build_transaccion(attrs) |> create_utxio() ,
+      with  {:ok, _tx} <- build_transaccion(attrs) |> create_utxio(),
+        {:ok, _tx} <- build_tx(attrs) |> create_tx_test(),
       {:ok, buckekt} <- Buckets.build_bucket_table(attrs) |> Buckets.create_bucket_table() do
         buckekt
       end
@@ -162,6 +163,20 @@ defmodule Core.Transactions do
 
     {:ok, result}
   end
+
+  def build_tx(attrs) do
+    %{
+      ammount: attrs["ammount "],
+      in: attrs["in"],
+      out: attrs["out"],
+      owner: attrs["owner"],
+      reference: attrs["reference"],
+      tx_table: attrs["tx_table"],
+      way: attrs["way"]
+}
+  end
+
+
 
   def build_transaccion(attrs) do
     %{
