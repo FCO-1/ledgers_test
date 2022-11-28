@@ -154,8 +154,9 @@ defmodule Core.Transactions do
 
   def create_tx(attrs) do
     result = Repo.transaction(fn ->
-      with  {:ok, _tx} <- build_transaccion(attrs) |> create_utxio(),
-        {:ok, _tx} <- build_tx(attrs) |> create_tx_test(),
+      with  {:ok, uxtio1} <- build_transaccion_in(attrs) |> create_utxio(),
+      {:ok, utxio2} <- build_transaccion_in(attrs) |> create_utxio(),
+      {:ok, _tx} <- build_tx(attrs) |> create_tx_test(),
       {:ok, buckekt} <- Buckets.build_bucket_table(attrs) |> Buckets.create_bucket_table() do
         buckekt
       end
@@ -178,7 +179,16 @@ defmodule Core.Transactions do
 
 
 
-  def build_transaccion(attrs) do
+  def build_transaccion_in(attrs) do
+    %{
+    assetmedio: attrs["assetmedio"],
+    object_id: attrs["object_id"],
+    size: attrs["size"],
+    tx_reference_id: attrs["tx_reference_id"]
+    }
+  end
+
+  def build_transaccion_out(attrs) do
     %{
     assetmedio: attrs["assetmedio"],
     object_id: attrs["object_id"],
