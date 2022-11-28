@@ -197,6 +197,36 @@ defmodule Core.Transactions do
     }
   end
 
+  def get_utxio_sequence do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('transactions.utxio_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
+
+   def get_tx_test do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('transactions.tx_tests_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
+
+   def get_general_sequence do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('transactions.general_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
+
   @doc """
   Updates a utxio.
 
