@@ -8,23 +8,31 @@
     phx-target={@myself}
     phx-change="validate"
     phx-submit="save">
-  
+
     <%= label f, :object_id %>
     <%= text_input f, :object_id %>
     <%= error_tag f, :object_id %>
-  
+
     <%= label f, :tx_reference_id %>
     <%= text_input f, :tx_reference_id %>
     <%= error_tag f, :tx_reference_id %>
-  
+
     <%= label f, :size %>
     <%= number_input f, :size, step: "any" %>
     <%= error_tag f, :size %>
-  
+
     <%= label f, :assetmedio %>
     <%= text_input f, :assetmedio %>
     <%= error_tag f, :assetmedio %>
-  
+
+    <%= label f, :owner_in %>
+    <%= text_input f, :owner_in %>
+    <%= error_tag f, :owner_in %>
+
+    <%= label f, :owner_out %>
+    <%= text_input f, :owner_out %>
+    <%= error_tag f, :owner_out %>
+
     <div>
       <%= submit "Save", phx_disable_with: "Saving..." %>
     </div>
