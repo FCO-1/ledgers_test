@@ -8,6 +8,7 @@ defmodule Core.Transactions do
 
   alias Core.Transactions.TxTest
 
+  alias Core.Buckets
   @doc """
   Returns the list of tx_tests.
 
@@ -149,6 +150,26 @@ defmodule Core.Transactions do
     %Utxio{}
     |> Utxio.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_tx(attrs) do
+    result = Repo.transaction(fn ->
+      with {:ok, _tx} <- build_transaccion(attrs) |> create_utxio() ,
+      {:ok, buckekt} <- Buckets.build_bucket_table(attrs) |> Buckets.create_bucket_table() do
+        buckekt
+      end
+    end)
+
+    {:ok, result}
+  end
+
+  def build_transaccion(attrs) do
+    %{
+    assetmedio: attrs["assetmedio"],
+    object_id: attrs["object_id"],
+    size: attrs["size"],
+    tx_reference_id: attrs["tx_reference_id"]
+    }
   end
 
   @doc """
