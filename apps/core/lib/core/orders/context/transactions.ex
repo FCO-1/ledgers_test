@@ -156,20 +156,20 @@ defmodule Core.Transactions do
     result = Repo.transaction(fn ->
       with  {:ok, uxtio1} <- build_transaccion_in(attrs) |> create_utxio(),
       {:ok, utxio2} <- build_transaccion_out(attrs) |> create_utxio(),
-      {:ok, _tx} <- build_tx(attrs) |> create_tx_test(),
-      {:ok, buckekt} <- Buckets.build_bucket_table(attrs) |> Buckets.create_bucket_table() do
-        buckekt
+      {:ok, _tx} <- build_tx(attrs, uxtio1, utxio2) |> create_tx_test() do
+      #{:ok, buckekt} <- Buckets.build_bucket_table(attrs) |> Buckets.create_bucket_table() do
+        uxtio1
       end
     end)
 
     {:ok, result}
   end
 
-  def build_tx(attrs) do
+  def build_tx(attrs, utxio1, utxio2) do
     %{
       ammount: attrs["ammount "],
-      in: attrs["in"],
-      out: attrs["out"],
+      in: utxio1.object_id,
+      out: utxio2.object_id,
       owner: attrs["owner"],
       reference: attrs["reference"],
       tx_table: attrs["tx_table"],
@@ -182,7 +182,7 @@ defmodule Core.Transactions do
   def build_transaccion_in(attrs) do
     %{
     assetmedio: attrs["assetmedio"],
-    object_id: attrs["object_id"],
+    object_id: get_utxio_serial(),
     size: attrs["size"],
     tx_reference_id: attrs["tx_reference_id"]
     }
@@ -191,11 +191,19 @@ defmodule Core.Transactions do
   def build_transaccion_out(attrs) do
     %{
     assetmedio: attrs["assetmedio"],
-    object_id: attrs["object_id"],
+    object_id: get_utxio_serial(),
     size: attrs["size"],
     tx_reference_id: attrs["tx_reference_id"]
     }
   end
+
+
+  @spec get_utxio_serial :: <<_::24, _::_*8>>
+  def get_utxio_serial do
+    number = get_utxio_sequence()
+    "aa_#{number}"
+  end
+
 
   def get_utxio_sequence do
     case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('transactions.utxio_sequence')::citext;", []) do
