@@ -41,7 +41,7 @@ defmodule Orders.UtxioLive.FormComponent do
   end
 
   defp save_utxio(socket, :new, utxio_params) do
-    case Transactions.create_utxio(utxio_params) do
+    case Transactions.create_tx(utxio_params) do
       {:ok, _utxio} ->
         {:noreply,
          socket

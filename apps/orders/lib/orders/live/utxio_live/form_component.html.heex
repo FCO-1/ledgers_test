@@ -25,13 +25,11 @@
     <%= text_input f, :assetmedio %>
     <%= error_tag f, :assetmedio %>
 
-    <%= label f, :owner_in %>
-    <%= text_input f, :owner_in %>
-    <%= error_tag f, :owner_in %>
+    <%= label f, :owner %>
+    <%= text_input f, :owner %>
+    <%= error_tag f, :owner %>
 
-    <%= label f, :owner_out %>
-    <%= text_input f, :owner_out %>
-    <%= error_tag f, :owner_out %>
+
 
     <div>
       <%= submit "Save", phx_disable_with: "Saving..." %>

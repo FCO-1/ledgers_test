@@ -153,47 +153,52 @@ defmodule Core.Transactions do
   end
 
   def create_tx(attrs) do
+    serial_tx = get_tx_serial()
     result = Repo.transaction(fn ->
-      with  {:ok, uxtio1} <- build_transaccion_in(attrs) |> create_utxio(),
-      {:ok, utxio2} <- build_transaccion_out(attrs) |> create_utxio(),
-      {:ok, _tx} <- build_tx(attrs, uxtio1, utxio2) |> create_tx_test() do
+      with  {:ok, uxtio1} <- build_transaccion_in(attrs, serial_tx) |> create_utxio(),
+      {:ok, utxio2} <- build_transaccion_out(attrs, serial_tx) |> create_utxio(),
+      {:ok, _tx} <- build_tx(attrs, uxtio1, utxio2, serial_tx) |> create_tx_test() do
       #{:ok, buckekt} <- Buckets.build_bucket_table(attrs) |> Buckets.create_bucket_table() do
         uxtio1
+      else
+        {:error, changeset} ->
+          changeset
+          |> Repo.rollback()
       end
     end)
 
     {:ok, result}
   end
 
-  def build_tx(attrs, utxio1, utxio2) do
+  def build_tx(attrs, utxio1, utxio2, serial_tx) do
     %{
-      ammount: attrs["ammount "],
+      ammount: attrs["size"],
       in: utxio1.object_id,
       out: utxio2.object_id,
       owner: attrs["owner"],
-      reference: attrs["reference"],
-      tx_table: attrs["tx_table"],
+      reference: get_general_sequence(),
+      tx_table: serial_tx,
       way: attrs["way"]
 }
   end
 
 
 
-  def build_transaccion_in(attrs) do
+  def build_transaccion_in(attrs, serial_tx) do
     %{
     assetmedio: attrs["assetmedio"],
     object_id: get_utxio_serial(),
     size: attrs["size"],
-    tx_reference_id: attrs["tx_reference_id"]
+    tx_reference_id: serial_tx
     }
   end
 
-  def build_transaccion_out(attrs) do
+  def build_transaccion_out(attrs, serial_tx) do
     %{
     assetmedio: attrs["assetmedio"],
     object_id: get_utxio_serial(),
     size: attrs["size"],
-    tx_reference_id: attrs["tx_reference_id"]
+    tx_reference_id: serial_tx
     }
   end
 
@@ -202,6 +207,12 @@ defmodule Core.Transactions do
   def get_utxio_serial do
     number = get_utxio_sequence()
     "aa_#{number}"
+  end
+
+
+  def get_tx_serial do
+    number = get_tx_test()
+    "tx_#{number}"
   end
 
 
