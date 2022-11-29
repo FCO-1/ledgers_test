@@ -72,6 +72,21 @@ defmodule Core.Buckets do
     }
   end
 
+  def get_bucket_serial do
+    number = get_bucket_sequence()
+    "bucket_#{number}"
+  end
+
+  def get_bucket_sequence do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('transactions.bucket_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
+
   def create_bucket_table(attrs \\ %{}) do
     %BucketTable{}
     |> BucketTable.changeset(attrs)
