@@ -4,6 +4,7 @@ defmodule Core.Buckets do
   """
 
   import Ecto.Query, warn: false
+  alias String.Chars.Decimal
   alias Core.Repo
 
   alias Core.Buckets.BucketTable
@@ -60,21 +61,28 @@ defmodule Core.Buckets do
   end
 
   def build_bucket_table(params, tx_1) do
-    %{
-      ammount: params["size"],
+
+    serial = get_bucket_serial()
+    map = %{
+      ammount: tx_1.ammount,
       asset: params["assetmedio"],
-      bucket_id: params["bucket_id"],
-      hash: params["hash"],
+      bucket_id: serial,
       locked_by: tx_1.tx_table,
       owner: params["owner"],
       state_locked: "1",
       state_spent: "0",
     }
+
+    Map.merge(map, %{hash: generate_hash(map)})
   end
 
   def get_bucket_serial do
     number = get_bucket_sequence()
     "bucket_#{number}"
+  end
+
+  def generate_hash(map) do
+    Jason.encode!(map) |> to_string() |> Base.encode64()
   end
 
   def get_bucket_sequence do

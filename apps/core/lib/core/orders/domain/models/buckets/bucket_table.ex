@@ -6,7 +6,7 @@ defmodule Core.Buckets.BucketTable do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "bucket_table" do
-    field :ammount, :string
+    field :ammount, :decimal
     field :asset, :string
     field :bucket_id, :string
     field :hash, :string
