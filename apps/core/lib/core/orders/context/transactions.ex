@@ -160,7 +160,7 @@ defmodule Core.Transactions do
       with  {:ok, uxtio1} <- build_transaccion_in(attrs, serial_tx) |> create_utxio(),
       {:ok, utxio2} <- build_transaccion_out(attrs, serial_tx) |> create_utxio(),
       {:ok, tx} <- build_tx(attrs, uxtio1, utxio2, serial_tx) |> create_tx_test(),
-      {:ok, buckekt} <- Buckets.build_bucket_table(attrs, tx) |> Buckets.create_bucket_table() do
+      {:ok, _buckekt} <- Buckets.build_bucket_table(attrs, tx) |> Buckets.create_bucket_table() do
         uxtio1
       else
         {:error, changeset} ->
