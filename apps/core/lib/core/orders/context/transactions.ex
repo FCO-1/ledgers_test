@@ -115,7 +115,9 @@ defmodule Core.Transactions do
 
   """
   def list_utxio do
-    Repo.all(Utxio)
+    Utxio
+    |> order_by([s], [desc: s.updated_at])
+    |> Repo.all()
   end
 
   @doc """
@@ -154,7 +156,7 @@ defmodule Core.Transactions do
 
   def create_tx(attrs) do
     serial_tx = get_tx_serial()
-    result = Repo.transaction(fn ->
+    Repo.transaction(fn ->
       with  {:ok, uxtio1} <- build_transaccion_in(attrs, serial_tx) |> create_utxio(),
       {:ok, utxio2} <- build_transaccion_out(attrs, serial_tx) |> create_utxio(),
       {:ok, _tx} <- build_tx(attrs, uxtio1, utxio2, serial_tx) |> create_tx_test() do
@@ -166,8 +168,6 @@ defmodule Core.Transactions do
           |> Repo.rollback()
       end
     end)
-
-    {:ok, result}
   end
 
   def build_tx(attrs, utxio1, utxio2, serial_tx) do
@@ -178,7 +178,7 @@ defmodule Core.Transactions do
       owner: attrs["owner"],
       reference: get_general_sequence(),
       tx_table: serial_tx,
-      way: attrs["way"]
+      way: "1"
 }
   end
 
