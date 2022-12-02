@@ -9,6 +9,10 @@
 # move said applications out of the umbrella.
 import Config
 
+# Configure Mix tasks and generators
+config :ledgers_buckets,
+  ecto_repos: [LedgersBuckets.Repo]
+
 config :orders,
   ecto_repos: [Core.Repo],
   generators: [context_app: :core, binary_id: true]
