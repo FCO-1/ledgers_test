@@ -2,6 +2,7 @@ defmodule LedgersBuckets.Buckets.BucketTxs do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @schema_prefix "buckets"
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "bucket_txs" do
@@ -18,7 +19,7 @@ defmodule LedgersBuckets.Buckets.BucketTxs do
     field :status, :string
     field :type, :string
 
-    timestamps()
+    timestamps(type: :integer, autogenerate: {:erlang,:system_time,[:millisecond]})
   end
 
   @doc false
