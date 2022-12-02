@@ -1,0 +1,81 @@
+<h1>Show Bucket txs</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.bucket_txs_show_path(@socket, :show, @bucket_txs)}>
+    <.live_component
+      module={LedgersBucketsWeb.BucketTxsLive.FormComponent}
+      id={@bucket_txs.id}
+      title={@page_title}
+      action={@live_action}
+      bucket_txs={@bucket_txs}
+      return_to={Routes.bucket_txs_show_path(@socket, :show, @bucket_txs)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Bucket tx:</strong>
+    <%= @bucket_txs.bucket_tx_id %>
+  </li>
+
+  <li>
+    <strong>Bucket tx at:</strong>
+    <%= @bucket_txs.bucket_tx_at %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @bucket_txs.type %>
+  </li>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @bucket_txs.amount %>
+  </li>
+
+  <li>
+    <strong>Asset:</strong>
+    <%= @bucket_txs.asset %>
+  </li>
+
+  <li>
+    <strong>State:</strong>
+    <%= @bucket_txs.state %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @bucket_txs.status %>
+  </li>
+
+  <li>
+    <strong>Note:</strong>
+    <%= @bucket_txs.note %>
+  </li>
+
+  <li>
+    <strong>Request:</strong>
+    <%= @bucket_txs.request_id %>
+  </li>
+
+  <li>
+    <strong>Reference:</strong>
+    <%= @bucket_txs.reference_id %>
+  </li>
+
+  <li>
+    <strong>Reference type:</strong>
+    <%= @bucket_txs.reference_type %>
+  </li>
+
+  <li>
+    <strong>Hash:</strong>
+    <%= @bucket_txs.hash %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.bucket_txs_show_path(@socket, :edit, @bucket_txs), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.bucket_txs_index_path(@socket, :index) %></span>
