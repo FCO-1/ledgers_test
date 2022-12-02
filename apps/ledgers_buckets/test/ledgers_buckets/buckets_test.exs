@@ -78,4 +78,70 @@ defmodule LedgersBuckets.BucketsTest do
       assert %Ecto.Changeset{} = Buckets.change_bucket_txs(bucket_txs)
     end
   end
+
+  describe "bucket_tx_from" do
+    alias LedgersBuckets.Buckets.BucketTxFrom
+
+    import LedgersBuckets.BucketsFixtures
+
+    @invalid_attrs %{amount: nil, asset: nil, bucket_tx_from_id: nil, owner: nil, type: nil, wallet: nil, weight: nil}
+
+    test "list_bucket_tx_from/0 returns all bucket_tx_from" do
+      bucket_tx_from = bucket_tx_from_fixture()
+      assert Buckets.list_bucket_tx_from() == [bucket_tx_from]
+    end
+
+    test "get_bucket_tx_from!/1 returns the bucket_tx_from with given id" do
+      bucket_tx_from = bucket_tx_from_fixture()
+      assert Buckets.get_bucket_tx_from!(bucket_tx_from.id) == bucket_tx_from
+    end
+
+    test "create_bucket_tx_from/1 with valid data creates a bucket_tx_from" do
+      valid_attrs = %{amount: "120.5", asset: "some asset", bucket_tx_from_id: "some bucket_tx_from_id", owner: "some owner", type: "some type", wallet: "some wallet", weight: 42}
+
+      assert {:ok, %BucketTxFrom{} = bucket_tx_from} = Buckets.create_bucket_tx_from(valid_attrs)
+      assert bucket_tx_from.amount == Decimal.new("120.5")
+      assert bucket_tx_from.asset == "some asset"
+      assert bucket_tx_from.bucket_tx_from_id == "some bucket_tx_from_id"
+      assert bucket_tx_from.owner == "some owner"
+      assert bucket_tx_from.type == "some type"
+      assert bucket_tx_from.wallet == "some wallet"
+      assert bucket_tx_from.weight == 42
+    end
+
+    test "create_bucket_tx_from/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Buckets.create_bucket_tx_from(@invalid_attrs)
+    end
+
+    test "update_bucket_tx_from/2 with valid data updates the bucket_tx_from" do
+      bucket_tx_from = bucket_tx_from_fixture()
+      update_attrs = %{amount: "456.7", asset: "some updated asset", bucket_tx_from_id: "some updated bucket_tx_from_id", owner: "some updated owner", type: "some updated type", wallet: "some updated wallet", weight: 43}
+
+      assert {:ok, %BucketTxFrom{} = bucket_tx_from} = Buckets.update_bucket_tx_from(bucket_tx_from, update_attrs)
+      assert bucket_tx_from.amount == Decimal.new("456.7")
+      assert bucket_tx_from.asset == "some updated asset"
+      assert bucket_tx_from.bucket_tx_from_id == "some updated bucket_tx_from_id"
+      assert bucket_tx_from.owner == "some updated owner"
+      assert bucket_tx_from.type == "some updated type"
+      assert bucket_tx_from.wallet == "some updated wallet"
+      assert bucket_tx_from.weight == 43
+    end
+
+    test "update_bucket_tx_from/2 with invalid data returns error changeset" do
+      bucket_tx_from = bucket_tx_from_fixture()
+      assert {:error, %Ecto.Changeset{}} = Buckets.update_bucket_tx_from(bucket_tx_from, @invalid_attrs)
+      assert bucket_tx_from == Buckets.get_bucket_tx_from!(bucket_tx_from.id)
+    end
+
+    test "delete_bucket_tx_from/1 deletes the bucket_tx_from" do
+      bucket_tx_from = bucket_tx_from_fixture()
+      assert {:ok, %BucketTxFrom{}} = Buckets.delete_bucket_tx_from(bucket_tx_from)
+      assert_raise Ecto.NoResultsError, fn -> Buckets.get_bucket_tx_from!(bucket_tx_from.id) end
+    end
+
+    test "change_bucket_tx_from/1 returns a bucket_tx_from changeset" do
+      bucket_tx_from = bucket_tx_from_fixture()
+      assert %Ecto.Changeset{} = Buckets.change_bucket_tx_from(bucket_tx_from)
+    end
+  end
 end

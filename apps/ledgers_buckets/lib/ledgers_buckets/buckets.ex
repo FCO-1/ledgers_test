@@ -101,4 +101,100 @@ defmodule LedgersBuckets.Buckets do
   def change_bucket_txs(%BucketTxs{} = bucket_txs, attrs \\ %{}) do
     BucketTxs.changeset(bucket_txs, attrs)
   end
+
+  alias LedgersBuckets.Buckets.BucketTxFrom
+
+  @doc """
+  Returns the list of bucket_tx_from.
+
+  ## Examples
+
+      iex> list_bucket_tx_from()
+      [%BucketTxFrom{}, ...]
+
+  """
+  def list_bucket_tx_from do
+    Repo.all(BucketTxFrom)
+  end
+
+  @doc """
+  Gets a single bucket_tx_from.
+
+  Raises `Ecto.NoResultsError` if the Bucket tx from does not exist.
+
+  ## Examples
+
+      iex> get_bucket_tx_from!(123)
+      %BucketTxFrom{}
+
+      iex> get_bucket_tx_from!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_bucket_tx_from!(id), do: Repo.get!(BucketTxFrom, id)
+
+  @doc """
+  Creates a bucket_tx_from.
+
+  ## Examples
+
+      iex> create_bucket_tx_from(%{field: value})
+      {:ok, %BucketTxFrom{}}
+
+      iex> create_bucket_tx_from(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_bucket_tx_from(attrs \\ %{}) do
+    %BucketTxFrom{}
+    |> BucketTxFrom.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a bucket_tx_from.
+
+  ## Examples
+
+      iex> update_bucket_tx_from(bucket_tx_from, %{field: new_value})
+      {:ok, %BucketTxFrom{}}
+
+      iex> update_bucket_tx_from(bucket_tx_from, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_bucket_tx_from(%BucketTxFrom{} = bucket_tx_from, attrs) do
+    bucket_tx_from
+    |> BucketTxFrom.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a bucket_tx_from.
+
+  ## Examples
+
+      iex> delete_bucket_tx_from(bucket_tx_from)
+      {:ok, %BucketTxFrom{}}
+
+      iex> delete_bucket_tx_from(bucket_tx_from)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_bucket_tx_from(%BucketTxFrom{} = bucket_tx_from) do
+    Repo.delete(bucket_tx_from)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking bucket_tx_from changes.
+
+  ## Examples
+
+      iex> change_bucket_tx_from(bucket_tx_from)
+      %Ecto.Changeset{data: %BucketTxFrom{}}
+
+  """
+  def change_bucket_tx_from(%BucketTxFrom{} = bucket_tx_from, attrs \\ %{}) do
+    BucketTxFrom.changeset(bucket_tx_from, attrs)
+  end
 end

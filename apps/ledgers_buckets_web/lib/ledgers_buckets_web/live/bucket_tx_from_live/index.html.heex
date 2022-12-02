@@ -1,0 +1,51 @@
+<h1>Listing Bucket tx from</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.bucket_tx_from_index_path(@socket, :index)}>
+    <.live_component
+      module={LedgersBucketsWeb.BucketTxFromLive.FormComponent}
+      id={@bucket_tx_from.id || :new}
+      title={@page_title}
+      action={@live_action}
+      bucket_tx_from={@bucket_tx_from}
+      return_to={Routes.bucket_tx_from_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bucket tx from</th>
+      <th>Owner</th>
+      <th>Wallet</th>
+      <th>Weight</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Asset</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="bucket_tx_from">
+    <%= for bucket_tx_from <- @bucket_tx_from_collection do %>
+      <tr id={"bucket_tx_from-#{bucket_tx_from.id}"}>
+        <td><%= bucket_tx_from.bucket_tx_from_id %></td>
+        <td><%= bucket_tx_from.owner %></td>
+        <td><%= bucket_tx_from.wallet %></td>
+        <td><%= bucket_tx_from.weight %></td>
+        <td><%= bucket_tx_from.type %></td>
+        <td><%= bucket_tx_from.amount %></td>
+        <td><%= bucket_tx_from.asset %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.bucket_tx_from_show_path(@socket, :show, bucket_tx_from) %></span>
+          <span><%= live_patch "Edit", to: Routes.bucket_tx_from_index_path(@socket, :edit, bucket_tx_from) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: bucket_tx_from.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Bucket tx from", to: Routes.bucket_tx_from_index_path(@socket, :new) %></span>
