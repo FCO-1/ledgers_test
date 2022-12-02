@@ -19,12 +19,26 @@ defmodule LedgersBucketsWeb.Router do
 
     get "/", PageController, :index
 
+    live "/bucket_tx_from", BucketTxFromLive.Index, :index
+    live "/bucket_tx_from/new", BucketTxFromLive.Index, :new
+    live "/bucket_tx_from/:id/edit", BucketTxFromLive.Index, :edit
+
+    live "/bucket_tx_from/:id", BucketTxFromLive.Show, :show
+    live "/bucket_tx_from/:id/show/edit", BucketTxFromLive.Show, :edit
+
     live "/bucket_tx_to", BucketTxToLive.Index, :index
     live "/bucket_tx_to/new", BucketTxToLive.Index, :new
     live "/bucket_tx_to/:id/edit", BucketTxToLive.Index, :edit
 
     live "/bucket_tx_to/:id", BucketTxToLive.Show, :show
     live "/bucket_tx_to/:id/show/edit", BucketTxToLive.Show, :edit
+
+    live "/buckets", BucketLive.Index, :index
+    live "/buckets/new", BucketLive.Index, :new
+    live "/buckets/:id/edit", BucketLive.Index, :edit
+
+    live "/buckets/:id", BucketLive.Show, :show
+    live "/buckets/:id/show/edit", BucketLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

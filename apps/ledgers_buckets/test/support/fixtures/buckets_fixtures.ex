@@ -66,4 +66,32 @@ defmodule LedgersBuckets.BucketsFixtures do
 
     bucket_tx_to
   end
+
+  @doc """
+  Generate a bucket.
+  """
+  def bucket_fixture(attrs \\ %{}) do
+    {:ok, bucket} =
+      attrs
+      |> Enum.into(%{
+        amount: "120.5",
+        asset: "some asset",
+        asset_reference: "some asset_reference",
+        asset_type: "some asset_type",
+        bucket_at: ~N[2022-12-01 20:37:00],
+        bucket_id: "some bucket_id",
+        bucket_tx_id: "some bucket_tx_id",
+        is_spent: 42,
+        lock_4_tx: 42,
+        locked_at: ~N[2022-12-01 20:37:00],
+        locked_by_tx_id: "some locked_by_tx_id",
+        owner: "some owner",
+        spent_at: ~N[2022-12-01 20:37:00],
+        type: "some type",
+        wallet: "some wallet"
+      })
+      |> LedgersBuckets.Buckets.create_bucket()
+
+    bucket
+  end
 end

@@ -206,4 +206,86 @@ defmodule LedgersBuckets.BucketsTest do
       assert %Ecto.Changeset{} = Buckets.change_bucket_tx_to(bucket_tx_to)
     end
   end
+
+  describe "buckets" do
+    alias LedgersBuckets.Buckets.Bucket
+
+    import LedgersBuckets.BucketsFixtures
+
+    @invalid_attrs %{amount: nil, asset: nil, asset_reference: nil, asset_type: nil, bucket_at: nil, bucket_id: nil, bucket_tx_id: nil, is_spent: nil, lock_4_tx: nil, locked_at: nil, locked_by_tx_id: nil, owner: nil, spent_at: nil, type: nil, wallet: nil}
+
+    test "list_buckets/0 returns all buckets" do
+      bucket = bucket_fixture()
+      assert Buckets.list_buckets() == [bucket]
+    end
+
+    test "get_bucket!/1 returns the bucket with given id" do
+      bucket = bucket_fixture()
+      assert Buckets.get_bucket!(bucket.id) == bucket
+    end
+
+    test "create_bucket/1 with valid data creates a bucket" do
+      valid_attrs = %{amount: "120.5", asset: "some asset", asset_reference: "some asset_reference", asset_type: "some asset_type", bucket_at: ~N[2022-12-01 20:37:00], bucket_id: "some bucket_id", bucket_tx_id: "some bucket_tx_id", is_spent: 42, lock_4_tx: 42, locked_at: ~N[2022-12-01 20:37:00], locked_by_tx_id: "some locked_by_tx_id", owner: "some owner", spent_at: ~N[2022-12-01 20:37:00], type: "some type", wallet: "some wallet"}
+
+      assert {:ok, %Bucket{} = bucket} = Buckets.create_bucket(valid_attrs)
+      assert bucket.amount == Decimal.new("120.5")
+      assert bucket.asset == "some asset"
+      assert bucket.asset_reference == "some asset_reference"
+      assert bucket.asset_type == "some asset_type"
+      assert bucket.bucket_at == ~N[2022-12-01 20:37:00]
+      assert bucket.bucket_id == "some bucket_id"
+      assert bucket.bucket_tx_id == "some bucket_tx_id"
+      assert bucket.is_spent == 42
+      assert bucket.lock_4_tx == 42
+      assert bucket.locked_at == ~N[2022-12-01 20:37:00]
+      assert bucket.locked_by_tx_id == "some locked_by_tx_id"
+      assert bucket.owner == "some owner"
+      assert bucket.spent_at == ~N[2022-12-01 20:37:00]
+      assert bucket.type == "some type"
+      assert bucket.wallet == "some wallet"
+    end
+
+    test "create_bucket/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Buckets.create_bucket(@invalid_attrs)
+    end
+
+    test "update_bucket/2 with valid data updates the bucket" do
+      bucket = bucket_fixture()
+      update_attrs = %{amount: "456.7", asset: "some updated asset", asset_reference: "some updated asset_reference", asset_type: "some updated asset_type", bucket_at: ~N[2022-12-02 20:37:00], bucket_id: "some updated bucket_id", bucket_tx_id: "some updated bucket_tx_id", is_spent: 43, lock_4_tx: 43, locked_at: ~N[2022-12-02 20:37:00], locked_by_tx_id: "some updated locked_by_tx_id", owner: "some updated owner", spent_at: ~N[2022-12-02 20:37:00], type: "some updated type", wallet: "some updated wallet"}
+
+      assert {:ok, %Bucket{} = bucket} = Buckets.update_bucket(bucket, update_attrs)
+      assert bucket.amount == Decimal.new("456.7")
+      assert bucket.asset == "some updated asset"
+      assert bucket.asset_reference == "some updated asset_reference"
+      assert bucket.asset_type == "some updated asset_type"
+      assert bucket.bucket_at == ~N[2022-12-02 20:37:00]
+      assert bucket.bucket_id == "some updated bucket_id"
+      assert bucket.bucket_tx_id == "some updated bucket_tx_id"
+      assert bucket.is_spent == 43
+      assert bucket.lock_4_tx == 43
+      assert bucket.locked_at == ~N[2022-12-02 20:37:00]
+      assert bucket.locked_by_tx_id == "some updated locked_by_tx_id"
+      assert bucket.owner == "some updated owner"
+      assert bucket.spent_at == ~N[2022-12-02 20:37:00]
+      assert bucket.type == "some updated type"
+      assert bucket.wallet == "some updated wallet"
+    end
+
+    test "update_bucket/2 with invalid data returns error changeset" do
+      bucket = bucket_fixture()
+      assert {:error, %Ecto.Changeset{}} = Buckets.update_bucket(bucket, @invalid_attrs)
+      assert bucket == Buckets.get_bucket!(bucket.id)
+    end
+
+    test "delete_bucket/1 deletes the bucket" do
+      bucket = bucket_fixture()
+      assert {:ok, %Bucket{}} = Buckets.delete_bucket(bucket)
+      assert_raise Ecto.NoResultsError, fn -> Buckets.get_bucket!(bucket.id) end
+    end
+
+    test "change_bucket/1 returns a bucket changeset" do
+      bucket = bucket_fixture()
+      assert %Ecto.Changeset{} = Buckets.change_bucket(bucket)
+    end
+  end
 end

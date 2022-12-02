@@ -1,0 +1,76 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="bucket-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+    <%= label f, :bucket_id %>
+    <%= text_input f, :bucket_id %>
+    <%= error_tag f, :bucket_id %>
+  
+    <%= label f, :bucket_at %>
+    <%= datetime_select f, :bucket_at %>
+    <%= error_tag f, :bucket_at %>
+  
+    <%= label f, :bucket_tx_id %>
+    <%= text_input f, :bucket_tx_id %>
+    <%= error_tag f, :bucket_tx_id %>
+  
+    <%= label f, :owner %>
+    <%= text_input f, :owner %>
+    <%= error_tag f, :owner %>
+  
+    <%= label f, :wallet %>
+    <%= text_input f, :wallet %>
+    <%= error_tag f, :wallet %>
+  
+    <%= label f, :type %>
+    <%= text_input f, :type %>
+    <%= error_tag f, :type %>
+  
+    <%= label f, :amount %>
+    <%= number_input f, :amount, step: "any" %>
+    <%= error_tag f, :amount %>
+  
+    <%= label f, :asset %>
+    <%= text_input f, :asset %>
+    <%= error_tag f, :asset %>
+  
+    <%= label f, :asset_type %>
+    <%= text_input f, :asset_type %>
+    <%= error_tag f, :asset_type %>
+  
+    <%= label f, :asset_reference %>
+    <%= text_input f, :asset_reference %>
+    <%= error_tag f, :asset_reference %>
+  
+    <%= label f, :is_spent %>
+    <%= number_input f, :is_spent %>
+    <%= error_tag f, :is_spent %>
+  
+    <%= label f, :lock_4_tx %>
+    <%= number_input f, :lock_4_tx %>
+    <%= error_tag f, :lock_4_tx %>
+  
+    <%= label f, :locked_by_tx_id %>
+    <%= text_input f, :locked_by_tx_id %>
+    <%= error_tag f, :locked_by_tx_id %>
+  
+    <%= label f, :locked_at %>
+    <%= datetime_select f, :locked_at %>
+    <%= error_tag f, :locked_at %>
+  
+    <%= label f, :spent_at %>
+    <%= datetime_select f, :spent_at %>
+    <%= error_tag f, :spent_at %>
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>
