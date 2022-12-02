@@ -94,4 +94,22 @@ defmodule LedgersBuckets.BucketsFixtures do
 
     bucket
   end
+
+  @doc """
+  Generate a bucket_flow.
+  """
+  def bucket_flow_fixture(attrs \\ %{}) do
+    {:ok, bucket_flow} =
+      attrs
+      |> Enum.into(%{
+        amount: "120.5",
+        bucket_flow_id: "some bucket_flow_id",
+        bucket_in: "some bucket_in",
+        bucket_out: "some bucket_out",
+        bucket_tx_id: "some bucket_tx_id"
+      })
+      |> LedgersBuckets.Buckets.create_bucket_flow()
+
+    bucket_flow
+  end
 end

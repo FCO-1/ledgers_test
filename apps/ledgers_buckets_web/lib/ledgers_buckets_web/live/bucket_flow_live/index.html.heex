@@ -1,0 +1,47 @@
+<h1>Listing Bucket flows</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.bucket_flow_index_path(@socket, :index)}>
+    <.live_component
+      module={LedgersBucketsWeb.BucketFlowLive.FormComponent}
+      id={@bucket_flow.id || :new}
+      title={@page_title}
+      action={@live_action}
+      bucket_flow={@bucket_flow}
+      return_to={Routes.bucket_flow_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bucket flow</th>
+      <th>Bucket tx</th>
+      <th>Amount</th>
+      <th>Bucket in</th>
+      <th>Bucket out</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="bucket_flows">
+    <%= for bucket_flow <- @bucket_flows do %>
+      <tr id={"bucket_flow-#{bucket_flow.id}"}>
+        <td><%= bucket_flow.bucket_flow_id %></td>
+        <td><%= bucket_flow.bucket_tx_id %></td>
+        <td><%= bucket_flow.amount %></td>
+        <td><%= bucket_flow.bucket_in %></td>
+        <td><%= bucket_flow.bucket_out %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.bucket_flow_show_path(@socket, :show, bucket_flow) %></span>
+          <span><%= live_patch "Edit", to: Routes.bucket_flow_index_path(@socket, :edit, bucket_flow) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: bucket_flow.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Bucket flow", to: Routes.bucket_flow_index_path(@socket, :new) %></span>

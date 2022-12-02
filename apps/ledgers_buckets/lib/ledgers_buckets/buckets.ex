@@ -389,4 +389,100 @@ defmodule LedgersBuckets.Buckets do
   def change_bucket(%Bucket{} = bucket, attrs \\ %{}) do
     Bucket.changeset(bucket, attrs)
   end
+
+  alias LedgersBuckets.Buckets.BucketFlow
+
+  @doc """
+  Returns the list of bucket_flows.
+
+  ## Examples
+
+      iex> list_bucket_flows()
+      [%BucketFlow{}, ...]
+
+  """
+  def list_bucket_flows do
+    Repo.all(BucketFlow)
+  end
+
+  @doc """
+  Gets a single bucket_flow.
+
+  Raises `Ecto.NoResultsError` if the Bucket flow does not exist.
+
+  ## Examples
+
+      iex> get_bucket_flow!(123)
+      %BucketFlow{}
+
+      iex> get_bucket_flow!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_bucket_flow!(id), do: Repo.get!(BucketFlow, id)
+
+  @doc """
+  Creates a bucket_flow.
+
+  ## Examples
+
+      iex> create_bucket_flow(%{field: value})
+      {:ok, %BucketFlow{}}
+
+      iex> create_bucket_flow(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_bucket_flow(attrs \\ %{}) do
+    %BucketFlow{}
+    |> BucketFlow.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a bucket_flow.
+
+  ## Examples
+
+      iex> update_bucket_flow(bucket_flow, %{field: new_value})
+      {:ok, %BucketFlow{}}
+
+      iex> update_bucket_flow(bucket_flow, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_bucket_flow(%BucketFlow{} = bucket_flow, attrs) do
+    bucket_flow
+    |> BucketFlow.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a bucket_flow.
+
+  ## Examples
+
+      iex> delete_bucket_flow(bucket_flow)
+      {:ok, %BucketFlow{}}
+
+      iex> delete_bucket_flow(bucket_flow)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_bucket_flow(%BucketFlow{} = bucket_flow) do
+    Repo.delete(bucket_flow)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking bucket_flow changes.
+
+  ## Examples
+
+      iex> change_bucket_flow(bucket_flow)
+      %Ecto.Changeset{data: %BucketFlow{}}
+
+  """
+  def change_bucket_flow(%BucketFlow{} = bucket_flow, attrs \\ %{}) do
+    BucketFlow.changeset(bucket_flow, attrs)
+  end
 end

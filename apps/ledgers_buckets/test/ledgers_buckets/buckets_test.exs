@@ -288,4 +288,66 @@ defmodule LedgersBuckets.BucketsTest do
       assert %Ecto.Changeset{} = Buckets.change_bucket(bucket)
     end
   end
+
+  describe "bucket_flows" do
+    alias LedgersBuckets.Buckets.BucketFlow
+
+    import LedgersBuckets.BucketsFixtures
+
+    @invalid_attrs %{amount: nil, bucket_flow_id: nil, bucket_in: nil, bucket_out: nil, bucket_tx_id: nil}
+
+    test "list_bucket_flows/0 returns all bucket_flows" do
+      bucket_flow = bucket_flow_fixture()
+      assert Buckets.list_bucket_flows() == [bucket_flow]
+    end
+
+    test "get_bucket_flow!/1 returns the bucket_flow with given id" do
+      bucket_flow = bucket_flow_fixture()
+      assert Buckets.get_bucket_flow!(bucket_flow.id) == bucket_flow
+    end
+
+    test "create_bucket_flow/1 with valid data creates a bucket_flow" do
+      valid_attrs = %{amount: "120.5", bucket_flow_id: "some bucket_flow_id", bucket_in: "some bucket_in", bucket_out: "some bucket_out", bucket_tx_id: "some bucket_tx_id"}
+
+      assert {:ok, %BucketFlow{} = bucket_flow} = Buckets.create_bucket_flow(valid_attrs)
+      assert bucket_flow.amount == Decimal.new("120.5")
+      assert bucket_flow.bucket_flow_id == "some bucket_flow_id"
+      assert bucket_flow.bucket_in == "some bucket_in"
+      assert bucket_flow.bucket_out == "some bucket_out"
+      assert bucket_flow.bucket_tx_id == "some bucket_tx_id"
+    end
+
+    test "create_bucket_flow/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Buckets.create_bucket_flow(@invalid_attrs)
+    end
+
+    test "update_bucket_flow/2 with valid data updates the bucket_flow" do
+      bucket_flow = bucket_flow_fixture()
+      update_attrs = %{amount: "456.7", bucket_flow_id: "some updated bucket_flow_id", bucket_in: "some updated bucket_in", bucket_out: "some updated bucket_out", bucket_tx_id: "some updated bucket_tx_id"}
+
+      assert {:ok, %BucketFlow{} = bucket_flow} = Buckets.update_bucket_flow(bucket_flow, update_attrs)
+      assert bucket_flow.amount == Decimal.new("456.7")
+      assert bucket_flow.bucket_flow_id == "some updated bucket_flow_id"
+      assert bucket_flow.bucket_in == "some updated bucket_in"
+      assert bucket_flow.bucket_out == "some updated bucket_out"
+      assert bucket_flow.bucket_tx_id == "some updated bucket_tx_id"
+    end
+
+    test "update_bucket_flow/2 with invalid data returns error changeset" do
+      bucket_flow = bucket_flow_fixture()
+      assert {:error, %Ecto.Changeset{}} = Buckets.update_bucket_flow(bucket_flow, @invalid_attrs)
+      assert bucket_flow == Buckets.get_bucket_flow!(bucket_flow.id)
+    end
+
+    test "delete_bucket_flow/1 deletes the bucket_flow" do
+      bucket_flow = bucket_flow_fixture()
+      assert {:ok, %BucketFlow{}} = Buckets.delete_bucket_flow(bucket_flow)
+      assert_raise Ecto.NoResultsError, fn -> Buckets.get_bucket_flow!(bucket_flow.id) end
+    end
+
+    test "change_bucket_flow/1 returns a bucket_flow changeset" do
+      bucket_flow = bucket_flow_fixture()
+      assert %Ecto.Changeset{} = Buckets.change_bucket_flow(bucket_flow)
+    end
+  end
 end

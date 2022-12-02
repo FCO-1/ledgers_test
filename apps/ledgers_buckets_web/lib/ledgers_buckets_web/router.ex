@@ -39,6 +39,13 @@ defmodule LedgersBucketsWeb.Router do
 
     live "/buckets/:id", BucketLive.Show, :show
     live "/buckets/:id/show/edit", BucketLive.Show, :edit
+
+    live "/bucket_flows", BucketFlowLive.Index, :index
+    live "/bucket_flows/new", BucketFlowLive.Index, :new
+    live "/bucket_flows/:id/edit", BucketFlowLive.Index, :edit
+
+    live "/bucket_flows/:id", BucketFlowLive.Show, :show
+    live "/bucket_flows/:id/show/edit", BucketFlowLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
