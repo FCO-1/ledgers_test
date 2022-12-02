@@ -10,8 +10,8 @@
 import Config
 
 config :ledgers_buckets_web,
-  ecto_repos: [LedgersBucketsWeb.Repo],
-  generators: [context_app: false]
+  ecto_repos: [LedgersBuckets.Repo],
+  generators: [context_app: :ledgers_buckets, binary_id: true]
 
 # Configures the endpoint
 config :ledgers_buckets_web, LedgersBucketsWeb.Endpoint,
