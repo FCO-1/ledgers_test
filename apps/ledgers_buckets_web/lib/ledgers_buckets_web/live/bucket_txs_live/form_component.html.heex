@@ -8,55 +8,55 @@
     phx-target={@myself}
     phx-change="validate"
     phx-submit="save">
-  
+
     <%= label f, :bucket_tx_id %>
     <%= text_input f, :bucket_tx_id %>
     <%= error_tag f, :bucket_tx_id %>
-  
+
     <%= label f, :bucket_tx_at %>
-    <%= text_input f, :bucket_tx_at %>
+    <%= datetime_local_input f, :bucket_tx_at, value: NaiveDateTime.local_now() %>
     <%= error_tag f, :bucket_tx_at %>
-  
+
     <%= label f, :type %>
     <%= text_input f, :type %>
     <%= error_tag f, :type %>
-  
+
     <%= label f, :amount %>
     <%= number_input f, :amount, step: "any" %>
     <%= error_tag f, :amount %>
-  
+
     <%= label f, :asset %>
     <%= text_input f, :asset %>
     <%= error_tag f, :asset %>
-  
+
     <%= label f, :state %>
     <%= text_input f, :state %>
     <%= error_tag f, :state %>
-  
+
     <%= label f, :status %>
     <%= text_input f, :status %>
     <%= error_tag f, :status %>
-  
+
     <%= label f, :note %>
     <%= text_input f, :note %>
     <%= error_tag f, :note %>
-  
+
     <%= label f, :request_id %>
     <%= text_input f, :request_id %>
     <%= error_tag f, :request_id %>
-  
+
     <%= label f, :reference_id %>
     <%= text_input f, :reference_id %>
     <%= error_tag f, :reference_id %>
-  
+
     <%= label f, :reference_type %>
     <%= text_input f, :reference_type %>
     <%= error_tag f, :reference_type %>
-  
+
     <%= label f, :hash %>
     <%= textarea f, :hash %>
     <%= error_tag f, :hash %>
-  
+
     <div>
       <%= submit "Save", phx_disable_with: "Saving..." %>
     </div>
