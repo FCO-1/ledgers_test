@@ -485,4 +485,54 @@ defmodule LedgersBuckets.Buckets do
   def change_bucket_flow(%BucketFlow{} = bucket_flow, attrs \\ %{}) do
     BucketFlow.changeset(bucket_flow, attrs)
   end
+
+
+  def get_bucket_txs_secuence do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('buckets.bucket_txs_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
+
+   def get_bucket_tx_from_secuence do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('buckets.bucket_tx_from_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
+
+   def get_bucket_tx_to_secuence do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('buckets.bucket_tx_to_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
+
+   def get_bucket_secuence do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('buckets.bucket_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
+   def get_bucket_flow_secuence do
+    case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('buckets.bucket_flow_sequence')::citext;", []) do
+       {:ok, result} ->
+         result.rows |> List.first() |> List.first()
+
+       {:error, _error} ->
+         nil
+     end
+   end
 end
