@@ -1,5 +1,12 @@
 import Config
 
+# We don't run a server during test. If one is required,
+# you can enable the server option below.
+config :ledgers_buckets_web, LedgersBucketsWeb.Endpoint,
+  http: [ip: {127, 0, 0, 1}, port: 4002],
+  secret_key_base: "OcPoHGoEOVzRAd8GDy4ALVxHzN6Ybw6tFAxajFz3LO4j4Q3Z0B23zVH3grOlKWH6",
+  server: false
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
