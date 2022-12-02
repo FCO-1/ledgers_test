@@ -197,4 +197,100 @@ defmodule LedgersBuckets.Buckets do
   def change_bucket_tx_from(%BucketTxFrom{} = bucket_tx_from, attrs \\ %{}) do
     BucketTxFrom.changeset(bucket_tx_from, attrs)
   end
+
+  alias LedgersBuckets.Buckets.BucketTxTo
+
+  @doc """
+  Returns the list of bucket_tx_to.
+
+  ## Examples
+
+      iex> list_bucket_tx_to()
+      [%BucketTxTo{}, ...]
+
+  """
+  def list_bucket_tx_to do
+    Repo.all(BucketTxTo)
+  end
+
+  @doc """
+  Gets a single bucket_tx_to.
+
+  Raises `Ecto.NoResultsError` if the Bucket tx to does not exist.
+
+  ## Examples
+
+      iex> get_bucket_tx_to!(123)
+      %BucketTxTo{}
+
+      iex> get_bucket_tx_to!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_bucket_tx_to!(id), do: Repo.get!(BucketTxTo, id)
+
+  @doc """
+  Creates a bucket_tx_to.
+
+  ## Examples
+
+      iex> create_bucket_tx_to(%{field: value})
+      {:ok, %BucketTxTo{}}
+
+      iex> create_bucket_tx_to(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_bucket_tx_to(attrs \\ %{}) do
+    %BucketTxTo{}
+    |> BucketTxTo.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a bucket_tx_to.
+
+  ## Examples
+
+      iex> update_bucket_tx_to(bucket_tx_to, %{field: new_value})
+      {:ok, %BucketTxTo{}}
+
+      iex> update_bucket_tx_to(bucket_tx_to, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_bucket_tx_to(%BucketTxTo{} = bucket_tx_to, attrs) do
+    bucket_tx_to
+    |> BucketTxTo.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a bucket_tx_to.
+
+  ## Examples
+
+      iex> delete_bucket_tx_to(bucket_tx_to)
+      {:ok, %BucketTxTo{}}
+
+      iex> delete_bucket_tx_to(bucket_tx_to)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_bucket_tx_to(%BucketTxTo{} = bucket_tx_to) do
+    Repo.delete(bucket_tx_to)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking bucket_tx_to changes.
+
+  ## Examples
+
+      iex> change_bucket_tx_to(bucket_tx_to)
+      %Ecto.Changeset{data: %BucketTxTo{}}
+
+  """
+  def change_bucket_tx_to(%BucketTxTo{} = bucket_tx_to, attrs \\ %{}) do
+    BucketTxTo.changeset(bucket_tx_to, attrs)
+  end
 end

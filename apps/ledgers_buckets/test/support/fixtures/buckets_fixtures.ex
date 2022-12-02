@@ -48,4 +48,22 @@ defmodule LedgersBuckets.BucketsFixtures do
 
     bucket_tx_from
   end
+
+  @doc """
+  Generate a bucket_tx_to.
+  """
+  def bucket_tx_to_fixture(attrs \\ %{}) do
+    {:ok, bucket_tx_to} =
+      attrs
+      |> Enum.into(%{
+        amount: "120.5",
+        assets: "some assets",
+        bucket_tx_id: "some bucket_tx_id",
+        onwer: "some onwer",
+        wallet: "some wallet"
+      })
+      |> LedgersBuckets.Buckets.create_bucket_tx_to()
+
+    bucket_tx_to
+  end
 end

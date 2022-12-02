@@ -1,0 +1,47 @@
+<h1>Listing Bucket tx to</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.bucket_tx_to_index_path(@socket, :index)}>
+    <.live_component
+      module={LedgersBucketsWeb.BucketTxToLive.FormComponent}
+      id={@bucket_tx_to.id || :new}
+      title={@page_title}
+      action={@live_action}
+      bucket_tx_to={@bucket_tx_to}
+      return_to={Routes.bucket_tx_to_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bucket tx</th>
+      <th>Onwer</th>
+      <th>Wallet</th>
+      <th>Amount</th>
+      <th>Assets</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="bucket_tx_to">
+    <%= for bucket_tx_to <- @bucket_tx_to_collection do %>
+      <tr id={"bucket_tx_to-#{bucket_tx_to.id}"}>
+        <td><%= bucket_tx_to.bucket_tx_id %></td>
+        <td><%= bucket_tx_to.onwer %></td>
+        <td><%= bucket_tx_to.wallet %></td>
+        <td><%= bucket_tx_to.amount %></td>
+        <td><%= bucket_tx_to.assets %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.bucket_tx_to_show_path(@socket, :show, bucket_tx_to) %></span>
+          <span><%= live_patch "Edit", to: Routes.bucket_tx_to_index_path(@socket, :edit, bucket_tx_to) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: bucket_tx_to.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Bucket tx to", to: Routes.bucket_tx_to_index_path(@socket, :new) %></span>

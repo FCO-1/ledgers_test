@@ -144,4 +144,66 @@ defmodule LedgersBuckets.BucketsTest do
       assert %Ecto.Changeset{} = Buckets.change_bucket_tx_from(bucket_tx_from)
     end
   end
+
+  describe "bucket_tx_to" do
+    alias LedgersBuckets.Buckets.BucketTxTo
+
+    import LedgersBuckets.BucketsFixtures
+
+    @invalid_attrs %{amount: nil, assets: nil, bucket_tx_id: nil, onwer: nil, wallet: nil}
+
+    test "list_bucket_tx_to/0 returns all bucket_tx_to" do
+      bucket_tx_to = bucket_tx_to_fixture()
+      assert Buckets.list_bucket_tx_to() == [bucket_tx_to]
+    end
+
+    test "get_bucket_tx_to!/1 returns the bucket_tx_to with given id" do
+      bucket_tx_to = bucket_tx_to_fixture()
+      assert Buckets.get_bucket_tx_to!(bucket_tx_to.id) == bucket_tx_to
+    end
+
+    test "create_bucket_tx_to/1 with valid data creates a bucket_tx_to" do
+      valid_attrs = %{amount: "120.5", assets: "some assets", bucket_tx_id: "some bucket_tx_id", onwer: "some onwer", wallet: "some wallet"}
+
+      assert {:ok, %BucketTxTo{} = bucket_tx_to} = Buckets.create_bucket_tx_to(valid_attrs)
+      assert bucket_tx_to.amount == Decimal.new("120.5")
+      assert bucket_tx_to.assets == "some assets"
+      assert bucket_tx_to.bucket_tx_id == "some bucket_tx_id"
+      assert bucket_tx_to.onwer == "some onwer"
+      assert bucket_tx_to.wallet == "some wallet"
+    end
+
+    test "create_bucket_tx_to/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Buckets.create_bucket_tx_to(@invalid_attrs)
+    end
+
+    test "update_bucket_tx_to/2 with valid data updates the bucket_tx_to" do
+      bucket_tx_to = bucket_tx_to_fixture()
+      update_attrs = %{amount: "456.7", assets: "some updated assets", bucket_tx_id: "some updated bucket_tx_id", onwer: "some updated onwer", wallet: "some updated wallet"}
+
+      assert {:ok, %BucketTxTo{} = bucket_tx_to} = Buckets.update_bucket_tx_to(bucket_tx_to, update_attrs)
+      assert bucket_tx_to.amount == Decimal.new("456.7")
+      assert bucket_tx_to.assets == "some updated assets"
+      assert bucket_tx_to.bucket_tx_id == "some updated bucket_tx_id"
+      assert bucket_tx_to.onwer == "some updated onwer"
+      assert bucket_tx_to.wallet == "some updated wallet"
+    end
+
+    test "update_bucket_tx_to/2 with invalid data returns error changeset" do
+      bucket_tx_to = bucket_tx_to_fixture()
+      assert {:error, %Ecto.Changeset{}} = Buckets.update_bucket_tx_to(bucket_tx_to, @invalid_attrs)
+      assert bucket_tx_to == Buckets.get_bucket_tx_to!(bucket_tx_to.id)
+    end
+
+    test "delete_bucket_tx_to/1 deletes the bucket_tx_to" do
+      bucket_tx_to = bucket_tx_to_fixture()
+      assert {:ok, %BucketTxTo{}} = Buckets.delete_bucket_tx_to(bucket_tx_to)
+      assert_raise Ecto.NoResultsError, fn -> Buckets.get_bucket_tx_to!(bucket_tx_to.id) end
+    end
+
+    test "change_bucket_tx_to/1 returns a bucket_tx_to changeset" do
+      bucket_tx_to = bucket_tx_to_fixture()
+      assert %Ecto.Changeset{} = Buckets.change_bucket_tx_to(bucket_tx_to)
+    end
+  end
 end

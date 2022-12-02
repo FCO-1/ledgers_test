@@ -18,6 +18,13 @@ defmodule LedgersBucketsWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    live "/bucket_tx_to", BucketTxToLive.Index, :index
+    live "/bucket_tx_to/new", BucketTxToLive.Index, :new
+    live "/bucket_tx_to/:id/edit", BucketTxToLive.Index, :edit
+
+    live "/bucket_tx_to/:id", BucketTxToLive.Show, :show
+    live "/bucket_tx_to/:id/show/edit", BucketTxToLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
