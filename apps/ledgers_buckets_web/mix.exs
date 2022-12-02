@@ -61,7 +61,7 @@ defmodule LedgersBucketsWeb.MixProject do
     [
       setup: ["deps.get"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["esbuild ledger_bucket_assets --minify", "phx.digest"]
     ]
   end
 end
