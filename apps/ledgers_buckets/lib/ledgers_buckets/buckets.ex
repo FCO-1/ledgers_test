@@ -84,6 +84,18 @@ defmodule LedgersBuckets.Buckets do
     }
   end
 
+  def build_tx_from(params, wallet) do
+    %{
+      amount: params["amount"],
+      asset: params["asset"],
+      bucket_tx_from_id: generate_bucket_tx_from_serial(),
+      owner: params["??"],
+      type: "fix",
+      wallet: wallet,
+      weight: 0
+    }
+  end
+
   @doc """
   Updates a bucket_txs.
 
