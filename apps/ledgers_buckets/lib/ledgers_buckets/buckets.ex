@@ -55,19 +55,32 @@ defmodule LedgersBuckets.Buckets do
     |> Repo.insert()
   end
 
+  def create_new_bucket_transaccion(attrs \\ %{}) do
+    Repo.transaction(fn ->
+      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs() do
+        bucket_txs
+      else
+        {:error, changeset} ->
+          changeset
+          |> Repo.rollback()
+      end
+    end)
+  end
+
   def build_bucket_txs(params) do
     %{
       amount: params["amount"],
-      asset: params["assets"],
-      bucket_tx_at: NaiveDateTime.local_now(),
+      asset: params["asset"],
+      bucket_tx_at: params["bucket_tx_at"],
       bucket_tx_id: generate_bucket_tx_serial(),
-      note: "cliente_vendedor",
-      reference_id: "1122233",
-      reference_type: "order" ,
+      note: params["note"],
+      reference_id: params["reference_id"],
+      reference_type: "order",
       request_id: "1122321",
-      state: "pending",
-      status: "open",
-      type: "mint",
+      state: params["state"],
+      status: params["status"],
+      type: params["type"],
+      hash: params["hash"]
     }
   end
 

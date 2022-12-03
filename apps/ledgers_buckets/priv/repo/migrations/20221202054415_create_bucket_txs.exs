@@ -9,7 +9,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBucketTxs do
     create table(:bucket_txs, primary_key: false, prefix: schema) do
       add :id, :binary_id, primary_key: true
       add :bucket_tx_id, :citext
-      add :bucket_tx_at, :string
+      add :bucket_tx_at, :naive_datetime
       add :type, :citext
       add :amount, :numeric
       add :asset, :citext

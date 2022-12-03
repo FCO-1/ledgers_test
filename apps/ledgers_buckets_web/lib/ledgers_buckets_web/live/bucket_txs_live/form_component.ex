@@ -41,7 +41,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
   end
 
   defp save_bucket_txs(socket, :new, bucket_txs_params) do
-    case Buckets.create_bucket_txs(bucket_txs_params) do
+    case Buckets.create_new_bucket_transaccion(bucket_txs_params) do
       {:ok, _bucket_txs} ->
         {:noreply,
          socket
@@ -49,6 +49,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect(changeset)
         {:noreply, assign(socket, changeset: changeset)}
     end
   end

@@ -8,7 +8,7 @@ defmodule LedgersBuckets.Buckets.BucketTxs do
   schema "bucket_txs" do
     field :amount, :decimal
     field :asset, :string
-    field :bucket_tx_at, :string
+    field :bucket_tx_at, :naive_datetime
     field :bucket_tx_id, :string
     field :hash, :string
     field :note, :string
