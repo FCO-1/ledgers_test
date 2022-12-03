@@ -486,6 +486,25 @@ defmodule LedgersBuckets.Buckets do
     BucketFlow.changeset(bucket_flow, attrs)
   end
 
+  def generate_bucket_tx_serial do
+    "bucket_tx_#{get_bucket_txs_secuence()}"
+  end
+
+  def generate_bucket_tx_from_serial do
+    "bucket_tx_from-#{get_bucket_tx_from_secuence()}"
+  end
+
+  def generate_bucket_tx_to_serial do
+    "bucket_tx_from_#{get_bucket_tx_to_secuence()}"
+  end
+
+  def generate_bucket_serial do
+    "bucket_#{get_bucket_secuence()}"
+  end
+
+  def generate_bucket_flow_serial do
+    "bucket_flow_#{get_bucket_flow_secuence()}"
+  end
 
   def get_bucket_txs_secuence do
     case Ecto.Adapters.SQL.query(Repo, "SELECT NEXTVAL('buckets.bucket_txs_sequence')::citext;", []) do
