@@ -325,6 +325,13 @@ defmodule LedgersBuckets.Buckets do
   """
   def get_bucket!(id), do: Repo.get!(Bucket, id)
 
+
+  def search_and_get_free_buckets(bucket_tx_id) do
+    query =  from b in Bucket,
+    where: b.is_spent == 0 and b.lock_4_tx == 0 and b.bucket_tx_id == ^bucket_tx_id
+    Repo.all(query)
+  end
+
   @doc """
   Creates a bucket.
 
@@ -360,6 +367,7 @@ defmodule LedgersBuckets.Buckets do
     |> Bucket.changeset(attrs)
     |> Repo.update()
   end
+
 
   @doc """
   Deletes a bucket.
