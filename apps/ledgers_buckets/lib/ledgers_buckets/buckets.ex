@@ -96,6 +96,15 @@ defmodule LedgersBuckets.Buckets do
     }
   end
 
+  def build_tx_to(params, tx, wallet) do
+    %{
+      amount: params["amount"],
+      assets: params["asset"],
+      bucket_tx_id: tx.id,
+      onwer: params["??"],
+    }
+  end
+
   @doc """
   Updates a bucket_txs.
 
