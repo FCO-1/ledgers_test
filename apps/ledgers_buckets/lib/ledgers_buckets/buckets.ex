@@ -55,6 +55,22 @@ defmodule LedgersBuckets.Buckets do
     |> Repo.insert()
   end
 
+  def build_bucket_txs(params) do
+    %{
+      amount: params["amount"],
+      asset: params["assets"],
+      bucket_tx_at: NaiveDateTime.local_now(),
+      bucket_tx_id: generate_bucket_tx_serial(),
+      note: "cliente_vendedor",
+      reference_id: "1122233",
+      reference_type: "order" ,
+      request_id: "1122321",
+      state: "pending",
+      status: "open",
+      type: "mint",
+    }
+  end
+
   @doc """
   Updates a bucket_txs.
 
