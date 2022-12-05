@@ -55,9 +55,11 @@ defmodule LedgersBuckets.Buckets do
     |> Repo.insert()
   end
 
-  def create_new_bucket_transaccion(attrs \\ %{}) do
+  def create_new_bucket_transaccion(attrs, wallet_from, wallet_to) do
     Repo.transaction(fn ->
-      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs() do
+      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
+      {:ok, _bucket_tx_from} <- build_tx_from(attrs, wallet_from) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs, wallet_to) |> create_bucket_tx_to() do
         bucket_txs
       else
         {:error, changeset} ->
@@ -102,6 +104,7 @@ defmodule LedgersBuckets.Buckets do
       assets: params["asset"],
       bucket_tx_id: tx.id,
       onwer: params["??"],
+      wallet: wallet
     }
   end
 
