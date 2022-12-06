@@ -40,6 +40,11 @@ defmodule LedgersBucketsWeb.BucketTxsLive.Index do
     {:noreply, assign(socket, :bucket_txs_collection, list_bucket_txs())}
   end
 
+
+  def handle_event("confirm_clent_recive", _params, socket) do
+    {:noreply, socket}
+  end
+
   defp list_bucket_txs do
     Buckets.list_bucket_txs()
   end
