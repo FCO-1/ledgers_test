@@ -10,7 +10,7 @@ defmodule LedgersBuckets.Buckets.BucketTxs do
     field :asset, :string
     field :bucket_tx_at, :naive_datetime
     field :bucket_tx_id, :string
-    field :hash, :string
+    field :hash, :binary
     field :note, :string
     field :reference_id, :string
     field :reference_type, :string

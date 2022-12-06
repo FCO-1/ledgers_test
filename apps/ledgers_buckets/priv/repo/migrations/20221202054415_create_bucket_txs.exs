@@ -19,7 +19,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBucketTxs do
       add :request_id, :string
       add :reference_id, :string
       add :reference_type, :string
-      add :hash, :text
+      add :hash, :binary
 
       timestamps(type: :bigint, autogenerate: {:erlang,:system_time,[:millisecond]})
     end

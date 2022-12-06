@@ -71,7 +71,7 @@ defmodule LedgersBuckets.Buckets do
   end
 
   def build_bucket_txs(params) do
-    %{
+    map = %{
       amount: params["amount"],
       asset: params["asset"],
       bucket_tx_at: params["bucket_tx_at"],
@@ -83,8 +83,16 @@ defmodule LedgersBuckets.Buckets do
       state: params["state"],
       status: params["status"],
       type: params["type"],
-      hash: params["hash"]
     }
+    generate_hash(map)
+  end
+
+  def generate_hash(map) do
+    chain = Jason.encode!(map) |> to_string()
+    hash_brute = :crypto.hash(:sha256, chain)
+    IO.inspect(hash_brute)
+#
+   Map.merge(map, %{hash: "#{hash_brute}"})
   end
 
   def build_tx_from(params) do
