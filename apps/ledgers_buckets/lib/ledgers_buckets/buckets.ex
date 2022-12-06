@@ -70,6 +70,15 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
+
+  def do_swap(bucket_ids) do
+    buckets = list_buckets_by_list_ids(bucket_ids)
+
+  end
+
+
+
+
   def build_bucket_txs(params) do
     map = %{
       amount: params["amount"],
@@ -391,6 +400,29 @@ defmodule LedgersBuckets.Buckets do
     Repo.all(Bucket)
   end
 
+
+  def list_buckets_by_list_ids(list_bucket_ids) do
+    query = from bct in Bucket,
+    where: bct.bucket_id in ^list_bucket_ids,
+    where: bct.is_spent == 0
+
+
+    Repo.all(query)
+  end
+
+  def get_sum_buckets_by_list_ids(list_bucket_ids) do
+    query = from bct in Bucket,
+    where: bct.bucket_id in ^list_bucket_ids,
+    where: bct.is_spent == 0,
+    group_by: bct.owner,
+    select: sum(bct.amount)
+
+    Repo.one(query)
+  end
+
+
+
+
   @doc """
   Gets a single bucket.
 
@@ -463,6 +495,15 @@ defmodule LedgersBuckets.Buckets do
       {:error, %Ecto.Changeset{}}
 
   """
+
+  def delete_many_buckets(list_buckets_ids) do
+    query = from bct in Bucket,
+    where: bct.bucket_id in ^list_buckets_ids
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete_all(:buckets, query)
+  end
+
   def delete_bucket(%Bucket{} = bucket) do
     Repo.delete(bucket)
   end
