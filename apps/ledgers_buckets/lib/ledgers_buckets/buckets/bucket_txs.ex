@@ -27,5 +27,6 @@ defmodule LedgersBuckets.Buckets.BucketTxs do
     bucket_txs
     |> cast(attrs, [:bucket_tx_id, :bucket_tx_at, :type, :amount, :asset, :state, :status, :note, :request_id, :reference_id, :reference_type, :hash])
     |> validate_required([:bucket_tx_id, :bucket_tx_at, :type, :amount, :asset, :state, :status, :note, :request_id, :reference_id, :reference_type, :hash])
+    |> unique_constraint(:hash, name: "bucket_txs_hash_index")
   end
 end
