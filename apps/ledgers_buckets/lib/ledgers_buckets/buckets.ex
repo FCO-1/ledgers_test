@@ -55,11 +55,12 @@ defmodule LedgersBuckets.Buckets do
     |> Repo.insert()
   end
 
-  def create_new_bucket_transaccion(attrs, wallet_from, wallet_to) do
+  def create_new_bucket_transaccion(attrs) do
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
-      {:ok, _bucket_tx_from} <- build_tx_from(attrs, wallet_from) |> create_bucket_tx_from(),
-      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs, wallet_to) |> create_bucket_tx_to() do
+      {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
+      {:ok, _bucket_grm} <- build_bucket(attrs, bucket_txs) |> create_bucket()  do
         bucket_txs
       else
         {:error, changeset} ->
@@ -86,25 +87,45 @@ defmodule LedgersBuckets.Buckets do
     }
   end
 
-  def build_tx_from(params, wallet) do
+  def build_tx_from(params) do
     %{
       amount: params["amount"],
       asset: params["asset"],
       bucket_tx_from_id: generate_bucket_tx_from_serial(),
-      owner: params["??"],
+      owner: params["owner_from"],
       type: "fix",
-      wallet: wallet,
+      wallet: params["wallet_from"],
       weight: 0
     }
   end
 
-  def build_tx_to(params, tx, wallet) do
+  def build_tx_to(params, tx) do
     %{
       amount: params["amount"],
       assets: params["asset"],
       bucket_tx_id: tx.id,
-      onwer: params["??"],
-      wallet: wallet
+      onwer: params["owner_to"],
+      wallet: params["wallet_to"]
+    }
+  end
+
+  def build_bucket(params, tx) do
+    %{
+      amount: params["amount"],
+      asset: params["asset"],
+      asset_reference: "??",
+      asset_type: params["type"],
+      bucket_at: NaiveDateTime.local_now(),
+      bucket_id: generate_bucket_serial(),
+      bucket_tx_id: tx.id ,
+      is_spent: 0,
+      lock_4_tx: 1,
+      locked_at: NaiveDateTime.local_now(),
+      locked_by_tx_id: tx.id,
+      owner: params["owner_to"],
+      spent_at: NaiveDateTime.local_now(),
+      type: params["type"],
+      wallet: params["wallet_to"]
     }
   end
 

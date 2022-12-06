@@ -9,9 +9,9 @@
     phx-change="validate"
     phx-submit="save">
 
-    <%= label f, :bucket_tx_id %>
-    <%= text_input f, :bucket_tx_id %>
-    <%= error_tag f, :bucket_tx_id %>
+    <%#= label f, :bucket_tx_id %>
+    <%#= text_input f, :bucket_tx_id %>
+    <%#= error_tag f, :bucket_tx_id %>
 
     <%= label f, :bucket_tx_at %>
     <%= datetime_local_input f, :bucket_tx_at, value: NaiveDateTime.local_now() %>
@@ -56,6 +56,23 @@
     <%= label f, :hash %>
     <%= textarea f, :hash %>
     <%= error_tag f, :hash %>
+
+    <%= label f, :owner_from %>
+    <%= text_input f, :owner_from %>
+    <%= error_tag f, :owner_from %>
+
+    <%= label f, :owner_to %>
+    <%= text_input f, :owner_to %>
+    <%= error_tag f, :owner_to %>
+
+    <%= label f, :wallet_from %>
+    <%= text_input f, :wallet_from %>
+    <%= error_tag f, :wallet_from %>
+
+    <%= label f, :wallet_to %>
+    <%= text_input f, :wallet_to %>
+    <%= error_tag f, :wallet_to %>
+
 
     <div>
       <%= submit "Save", phx_disable_with: "Saving..." %>
