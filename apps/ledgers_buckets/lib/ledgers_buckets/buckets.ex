@@ -525,6 +525,11 @@ defmodule LedgersBuckets.Buckets do
 
     Ecto.Multi.new()
     |> Ecto.Multi.delete_all(:buckets, query)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
   end
 
   def delete_bucket(%Bucket{} = bucket) do
