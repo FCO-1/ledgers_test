@@ -72,11 +72,13 @@ defmodule LedgersBuckets.Buckets do
 
 
   def create_new_bucket_transaccion_for_swap(attrs, list_ids) do
+    sum = get_sum_buckets_by_list_ids(list_ids)
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
-      {:ok, _bucketsdeleted} <- delete_many_buckets(list_ids)  do
+      {:ok, _bucketsdeleted} <- delete_many_buckets(list_ids),
+      {:ok, _created_new_bucket} <- build_bucket(Map.merge(attrs, %{amount: sum}), bucket_txs) |> create_bucket() do
         bucket_txs
       else
         {:error, changeset} ->
@@ -87,17 +89,6 @@ defmodule LedgersBuckets.Buckets do
   end
 
 
-  def do_swap(list_bucket_ids, params) do
-    query = from bct in Bucket,
-    where: bct.bucket_id in ^list_bucket_ids
-
-    struct = list_bucket_ids
-
-
-    Ecto.Multi.new()
-    |> Ecto.Multi.delete_all(:buckets, query)
-
-  end
 
 
 
