@@ -19,6 +19,13 @@ defmodule LedgersBucketsWeb.Router do
 
     get "/", PageController, :index
 
+    live "/orders", OrderLive.Index, :index
+    live "/orders/new", OrderLive.Index, :new
+    live "/orders/:id/edit", OrderLive.Index, :edit
+
+    live "/orders/:id", OrderLive.Show, :show
+    live "/orders/:id/show/edit", OrderLive.Show, :edit
+
     live "/bucket_txs", BucketTxsLive.Index, :index
     live "/bucket_txs/new", BucketTxsLive.Index, :new
     live "/bucket_txs/:id/edit", BucketTxsLive.Index, :edit
