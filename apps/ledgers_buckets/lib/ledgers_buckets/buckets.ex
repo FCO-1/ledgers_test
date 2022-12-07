@@ -523,7 +523,7 @@ defmodule LedgersBuckets.Buckets do
     where: bct.bucket_id in ^list_buckets_ids
 
     Ecto.Multi.new()
-    |> Ecto.Multi.run(:generate_insets, create_new_bucket_transaccion_for_swap(params))
+    |> Ecto.Multi.run(:generate_inserts, create_new_bucket_transaccion_for_swap(params))
     |> Ecto.Multi.delete_all(:buckets, query)
   end
 
