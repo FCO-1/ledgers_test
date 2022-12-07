@@ -180,6 +180,16 @@ defmodule LedgersBuckets.Buckets do
     }
   end
 
+  def build_bucket_flow(params, bucket_tx, bucket_out, bucket_in \\ nil ) do
+    %{
+      amount: params["amount"],
+      bucket_flow_id: generate_bucket_flow_serial(),
+      bucket_in: bucket_in,
+      bucket_out: bucket_out,
+      bucket_tx_id: bucket_tx.bucket_tx_id,
+    }
+  end
+
   @doc """
   Updates a bucket_txs.
 
