@@ -60,7 +60,8 @@ defmodule LedgersBuckets.Buckets do
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
-      {:ok, _bucket_grm} <- build_bucket(attrs, bucket_txs) |> create_bucket()  do
+      {:ok, bucket_grm} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
+      {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_grm.bucket_id, nil) |> create_bucket_flow() do
         bucket_txs
       else
         {:error, changeset} ->
