@@ -71,11 +71,12 @@ defmodule LedgersBuckets.Buckets do
   end
 
 
-  def create_new_bucket_transaccion_for_swap(attrs) do
+  def create_new_bucket_transaccion_for_swap(attrs, list_ids) do
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
-      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to() do
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
+      {:ok, _bucketsdeleted} <- delete_many_buckets(list_ids)  do
         bucket_txs
       else
         {:error, changeset} ->
@@ -518,12 +519,11 @@ defmodule LedgersBuckets.Buckets do
 
   """
 
-  def delete_many_buckets(list_buckets_ids, params) do
+  def delete_many_buckets(list_buckets_ids) do
     query = from bct in Bucket,
     where: bct.bucket_id in ^list_buckets_ids
 
     Ecto.Multi.new()
-    |> Ecto.Multi.run(:generate_inserts, create_new_bucket_transaccion_for_swap(params))
     |> Ecto.Multi.delete_all(:buckets, query)
   end
 
