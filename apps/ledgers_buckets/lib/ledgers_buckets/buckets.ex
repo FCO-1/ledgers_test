@@ -89,7 +89,6 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
-
   def test_new_bucket_swap do
     map = %{
       "amount" => "",
@@ -111,9 +110,6 @@ defmodule LedgersBuckets.Buckets do
     create_new_bucket_transaccion_for_swap(map, ["bucket_1000", "bucket_1001"])
 
   end
-
-
-
 
 
   def build_bucket_txs(params) do
