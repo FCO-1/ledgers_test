@@ -71,8 +71,30 @@ defmodule LedgersBuckets.Buckets do
   end
 
 
-  def do_swap(bucket_ids) do
-    buckets = list_buckets_by_list_ids(bucket_ids)
+  def create_new_bucket_transaccion_for_swap(attrs) do
+    Repo.transaction(fn ->
+      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
+      {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to() do
+        bucket_txs
+      else
+        {:error, changeset} ->
+          changeset
+          |> Repo.rollback()
+      end
+    end)
+  end
+
+
+  def do_swap(list_bucket_ids, params) do
+    query = from bct in Bucket,
+    where: bct.bucket_id in ^list_bucket_ids
+
+    struct = list_bucket_ids
+
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete_all(:buckets, query)
 
   end
 
@@ -496,11 +518,12 @@ defmodule LedgersBuckets.Buckets do
 
   """
 
-  def delete_many_buckets(list_buckets_ids) do
+  def delete_many_buckets(list_buckets_ids, params) do
     query = from bct in Bucket,
     where: bct.bucket_id in ^list_buckets_ids
 
     Ecto.Multi.new()
+    |> Ecto.Multi.run(:generate_insets, create_new_bucket_transaccion_for_swap(params))
     |> Ecto.Multi.delete_all(:buckets, query)
   end
 
