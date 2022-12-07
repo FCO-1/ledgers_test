@@ -73,12 +73,13 @@ defmodule LedgersBuckets.Buckets do
 
   def create_new_bucket_transaccion_for_swap(attrs, list_ids) do
     sum = get_sum_buckets_by_list_ids(list_ids)
+    new_attrs = Map.merge(attrs, %{"amount" => sum})
     Repo.transaction(fn ->
-      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
-      {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
-      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
+      with {:ok, bucket_txs} <- build_bucket_txs(new_attrs) |> create_bucket_txs(),
+      {:ok, _bucket_tx_from} <- build_tx_from(new_attrs) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(new_attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, _bucketsdeleted} <- delete_many_buckets(list_ids),
-      {:ok, _created_new_bucket} <- build_bucket(Map.merge(attrs, %{amount: sum}), bucket_txs) |> create_bucket() do
+      {:ok, _created_new_bucket} <- build_bucket(new_attrs, bucket_txs) |> create_bucket() do
         bucket_txs
       else
         {:error, changeset} ->
@@ -88,6 +89,28 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
+
+  def test_new_bucket_swap do
+    map = %{
+      "amount" => "",
+      "asset" => "MXN",
+      "bucket_tx_at" => "2022-12-06T21:43",
+      "note" => "cliente cliente",
+      "owner_from" => "cliente25",
+      "owner_to" => "cliente25",
+      "reference_id" => "Or221",
+      "reference_type" => "order",
+      "request_id" => "1224123",
+      "state" => "pending",
+      "status" => "open",
+      "type" => "swap",
+      "wallet_from" => "cmd.mint",
+      "wallet_to" => "irl.efectivo"
+    }
+
+    create_new_bucket_transaccion_for_swap(map, ["bucket_1000", "bucket_1001"])
+
+  end
 
 
 
@@ -518,8 +541,8 @@ defmodule LedgersBuckets.Buckets do
     |> Ecto.Multi.delete_all(:buckets, query)
     |> Repo.transaction()
     |> case do
-      {:ok, %{user: user}} -> {:ok, user}
-      {:error, :user, changeset, _} -> {:error, changeset}
+      {:ok, %{buckets: bucket}} -> {:ok, bucket}
+      {:error, :buckets, changeset, _} -> {:error, changeset}
     end
   end
 

@@ -15,6 +15,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
 
   @impl true
   def handle_event("validate", %{"bucket_txs" => bucket_txs_params}, socket) do
+    IO.inspect(bucket_txs_params)
     changeset =
       socket.assigns.bucket_txs
       |> Buckets.change_bucket_txs(bucket_txs_params)
