@@ -71,6 +71,7 @@ defmodule LedgersBuckets.Buckets do
   end
 
 
+
   def create_new_bucket_transaccion_for_swap(attrs, list_ids) do
     sum = get_sum_buckets_by_list_ids(list_ids)
     new_attrs = Map.merge(attrs, %{"amount" => sum})
@@ -144,7 +145,7 @@ defmodule LedgersBuckets.Buckets do
       bucket_tx_from_id: generate_bucket_tx_from_serial(),
       owner: params["owner_from"],
       type: "fix",
-      wallet: params["wallet_from"],
+      wallet: params["wallet_from"] || nil,
       weight: 0
     }
   end

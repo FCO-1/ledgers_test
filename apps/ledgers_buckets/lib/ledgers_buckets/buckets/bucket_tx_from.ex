@@ -21,6 +21,6 @@ defmodule LedgersBuckets.Buckets.BucketTxFrom do
   def changeset(bucket_tx_from, attrs) do
     bucket_tx_from
     |> cast(attrs, [:bucket_tx_from_id, :owner, :wallet, :weight, :type, :amount, :asset])
-    |> validate_required([:bucket_tx_from_id, :owner, :wallet, :weight, :type, :amount, :asset])
+    |> validate_required([:bucket_tx_from_id, :weight, :type, :amount, :asset])
   end
 end
