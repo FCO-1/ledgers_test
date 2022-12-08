@@ -91,15 +91,16 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
-  def create_new_bucket_transaccion_for_new_buckets(attrs, list_ids) do
-    sum = get_sum_buckets_by_list_ids(list_ids)
-    new_attrs = Map.merge(attrs, %{"amount" => sum})
+  def create_new_bucket_transaccion_for_new_buckets(attrs, amount, remain, list_ids) do
+    map = Map.merge(attrs, %{"amount" => amount})
+    map_remain = Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0, "amount" => remain})
     Repo.transaction(fn ->
-      with {:ok, bucket_txs} <- build_bucket_txs(new_attrs) |> create_bucket_txs(),
-      {:ok, _bucket_tx_from} <- build_tx_from(new_attrs) |> create_bucket_tx_from(),
-      {:ok, _bucket_tx_to} <- build_tx_to(new_attrs, bucket_txs) |> create_bucket_tx_to(),
+      with {:ok, bucket_txs} <- build_bucket_txs(map) |> create_bucket_txs(),
+      {:ok, _bucket_tx_from} <- build_tx_from(map) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(map, bucket_txs) |> create_bucket_tx_to(),
       {:ok, _bucketsdeleted} <- delete_many_buckets(list_ids),
-      {:ok, _created_new_bucket} <- build_bucket(new_attrs, bucket_txs) |> create_bucket() do
+      {:ok, _created_new_bucket} <- build_bucket(map, bucket_txs) |> create_bucket(),
+      {:ok, _created_new_bucket} <- build_bucket(map_remain, bucket_txs) |> create_bucket() do
         bucket_txs
       else
         {:error, changeset} ->
@@ -188,8 +189,8 @@ defmodule LedgersBuckets.Buckets do
       bucket_at: NaiveDateTime.local_now(),
       bucket_id: generate_bucket_serial(),
       bucket_tx_id: tx.id ,
-      is_spent: 0,
-      lock_4_tx: 1,
+      is_spent: params["is_spent"],
+      lock_4_tx: params["locket_4_tx"],
       locked_at: NaiveDateTime.local_now(),
       locked_by_tx_id: tx.id,
       owner: params["owner_to"],
