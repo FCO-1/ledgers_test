@@ -2,6 +2,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
   use LedgersBucketsWeb, :live_component
 
   alias LedgersBuckets.Buckets
+  alias LedgersBuckets.Domain.BucketsDomain
 
   @impl true
   def update(%{bucket_txs: bucket_txs} = assigns, socket) do
@@ -42,7 +43,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
   end
 
   defp save_bucket_txs(socket, :new, bucket_txs_params) do
-    case Buckets.create_new_bucket_transaccion(bucket_txs_params) do
+    case BucketsDomain.create_new_bucket_transaccion(bucket_txs_params) do
       {:ok, _bucket_txs} ->
         {:noreply,
          socket

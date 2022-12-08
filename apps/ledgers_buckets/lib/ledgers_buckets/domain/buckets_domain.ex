@@ -3,7 +3,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
 
   def create_new_bucket_transaccion(attrs) do
-    Buckets.create_new_bucket_transaccion(attrs)
+    Buckets.create_new_bucket_transaccion(Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0}))
   end
 
   def create_new_buckets_for_swap(attrs, list_buckets_ids) do
