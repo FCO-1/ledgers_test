@@ -74,14 +74,13 @@ defmodule LedgersBuckets.Buckets do
 
 
   def create_new_bucket_transaccion_for_swap(attrs, list_ids) do
-    sum = get_sum_buckets_by_list_ids(list_ids)
-    new_attrs = Map.merge(attrs, %{"amount" => sum})
+
     Repo.transaction(fn ->
-      with {:ok, bucket_txs} <- build_bucket_txs(new_attrs) |> create_bucket_txs(),
-      {:ok, _bucket_tx_from} <- build_tx_from(new_attrs) |> create_bucket_tx_from(),
-      {:ok, _bucket_tx_to} <- build_tx_to(new_attrs, bucket_txs) |> create_bucket_tx_to(),
+      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
+      {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, _bucketsdeleted} <- delete_many_buckets(list_ids),
-      {:ok, _created_new_bucket} <- build_bucket(new_attrs, bucket_txs) |> create_bucket() do
+      {:ok, _created_new_bucket} <- build_bucket(attrs, bucket_txs) |> create_bucket() do
         bucket_txs
       else
         {:error, changeset} ->
