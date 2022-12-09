@@ -4,6 +4,7 @@ defmodule LedgersBuckets.Buckets do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Multi
   alias LedgersBuckets.Repo
 
   alias LedgersBuckets.Buckets.BucketTxs
@@ -74,13 +75,15 @@ defmodule LedgersBuckets.Buckets do
 
 
   def create_new_bucket_transaccion_for_swap(attrs, list_ids) do
-
+    IO.inspect(attrs)
+    list_buckets = list_buckets_by_list_ids(list_ids)
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, _bucketsdeleted} <- delete_many_buckets(list_ids),
-      {:ok, _created_new_bucket} <- build_bucket(attrs, bucket_txs) |> create_bucket() do
+      {:ok, created_new_bucket} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
+      {:ok, _created_new_bucket} <- build_many_bucket_flow_for_swap(bucket_txs, created_new_bucket.bucket_id, list_buckets) |>  create_many_buckets_flows() do
         bucket_txs
       else
         {:error, changeset} ->
@@ -109,6 +112,27 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
+  def generate_deposit_transaction(attrs, bucket_from, bucket_to) do
+    Repo.transaction(fn ->
+      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
+      {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
+      {:ok, bucket_grm} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
+      {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_grm.bucket_id, nil) |> create_bucket_flow() do
+        bucket_txs
+      else
+        {:error, changeset} ->
+          changeset
+          |> Repo.rollback()
+      end
+    end)
+  end
+
+
+  def build_generate_one_or_many_buckets_flow(list_buckets_ids, attrs, bucket_tx_id) do
+
+  end
+
   def test_new_bucket_swap do
     map = %{
       "amount" => "",
@@ -127,10 +151,9 @@ defmodule LedgersBuckets.Buckets do
       "wallet_to" => "irl.efectivo"
     }
 
-    create_new_bucket_transaccion_for_swap(map, ["bucket_1000", "bucket_1001"])
+    create_new_bucket_transaccion_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
 
   end
-
 
   def build_bucket_txs(params) do
     map = %{
@@ -197,6 +220,18 @@ defmodule LedgersBuckets.Buckets do
       type: params["type"],
       wallet: params["wallet_to"]
     }
+  end
+
+  def build_many_bucket_flow_for_swap(bucket_tx, bucket_out, list_buckets) do
+    for bucket <- list_buckets do
+      %{
+        amount: bucket.amount,
+        bucket_flow_id: generate_bucket_flow_serial(),
+        bucket_in: bucket.bucket_id,
+        bucket_out: bucket_out,
+        bucket_tx_id: bucket_tx.bucket_tx_id,
+      }
+    end
   end
 
   def build_bucket_flow(params, bucket_tx, bucket_out, bucket_in \\ nil ) do
@@ -636,6 +671,17 @@ defmodule LedgersBuckets.Buckets do
     %BucketFlow{}
     |> BucketFlow.changeset(attrs)
     |> Repo.insert()
+  end
+
+
+  def create_many_buckets_flows(list_buckets_flow) do
+    Multi.new()
+    |> Multi.insert_all(:bucket_flows, BucketFlow, list_buckets_flow)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{bucket_flows: bucket}} -> {:ok, bucket}
+      {:error, :bucket_flows, changeset, _} -> {:error, changeset}
+    end
   end
 
   @doc """

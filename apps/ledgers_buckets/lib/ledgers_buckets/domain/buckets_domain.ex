@@ -86,10 +86,12 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
         "status" => "open",
         "type" => "swap",
         "wallet_from" => "cmd.mint",
-        "wallet_to" => "irl.efectivo"
+        "wallet_to" => "irl.efectivo",
+        "is_spent" => 0,
+        "locket_4_tx" => 0,
       }
 
-      create_new_buckets_for_swap(map, ["bucket_1000", "bucket_1001"])
+      create_new_buckets_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
 
     end
 
