@@ -51,6 +51,7 @@ defmodule LedgersBucketsWeb.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:ledgers_buckets, in_umbrella: true},
+      {:edge_gateway, in_umbrella: true},
     ]
   end
 
