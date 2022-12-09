@@ -64,30 +64,6 @@ defmodule LedgersBuckets.Api.BucketsApi do
       BucketsDomain.create_new_buckets_for_partitions(attrs, amount, list_buckets_ids)
     end
 
-    def test_new_bucket_swap do
-      map = %{
-        "amount" => "",
-        "asset" => "MXN",
-        "bucket_tx_at" => "2022-12-06T21:43",
-        "note" => "cliente cliente",
-        "owner_from" => "cliente25",
-        "owner_to" => "cliente25",
-        "reference_id" => "Or221",
-        "reference_type" => "order",
-        "request_id" => "1224123",
-        "state" => "pending",
-        "status" => "open",
-        "type" => "swap",
-        "wallet_from" => "cmd.mint",
-        "wallet_to" => "irl.efectivo"
-      }
-
-      create_new_buckets_for_swap(map, ["bucket_1000", "bucket_1001"])
-
-    end
-
-
-
 
     def generate_hash(map) do
      BucketsDomain.generate_hash(map)
