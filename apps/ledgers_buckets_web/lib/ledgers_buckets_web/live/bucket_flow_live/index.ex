@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.BucketFlowLive.Index do
   use LedgersBucketsWeb, :live_view
 
-  alias LedgersBuckets.Buckets
+  alias EdgeGateeay.Api.BucketsApex
   alias LedgersBuckets.Buckets.BucketFlow
 
   @impl true
@@ -17,7 +17,7 @@ defmodule LedgersBucketsWeb.BucketFlowLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Bucket flow")
-    |> assign(:bucket_flow, Buckets.get_bucket_flow!(id))
+    |> assign(:bucket_flow, BucketsApex.get_bucket_flow!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -34,13 +34,13 @@ defmodule LedgersBucketsWeb.BucketFlowLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    bucket_flow = Buckets.get_bucket_flow!(id)
-    {:ok, _} = Buckets.delete_bucket_flow(bucket_flow)
+    bucket_flow = BucketsApex.get_bucket_flow!(id)
+    {:ok, _} = BucketsApex.delete_bucket_flow(bucket_flow)
 
     {:noreply, assign(socket, :bucket_flows, list_bucket_flows())}
   end
 
   defp list_bucket_flows do
-    Buckets.list_bucket_flows()
+    BucketsApex.list_bucket_flows()
   end
 end

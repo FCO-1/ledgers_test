@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.BucketTxsLive.Index do
   use LedgersBucketsWeb, :live_view
 
-  alias LedgersBuckets.Buckets
+  alias EdgeGateeay.Api.BucketsApex
   alias LedgersBuckets.Buckets.BucketTxs
 
   @impl true
@@ -17,7 +17,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Bucket txs")
-    |> assign(:bucket_txs, Buckets.get_bucket_txs!(id))
+    |> assign(:bucket_txs, BucketsApex.get_bucket_txs!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -34,8 +34,8 @@ defmodule LedgersBucketsWeb.BucketTxsLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    bucket_txs = Buckets.get_bucket_txs!(id)
-    {:ok, _} = Buckets.delete_bucket_txs(bucket_txs)
+    bucket_txs = BucketsApex.get_bucket_txs!(id)
+    {:ok, _} = BucketsApex.delete_bucket_txs(bucket_txs)
 
     {:noreply, assign(socket, :bucket_txs_collection, list_bucket_txs())}
   end
@@ -46,6 +46,6 @@ defmodule LedgersBucketsWeb.BucketTxsLive.Index do
   end
 
   defp list_bucket_txs do
-    Buckets.list_bucket_txs()
+    BucketsApex.list_bucket_txs()
   end
 end

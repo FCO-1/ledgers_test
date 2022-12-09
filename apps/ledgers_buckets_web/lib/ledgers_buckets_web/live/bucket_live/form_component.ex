@@ -1,11 +1,11 @@
 defmodule LedgersBucketsWeb.BucketLive.FormComponent do
   use LedgersBucketsWeb, :live_component
 
-  alias LedgersBuckets.Buckets
+  alias EdgeGateeay.Api.BucketsApex
 
   @impl true
   def update(%{bucket: bucket} = assigns, socket) do
-    changeset = Buckets.change_bucket(bucket)
+    changeset = BucketsApex.change_bucket(bucket)
 
     {:ok,
      socket
@@ -17,7 +17,7 @@ defmodule LedgersBucketsWeb.BucketLive.FormComponent do
   def handle_event("validate", %{"bucket" => bucket_params}, socket) do
     changeset =
       socket.assigns.bucket
-      |> Buckets.change_bucket(bucket_params)
+      |> BucketsApex.change_bucket(bucket_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -28,7 +28,7 @@ defmodule LedgersBucketsWeb.BucketLive.FormComponent do
   end
 
   defp save_bucket(socket, :edit, bucket_params) do
-    case Buckets.update_bucket(socket.assigns.bucket, bucket_params) do
+    case BucketsApex.update_bucket(socket.assigns.bucket, bucket_params) do
       {:ok, _bucket} ->
         {:noreply,
          socket
@@ -41,7 +41,7 @@ defmodule LedgersBucketsWeb.BucketLive.FormComponent do
   end
 
   defp save_bucket(socket, :new, bucket_params) do
-    case Buckets.create_bucket(bucket_params) do
+    case BucketsApex.create_bucket(bucket_params) do
       {:ok, _bucket} ->
         {:noreply,
          socket

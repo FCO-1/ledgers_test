@@ -1,11 +1,11 @@
 defmodule LedgersBucketsWeb.BucketFlowLive.FormComponent do
   use LedgersBucketsWeb, :live_component
 
-  alias LedgersBuckets.Buckets
+  alias EdgeGateeay.Api.BucketsApex
 
   @impl true
   def update(%{bucket_flow: bucket_flow} = assigns, socket) do
-    changeset = Buckets.change_bucket_flow(bucket_flow)
+    changeset = BucketsApex.change_bucket_flow(bucket_flow)
 
     {:ok,
      socket
@@ -17,7 +17,7 @@ defmodule LedgersBucketsWeb.BucketFlowLive.FormComponent do
   def handle_event("validate", %{"bucket_flow" => bucket_flow_params}, socket) do
     changeset =
       socket.assigns.bucket_flow
-      |> Buckets.change_bucket_flow(bucket_flow_params)
+      |> BucketsApex.change_bucket_flow(bucket_flow_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -28,7 +28,7 @@ defmodule LedgersBucketsWeb.BucketFlowLive.FormComponent do
   end
 
   defp save_bucket_flow(socket, :edit, bucket_flow_params) do
-    case Buckets.update_bucket_flow(socket.assigns.bucket_flow, bucket_flow_params) do
+    case BucketsApex.update_bucket_flow(socket.assigns.bucket_flow, bucket_flow_params) do
       {:ok, _bucket_flow} ->
         {:noreply,
          socket
@@ -41,7 +41,7 @@ defmodule LedgersBucketsWeb.BucketFlowLive.FormComponent do
   end
 
   defp save_bucket_flow(socket, :new, bucket_flow_params) do
-    case Buckets.create_bucket_flow(bucket_flow_params) do
+    case BucketsApex.create_bucket_flow(bucket_flow_params) do
       {:ok, _bucket_flow} ->
         {:noreply,
          socket

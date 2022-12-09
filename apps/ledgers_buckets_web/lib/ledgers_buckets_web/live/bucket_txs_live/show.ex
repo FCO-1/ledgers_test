@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.BucketTxsLive.Show do
   use LedgersBucketsWeb, :live_view
 
-  alias LedgersBuckets.Buckets
+  alias EdgeGateeay.Api.BucketsApex
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,7 +13,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:bucket_txs, Buckets.get_bucket_txs!(id))}
+     |> assign(:bucket_txs, BucketsApex.get_bucket_txs!(id))}
   end
 
   defp page_title(:show), do: "Show Bucket txs"

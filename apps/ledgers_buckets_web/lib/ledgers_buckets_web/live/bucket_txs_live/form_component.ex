@@ -1,12 +1,10 @@
 defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
   use LedgersBucketsWeb, :live_component
 
-  alias LedgersBuckets.Buckets
-  alias LedgersBuckets.Domain.BucketsDomain
-
+  alias EdgeGateeay.Api.BucketsApex
   @impl true
   def update(%{bucket_txs: bucket_txs} = assigns, socket) do
-    changeset = Buckets.change_bucket_txs(bucket_txs)
+    changeset = BucketsApex.change_bucket_txs(bucket_txs)
 
     {:ok,
      socket
@@ -19,7 +17,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
     IO.inspect(bucket_txs_params)
     changeset =
       socket.assigns.bucket_txs
-      |> Buckets.change_bucket_txs(bucket_txs_params)
+      |> BucketsApex.change_bucket_txs(bucket_txs_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -30,7 +28,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
   end
 
   defp save_bucket_txs(socket, :edit, bucket_txs_params) do
-    case Buckets.update_bucket_txs(socket.assigns.bucket_txs, bucket_txs_params) do
+    case BucketsApex.update_bucket_txs(socket.assigns.bucket_txs, bucket_txs_params) do
       {:ok, _bucket_txs} ->
         {:noreply,
          socket
@@ -43,7 +41,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
   end
 
   defp save_bucket_txs(socket, :new, bucket_txs_params) do
-    case BucketsDomain.create_new_bucket_transaccion(bucket_txs_params) do
+    case BucketsApex.create_new_bucket_transaccion(bucket_txs_params) do
       {:ok, _bucket_txs} ->
         {:noreply,
          socket

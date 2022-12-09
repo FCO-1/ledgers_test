@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.BucketLive.Index do
   use LedgersBucketsWeb, :live_view
 
-  alias LedgersBuckets.Buckets
+  alias EdgeGateeay.Api.BucketsApex
   alias LedgersBuckets.Buckets.Bucket
 
   @impl true
@@ -17,7 +17,7 @@ defmodule LedgersBucketsWeb.BucketLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Bucket")
-    |> assign(:bucket, Buckets.get_bucket!(id))
+    |> assign(:bucket, BucketsApex.get_bucket!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -34,13 +34,13 @@ defmodule LedgersBucketsWeb.BucketLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    bucket = Buckets.get_bucket!(id)
-    {:ok, _} = Buckets.delete_bucket(bucket)
+    bucket = BucketsApex.get_bucket!(id)
+    {:ok, _} = BucketsApex.delete_bucket(bucket)
 
     {:noreply, assign(socket, :buckets, list_buckets())}
   end
 
   defp list_buckets do
-    Buckets.list_buckets()
+    BucketsApex.list_buckets()
   end
 end

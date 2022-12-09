@@ -1,4 +1,4 @@
-defmodule  EdgeGateeay.Api.BucketsApi do
+defmodule  EdgeGateeay.Api.BucketsApex do
   alias LedgersBuckets.Api.BucketsApi
 
 
