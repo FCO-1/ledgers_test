@@ -1,8 +1,8 @@
-defmodule LedgersBuckets.Domain.BucketsDomain do
-  alias LedgersBuckets.Buckets
+defmodule LedgersBuckets.Api.BucketsApi do
+  alias LedgersBuckets.Domain.BucketsDomain
 
     @moduledoc """
-    The Buckets context.
+    The BucketsDomain context.
     """
 
 
@@ -17,7 +17,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def list_bucket_txs do
-      Buckets.list_bucket_txs()
+      BucketsDomain.list_bucket_txs()
     end
 
     @doc """
@@ -34,7 +34,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
         ** (Ecto.NoResultsError)
 
     """
-    def get_bucket_txs!(id), do: Buckets.get_bucket_txs!(id)
+    def get_bucket_txs!(id), do: BucketsDomain.get_bucket_txs!(id)
 
     @doc """
     Creates a bucket_txs.
@@ -49,26 +49,19 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def create_bucket_txs(attrs) do
-      Buckets.create_bucket_txs(attrs)
+      BucketsDomain.create_bucket_txs(attrs)
     end
 
     def create_new_bucket_transaccion(attrs) do
-      Buckets.create_new_bucket_transaccion(Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0}))
+      BucketsDomain.create_new_bucket_transaccion(Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0}))
     end
 
     def create_new_buckets_for_swap(attrs, list_buckets_ids) do
-      sum = Buckets.get_sum_buckets_by_list_ids(list_buckets_ids)
-      Buckets.create_new_bucket_transaccion_for_swap(Map.merge(attrs, %{"amount" => sum}), list_buckets_ids)
+      BucketsDomain.create_new_buckets_for_swap(attrs, list_buckets_ids)
     end
 
     def create_new_buckets_for_partitions(attrs, amount, list_buckets_ids) do
-      sum_from_buckets = Buckets.get_sum_buckets_by_list_ids(list_buckets_ids)
-      if amount <= sum_from_buckets do
-         remain = sum_from_buckets - amount
-        Buckets.create_new_bucket_transaccion_for_new_buckets(attrs, amount, remain, list_buckets_ids)
-      else
-        {:error, %{"message" => "El monto es superior a lo que tiene en cuenta"} }
-      end
+      BucketsDomain.create_new_buckets_for_partitions(attrs, amount, list_buckets_ids)
     end
 
     def test_new_bucket_swap do
@@ -97,7 +90,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
 
     def generate_hash(map) do
-     Buckets.generate_hash(map)
+     BucketsDomain.generate_hash(map)
     end
 
 
@@ -114,7 +107,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def update_bucket_txs(bucket_txs, attrs) do
-      Buckets.update_bucket_txs(bucket_txs, attrs)
+      BucketsDomain.update_bucket_txs(bucket_txs, attrs)
     end
 
     @doc """
@@ -130,7 +123,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def delete_bucket_txs(bucket_txs) do
-      Buckets.delete_bucket_txs(bucket_txs)
+      BucketsDomain.delete_bucket_txs(bucket_txs)
     end
 
     @doc """
@@ -143,13 +136,13 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def change_bucket_txs(bucket_txs) do
-      Buckets.change_bucket_txs(bucket_txs)
+      BucketsDomain.change_bucket_txs(bucket_txs)
     end
     def change_bucket_txs(bucket_txs, attrs) do
-      Buckets.change_bucket_txs(bucket_txs, attrs)
+      BucketsDomain.change_bucket_txs(bucket_txs, attrs)
     end
     ########################################
-    # LedgersBuckets.Buckets.BucketTxFrom
+    # LedgersBuckets.BucketsDomain.BucketTxFrom
     ########################################
 
     @doc """
@@ -162,7 +155,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def list_bucket_tx_from do
-      Buckets.list_bucket_tx_from()
+      BucketsDomain.list_bucket_tx_from()
     end
 
     @doc """
@@ -179,7 +172,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
         ** (Ecto.NoResultsError)
 
     """
-    def get_bucket_tx_from!(id), do: Buckets.get_bucket_tx_from!(id)
+    def get_bucket_tx_from!(id), do: BucketsDomain.get_bucket_tx_from!(id)
 
     @doc """
     Creates a bucket_tx_from.
@@ -194,7 +187,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def create_bucket_tx_from(attrs) do
-      Buckets.create_bucket_tx_from(attrs)
+      BucketsDomain.create_bucket_tx_from(attrs)
     end
     @doc """
     Updates a bucket_tx_from.
@@ -209,7 +202,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def update_bucket_tx_from(bucket_tx_from, attrs) do
-      Buckets.update_bucket_tx_from(bucket_tx_from, attrs)
+      BucketsDomain.update_bucket_tx_from(bucket_tx_from, attrs)
     end
 
     @doc """
@@ -225,7 +218,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def delete_bucket_tx_from(bucket_tx_from) do
-      Buckets.delete_bucket_tx_from(bucket_tx_from)
+      BucketsDomain.delete_bucket_tx_from(bucket_tx_from)
     end
 
     @doc """
@@ -238,14 +231,14 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def change_bucket_tx_from(bucket_tx_from) do
-      Buckets.change_bucket_tx_from(bucket_tx_from)
+      BucketsDomain.change_bucket_tx_from(bucket_tx_from)
     end
 
     def change_bucket_tx_from(bucket_tx_from, attrs) do
-      Buckets.change_bucket_tx_from(bucket_tx_from, attrs)
+      BucketsDomain.change_bucket_tx_from(bucket_tx_from, attrs)
     end
     #####################################
-    #LedgersBuckets.Buckets.BucketTxTo
+    #LedgersBuckets.BucketsDomain.BucketTxTo
     #####################################
     @doc """
     Returns the list of bucket_tx_to.
@@ -257,7 +250,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def list_bucket_tx_to do
-      Buckets.list_bucket_tx_to()
+      BucketsDomain.list_bucket_tx_to()
     end
 
     @doc """
@@ -274,7 +267,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
         ** (Ecto.NoResultsError)
 
     """
-    def get_bucket_tx_to!(id), do: Buckets.get_bucket_tx_to!(id)
+    def get_bucket_tx_to!(id), do: BucketsDomain.get_bucket_tx_to!(id)
 
     @doc """
     Creates a bucket_tx_to.
@@ -289,7 +282,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def create_bucket_tx_to(attrs) do
-      Buckets.create_bucket_tx_to(attrs)
+      BucketsDomain.create_bucket_tx_to(attrs)
     end
 
     @doc """
@@ -305,7 +298,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def update_bucket_tx_to(bucket_tx_to, attrs) do
-      Buckets.update_bucket_tx_to(bucket_tx_to, attrs)
+      BucketsDomain.update_bucket_tx_to(bucket_tx_to, attrs)
     end
 
     @doc """
@@ -321,7 +314,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def delete_bucket_tx_to(bucket_tx_to) do
-      Buckets.delete_bucket_tx_to(bucket_tx_to)
+      BucketsDomain.delete_bucket_tx_to(bucket_tx_to)
     end
 
     @doc """
@@ -334,14 +327,14 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def change_bucket_tx_to(bucket_tx_to) do
-      Buckets.change_bucket_tx_to(bucket_tx_to)
+      BucketsDomain.change_bucket_tx_to(bucket_tx_to)
     end
 
     def change_bucket_tx_to(bucket_tx_to, attrs) do
-      Buckets.change_bucket_tx_to(bucket_tx_to, attrs)
+      BucketsDomain.change_bucket_tx_to(bucket_tx_to, attrs)
     end
     ###########################################################
-    #alias LedgersBuckets.Buckets.Bucket
+    #alias LedgersBuckets.BucketsDomain.Bucket
     ###########################################################
     @doc """
     Returns the list of buckets.
@@ -353,16 +346,16 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def list_buckets do
-      Buckets.list_buckets()
+      BucketsDomain.list_buckets()
     end
 
 
     def list_buckets_by_list_ids(list_bucket_ids) do
-      Buckets.list_buckets_by_list_ids(list_bucket_ids)
+      BucketsDomain.list_buckets_by_list_ids(list_bucket_ids)
     end
 
     def get_sum_buckets_by_list_ids(list_bucket_ids) do
-     Buckets.get_sum_buckets_by_list_ids(list_bucket_ids)
+     BucketsDomain.get_sum_buckets_by_list_ids(list_bucket_ids)
     end
 
     @doc """
@@ -379,11 +372,11 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
         ** (Ecto.NoResultsError)
 
     """
-    def get_bucket!(id), do: Buckets.get_bucket!(id)
+    def get_bucket!(id), do: BucketsDomain.get_bucket!(id)
 
 
     def search_and_get_free_buckets(bucket_tx_id) do
-      Buckets.search_and_get_free_buckets(bucket_tx_id)
+      BucketsDomain.search_and_get_free_buckets(bucket_tx_id)
     end
 
     @doc """
@@ -399,7 +392,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def create_bucket(attrs) do
-      Buckets.create_bucket(attrs)
+      BucketsDomain.create_bucket(attrs)
     end
 
 
@@ -416,7 +409,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def update_bucket(bucket, attrs) do
-      Buckets.update_bucket(bucket, attrs)
+      BucketsDomain.update_bucket(bucket, attrs)
     end
 
 
@@ -434,11 +427,11 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
     """
 
     def delete_many_buckets(list_buckets_ids) do
-      Buckets.delete_many_buckets(list_buckets_ids)
+      BucketsDomain.delete_many_buckets(list_buckets_ids)
     end
 
     def delete_bucket(bucket) do
-      Buckets.delete_bucket(bucket)
+      BucketsDomain.delete_bucket(bucket)
     end
 
     @doc """
@@ -451,14 +444,14 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def change_bucket(bucket) do
-      Buckets.change_bucket(bucket)
+      BucketsDomain.change_bucket(bucket)
     end
     def change_bucket(bucket, attrs) do
-      Buckets.change_bucket(bucket, attrs)
+      BucketsDomain.change_bucket(bucket, attrs)
     end
 
     ##############################################
-    #LedgersBuckets.Buckets.BucketFlow
+    #LedgersBuckets.BucketsDomain.BucketFlow
     ##############################################
 
     @doc """
@@ -471,7 +464,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def list_bucket_flows do
-      Buckets.list_bucket_flows()
+      BucketsDomain.list_bucket_flows()
     end
 
     @doc """
@@ -488,7 +481,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
         ** (Ecto.NoResultsError)
 
     """
-    def get_bucket_flow!(id), do: Buckets.get_bucket_flow!(id)
+    def get_bucket_flow!(id), do: BucketsDomain.get_bucket_flow!(id)
 
     @doc """
     Creates a bucket_flow.
@@ -503,7 +496,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def create_bucket_flow(attrs) do
-      Buckets.create_bucket_flow(attrs)
+      BucketsDomain.create_bucket_flow(attrs)
     end
 
     @doc """
@@ -519,7 +512,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def update_bucket_flow(bucket_flow, attrs) do
-      Buckets.update_bucket_flow(bucket_flow, attrs)
+      BucketsDomain.update_bucket_flow(bucket_flow, attrs)
     end
 
     @doc """
@@ -535,7 +528,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def delete_bucket_flow(bucket_flow) do
-      Buckets.delete_bucket_flow(bucket_flow)
+      BucketsDomain.delete_bucket_flow(bucket_flow)
     end
 
     @doc """
@@ -548,10 +541,10 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     """
     def change_bucket_flow(bucket_flow) do
-      Buckets.change_bucket_flow(bucket_flow)
+      BucketsDomain.change_bucket_flow(bucket_flow)
     end
 
     def change_bucket_flow(bucket_flow, attrs) do
-      Buckets.change_bucket_flow(bucket_flow, attrs)
+      BucketsDomain.change_bucket_flow(bucket_flow, attrs)
     end
 end
