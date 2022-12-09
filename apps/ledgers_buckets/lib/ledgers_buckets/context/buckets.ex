@@ -74,14 +74,13 @@ defmodule LedgersBuckets.Buckets do
 
 
 
-  def create_new_bucket_transaccion_for_swap(attrs, list_ids) do
+  def create_new_bucket_transaccion_for_swap(attrs, list_buckets) do
     IO.inspect(attrs)
-    list_buckets = list_buckets_by_list_ids(list_ids)
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
-      {:ok, _bucketsdeleted} <- delete_many_buckets(list_ids),
+      {:ok, _bucketsdeleted} <- delete_many_buckets(list_buckets),
       {:ok, created_new_bucket} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
       {:ok, _created_new_bucket} <- build_many_bucket_flow_for_swap(bucket_txs, created_new_bucket.bucket_id, list_buckets) |>  create_many_buckets_flows() do
         bucket_txs
@@ -96,6 +95,8 @@ defmodule LedgersBuckets.Buckets do
   def create_new_bucket_transaccion_for_new_buckets(attrs, amount, remain, list_ids) do
     map = Map.merge(attrs, %{"amount" => amount})
     map_remain = Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0, "amount" => remain})
+
+
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(map) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(map) |> create_bucket_tx_from(),
@@ -129,9 +130,6 @@ defmodule LedgersBuckets.Buckets do
   end
 
 
-  def build_generate_one_or_many_buckets_flow(list_buckets_ids, attrs, bucket_tx_id) do
-
-  end
 
   def test_new_bucket_swap do
     map = %{
@@ -594,12 +592,22 @@ defmodule LedgersBuckets.Buckets do
 
   """
 
-  def delete_many_buckets(list_buckets_ids) do
+  def delete_many_buckets_by_list_bucket_id(list_buckets_ids) do
     query = from bct in Bucket,
     where: bct.bucket_id in ^list_buckets_ids
 
     Ecto.Multi.new()
     |> Ecto.Multi.delete_all(:buckets, query)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{buckets: bucket}} -> {:ok, bucket}
+      {:error, :buckets, changeset, _} -> {:error, changeset}
+    end
+  end
+
+  def delete_many_buckets(list_buckets) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete_all(:buckets, list_buckets)
     |> Repo.transaction()
     |> case do
       {:ok, %{buckets: bucket}} -> {:ok, bucket}
