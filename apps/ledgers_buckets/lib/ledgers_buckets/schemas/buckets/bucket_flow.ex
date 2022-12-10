@@ -19,6 +19,6 @@ defmodule LedgersBuckets.Buckets.BucketFlow do
   def changeset(bucket_flow, attrs) do
     bucket_flow
     |> cast(attrs, [:bucket_flow_id, :bucket_tx_id, :amount, :bucket_in, :bucket_out])
-    |> validate_required([:bucket_flow_id, :bucket_tx_id, :amount, :bucket_out])
+    |> validate_required([:bucket_flow_id, :bucket_tx_id, :amount])
   end
 end

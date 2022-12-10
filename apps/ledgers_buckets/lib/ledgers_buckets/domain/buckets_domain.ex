@@ -63,6 +63,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     def create_new_buckets_for_partitions(attrs, amount, list_buckets_ids) do
       sum_from_buckets = Buckets.get_sum_buckets_by_list_ids(list_buckets_ids)
+
       if amount <= sum_from_buckets do
          remain = sum_from_buckets - amount
         Buckets.create_new_bucket_transaccion_for_new_buckets(attrs, amount, remain, list_buckets_ids)
@@ -88,7 +89,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
         "wallet_from" => "cmd.mint",
         "wallet_to" => "irl.efectivo",
         "is_spent" => 0,
-        "locket_4_tx" => 0,
+        "locket_4_tx" => 1,
       }
 
       create_new_buckets_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
