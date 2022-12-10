@@ -52,13 +52,17 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
       Buckets.create_bucket_txs(attrs)
     end
 
-    def create_new_bucket_transaccion(attrs) do
-      Buckets.create_new_bucket_transaccion(Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0}))
+    def create_new_bucket_transaction(attrs) do
+      Buckets.create_new_bucket_transaction(Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0}))
     end
 
     def create_new_buckets_for_swap(attrs, list_buckets_ids) do
       sum = Buckets.get_sum_buckets_by_list_ids(list_buckets_ids)
-      Buckets.create_new_bucket_transaccion_for_swap(Map.merge(attrs, %{"amount" => sum}), list_buckets_ids)
+      Buckets.create_new_bucket_transaction_for_swap(Map.merge(attrs, %{"amount" => sum}), list_buckets_ids)
+    end
+
+    def create_transaction_burn_buckets(attrs, list_bucket_ids) do
+      Buckets.create_transaction_burn_buckets(attrs, list_bucket_ids)
     end
 
     def create_new_buckets_for_partitions(attrs, amount, list_buckets_ids) do
@@ -66,7 +70,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
       if amount <= sum_from_buckets do
          remain = sum_from_buckets - amount
-        Buckets.create_new_bucket_transaccion_for_new_buckets(attrs, amount, remain, list_buckets_ids)
+        Buckets.create_new_bucket_transaction_for_new_buckets(attrs, amount, remain, list_buckets_ids)
       else
         {:error, %{"message" => "El monto es superior a lo que tiene en cuenta"} }
       end

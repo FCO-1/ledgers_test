@@ -50,8 +50,8 @@ defmodule LedgersBuckets.Api.BucketsApi do
       BucketsDomain.create_bucket_txs(attrs)
     end
 
-    def create_new_bucket_transaccion(attrs) do
-      BucketsDomain.create_new_bucket_transaccion(Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0}))
+    def create_new_bucket_transaction(attrs) do
+      BucketsDomain.create_new_bucket_transaction(attrs)
     end
 
     def create_new_buckets_for_swap(attrs, list_buckets_ids) do
@@ -61,7 +61,6 @@ defmodule LedgersBuckets.Api.BucketsApi do
     def create_new_buckets_for_partitions(attrs, amount, list_buckets_ids) do
       BucketsDomain.create_new_buckets_for_partitions(attrs, amount, list_buckets_ids)
     end
-
 
     def generate_hash(map) do
      BucketsDomain.generate_hash(map)

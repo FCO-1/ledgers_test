@@ -56,7 +56,7 @@ defmodule LedgersBuckets.Buckets do
     |> Repo.insert()
   end
 
-  def create_new_bucket_transaccion(attrs) do
+  def create_new_bucket_transaction(attrs) do
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
@@ -72,7 +72,7 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
-  def create_new_bucket_transaccion_for_swap(attrs, list_buckets) do
+  def create_new_bucket_transaction_for_swap(attrs, list_buckets) do
     IO.inspect(attrs)
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
@@ -90,7 +90,7 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
-  def create_new_bucket_transaccion_burn_buckets(attrs, list_buckets) do
+  def create_transaction_burn_buckets(attrs, list_buckets) do
     IO.inspect(attrs)
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
@@ -107,7 +107,7 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
-  def create_new_bucket_transaccion_for_new_buckets(attrs, amount, remain, list_ids) do
+  def create_new_bucket_transaction_for_new_buckets(attrs, amount, remain, list_ids) do
     map = Map.merge(attrs, %{"amount" => amount})
     map_remain = Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0, "amount" => remain})
     Repo.transaction(fn ->
@@ -126,7 +126,7 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
-  def generate_deposit_transaction(attrs, bucket_from, bucket_to) do
+  def generate_deposit_transaction(attrs) do
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
@@ -162,7 +162,7 @@ defmodule LedgersBuckets.Buckets do
       "wallet_to" => "irl.efectivo"
     }
 
-    create_new_bucket_transaccion_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
+    create_new_bucket_transaction_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
 
   end
 
@@ -186,8 +186,6 @@ defmodule LedgersBuckets.Buckets do
   def generate_hash(map) do
     chain = Jason.encode!(map) |> to_string()
     hash_brute = :crypto.hash(:sha256, chain)
-    IO.inspect(hash_brute)
-#
    Map.merge(map, %{hash: "#{hash_brute}"})
   end
 

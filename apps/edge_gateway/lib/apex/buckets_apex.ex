@@ -51,8 +51,8 @@ defmodule  EdgeGateeay.Api.BucketsApex do
       BucketsApi.create_bucket_txs(attrs)
     end
 
-    def create_new_bucket_transaccion(attrs) do
-      BucketsApi.create_new_bucket_transaccion(Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0}))
+    def create_new_bucket_transaction(attrs) do
+      BucketsApi.create_new_bucket_transaction(attrs)
     end
 
     def create_new_buckets_for_swap(attrs, list_buckets_ids) do

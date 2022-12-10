@@ -41,7 +41,7 @@ defmodule LedgersBucketsWeb.BucketTxsLive.FormComponent do
   end
 
   defp save_bucket_txs(socket, :new, bucket_txs_params) do
-    case BucketsApex.create_new_bucket_transaccion(bucket_txs_params) do
+    case BucketsApex.create_new_bucket_transaction(bucket_txs_params) do
       {:ok, _bucket_txs} ->
         {:noreply,
          socket
