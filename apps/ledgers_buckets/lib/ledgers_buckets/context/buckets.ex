@@ -73,7 +73,6 @@ defmodule LedgersBuckets.Buckets do
   end
 
   def create_new_bucket_transaction_for_swap(attrs, list_buckets) do
-    IO.inspect(attrs)
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
@@ -126,12 +125,13 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
-  def generate_deposit_transaction(attrs) do
+  def generate_deposit_transaction(attrs, list_buckets) do
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, bucket_grm} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
+      {:ok, _bucketsdeleted} <- delete_many_buckets(list_buckets),
       {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_grm.bucket_id, nil) |> create_bucket_flow() do
         bucket_txs
       else
@@ -141,7 +141,6 @@ defmodule LedgersBuckets.Buckets do
       end
     end)
   end
-
 
 
   def test_new_bucket_swap do

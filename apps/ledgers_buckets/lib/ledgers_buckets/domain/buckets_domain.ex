@@ -76,6 +76,23 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
       end
     end
 
+
+    def create_transaction_new_buckets_for_expand(attrs, list_attrs_for_buckets_destination) do
+
+    end
+
+
+    def map do
+      %{
+        "owner_to" => "",
+        "wallet_to" => "",
+        "amount" => "",
+        "asset" => "",
+        "lock_4_tx" => "",
+        "is_spent" => ""
+      }
+    end
+
     def test_new_bucket_swap do
       map = %{
         "amount" => "",
@@ -99,8 +116,6 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
       create_new_buckets_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
 
     end
-
-
 
 
     def generate_hash(map) do
