@@ -79,8 +79,8 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
     end
 
 
-    def create_transaction_new_buckets_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination) do
-      Buckets.build_many_bucket_flow_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination)
+    def create_new_bucket_transaction_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination) do
+      Buckets.create_new_bucket_transaction_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination)
     end
 
 
@@ -93,6 +93,50 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
     end
 
+
+    def test_new_bucket_expand do
+      map = %{
+        "amount" => "800",
+        "asset" => "MXN",
+        "bucket_tx_at" => "2022-12-06T21:43",
+        "note" => "cliente cliente",
+        "owner_from" => "cliente25",
+        "owner_to" => "cliente25",
+        "reference_id" => "Or221",
+        "reference_type" => "order",
+        "request_id" => "1224123",
+        "state" => "pending",
+        "status" => "open",
+        "type" => "expand",
+        "wallet_from" => "iri.efectivo",
+        "wallet_to" => "irl.efectivo"
+      }
+
+      list = [
+        %{
+          amount: 200,
+          asset: "MXN",
+          is_spent: 0,
+          lock_4_tx: 0,
+          owner_to: "cliente 25",
+          wallet_to: "ilr.cash"
+        },
+        %{
+          amount: 600,
+          asset: "MXN",
+          is_spent: 0,
+          lock_4_tx: 0,
+          owner_to: "cliente 25",
+          wallet_to: "ilr.cash"
+        },
+
+      ]
+
+      bucket_in = get_bucket!("e4dbd949-b267-454e-87f1-f296e055e52e")
+
+      create_new_bucket_transaction_for_expand(map, bucket_in, list)
+
+    end
 
 
     def test_new_bucket_swap do
