@@ -165,9 +165,6 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
-
-
-
   def test_new_bucket_swap do
     map = %{
       "amount" => "",
