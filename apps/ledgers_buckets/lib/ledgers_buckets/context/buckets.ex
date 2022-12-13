@@ -95,7 +95,7 @@ defmodule LedgersBuckets.Buckets do
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, _bucketsdeleted} <- delete_many_buckets(list_buckets),
-      {:ok, created_new_bucket} <- build_many_bucket_for_expand(bucket_txs, bucket_in, list_buckets) |> create_many_buckets(),
+      {:ok, {_, created_new_bucket}} <- build_many_bucket_for_expand(bucket_txs, bucket_in, list_buckets) |> create_many_buckets(),
       {:ok, _created_new_bucket} <- build_many_bucket_flow_for_expand(bucket_txs, bucket_in, created_new_bucket) |>  create_many_buckets_flows() do
         bucket_txs
       else
@@ -624,12 +624,71 @@ defmodule LedgersBuckets.Buckets do
 
   def create_many_buckets(list_buckets) do
     Multi.new()
-    |> Multi.insert_all(:bucket, Bucket, list_buckets)
+    |> Multi.insert_all(:bucket, Bucket, list_buckets, returning: true)
+    |> Multi.inspect()
     |> Repo.transaction()
     |> case do
       {:ok, %{bucket: bucket}} -> {:ok, bucket}
       {:error, :bucket, changeset, _} -> {:error, changeset}
     end
+  end
+
+
+
+  def list do
+    [
+      %{
+        amount: 100,
+        asset: "MXN",
+        asset_reference: "??",
+        asset_type: "efectivo",
+        bucket_at: NaiveDateTime.local_now(),
+        bucket_id: "hola",
+        bucket_tx_id: "??",
+        is_spent: 0,
+        lock_4_tx: 0,
+        locked_at: NaiveDateTime.local_now(),
+        locked_by_tx_id: "d",
+        owner: "Solo ejemplo",
+        spent_at: NaiveDateTime.local_now(),
+        type: "ejemplo",
+        wallet: "cmd.cash"
+      },
+      %{
+        amount: 100,
+        asset: "MXN",
+        asset_reference: "??",
+        asset_type: "efectivo",
+        bucket_at: NaiveDateTime.local_now(),
+        bucket_id: "hola",
+        bucket_tx_id: "??",
+        is_spent: 0,
+        lock_4_tx: 0,
+        locked_at: NaiveDateTime.local_now(),
+        locked_by_tx_id: "d",
+        owner: "Solo ejemplo",
+        spent_at: NaiveDateTime.local_now(),
+        type: "ejempl1",
+        wallet: "cmd.cash"
+      },
+      %{
+        amount: 100,
+        asset: "MXN",
+        asset_reference: "??",
+        asset_type: "efectivo",
+        bucket_at: NaiveDateTime.local_now(),
+        bucket_id: "hola",
+        bucket_tx_id: "??",
+        is_spent: 0,
+        lock_4_tx: 0,
+        locked_at: NaiveDateTime.local_now(),
+        locked_by_tx_id: "d",
+        owner: "Solo ejemplo",
+        spent_at: NaiveDateTime.local_now(),
+        type: "ejempl0",
+        wallet: "cmd.cash"
+      },
+    ]
   end
 
   @doc """
