@@ -95,8 +95,8 @@ defmodule LedgersBuckets.Buckets do
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, _bucketsdeleted} <- delete_many_buckets(list_buckets),
-      {:ok, created_new_bucket} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
-      {:ok, _created_new_bucket} <- build_many_bucket_flow_for_expand(bucket_txs, bucket_in, list_buckets) |>  create_many_buckets_flows() do
+      {:ok, created_new_bucket} <- build_many_bucket_for_expand(bucket_txs, bucket_in, list_buckets) |> create_many_buckets(),
+      {:ok, _created_new_bucket} <- build_many_bucket_flow_for_expand(bucket_txs, bucket_in, created_new_bucket) |>  create_many_buckets_flows() do
         bucket_txs
       else
         {:error, changeset} ->
@@ -247,7 +247,7 @@ defmodule LedgersBuckets.Buckets do
     }
   end
 
-  def build_many_bucket(tx, bucket_in, list_attrs_buckets) do
+  def build_many_bucket_for_expand(tx, bucket_in, list_attrs_buckets) do
     for attrs_bucket <- list_attrs_buckets do
 
         %{
