@@ -89,6 +89,23 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
+  def create_new_bucket_transaction_for_expand(attrs, bucket_in, list_buckets) do
+    Repo.transaction(fn ->
+      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
+      {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
+      {:ok, _bucketsdeleted} <- delete_many_buckets(list_buckets),
+      {:ok, created_new_bucket} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
+      {:ok, _created_new_bucket} <- build_many_bucket_flow_for_expand(bucket_txs, bucket_in, list_buckets) |>  create_many_buckets_flows() do
+        bucket_txs
+      else
+        {:error, changeset} ->
+          changeset
+          |> Repo.rollback()
+      end
+    end)
+  end
+
   def create_transaction_burn_buckets(attrs, list_buckets) do
     IO.inspect(attrs)
     Repo.transaction(fn ->
@@ -230,6 +247,29 @@ defmodule LedgersBuckets.Buckets do
     }
   end
 
+  def build_many_bucket(tx, bucket_in, list_attrs_buckets) do
+    for attrs_bucket <- list_attrs_buckets do
+
+        %{
+        amount: attrs_bucket["amount"],
+        asset: attrs_bucket["asset"],
+        asset_reference: "??",
+        asset_type: bucket_in["type"],
+        bucket_at: NaiveDateTime.local_now(),
+        bucket_id: generate_bucket_serial(),
+        bucket_tx_id: tx.bucket_tx_id ,
+        is_spent: attrs_bucket["is_spent"],
+        lock_4_tx: attrs_bucket["locket_4_tx"],
+        locked_at: NaiveDateTime.local_now(),
+        locked_by_tx_id: tx.id,
+        owner: attrs_bucket["owner_to"],
+        spent_at: NaiveDateTime.local_now(),
+        type: bucket_in["type"],
+        wallet: attrs_bucket["wallet_to"]
+      }
+    end
+  end
+
   def build_many_bucket_flow_for_swap(bucket_tx, bucket_out, list_buckets) do
     for bucket <- list_buckets do
       %{
@@ -237,6 +277,18 @@ defmodule LedgersBuckets.Buckets do
         bucket_flow_id: generate_bucket_flow_serial(),
         bucket_in: bucket.bucket_id,
         bucket_out: bucket_out,
+        bucket_tx_id: bucket_tx.bucket_tx_id,
+      }
+    end
+  end
+
+  def build_many_bucket_flow_for_expand(bucket_tx, bucket_in, list_buckets) do
+    for bucket <- list_buckets do
+      %{
+        amount: bucket.amount,
+        bucket_flow_id: generate_bucket_flow_serial(),
+        bucket_in: bucket_in,
+        bucket_out: bucket.bucket_id,
         bucket_tx_id: bucket_tx.bucket_tx_id,
       }
     end
