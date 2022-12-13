@@ -114,20 +114,20 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
       list = [
         %{
-          amount: 200,
-          asset: "MXN",
-          is_spent: 0,
-          lock_4_tx: 0,
-          owner_to: "cliente 25",
-          wallet_to: "ilr.cash"
+          "amount" => 200,
+          "asset" => "MXN",
+          "is_spent" => 0,
+          "lock_4_tx" => 0,
+          "owner_to" => "cliente 25",
+          "wallet_to" => "ilr.cash"
         },
         %{
-          amount: 600,
-          asset: "MXN",
-          is_spent: 0,
-          lock_4_tx: 0,
-          owner_to: "cliente 25",
-          wallet_to: "ilr.cash"
+          "amount" => 600,
+          "asset" => "MXN",
+          "is_spent" => 0,
+          "lock_4_tx" => 0,
+          "owner_to" => "cliente 25",
+          "wallet_to" => "ilr.cash"
         },
 
       ]
