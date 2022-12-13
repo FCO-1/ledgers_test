@@ -79,8 +79,8 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
     end
 
 
-    def create_transaction_new_buckets_for_expand(attrs, list_attrs_for_buckets_destination) do
-
+    def create_transaction_new_buckets_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination) do
+      Buckets.build_many_bucket_flow_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination)
     end
 
 
