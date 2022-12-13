@@ -2,6 +2,7 @@ defmodule LedgersBuckets.Schemas.Buckets.BucketForExpand do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key false
   embedded_schema do
     field :wallet_to, :string
     field :owner_to, :string

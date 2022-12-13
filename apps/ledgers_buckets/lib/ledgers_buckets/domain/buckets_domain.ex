@@ -1,5 +1,7 @@
 defmodule LedgersBuckets.Domain.BucketsDomain do
   alias LedgersBuckets.Buckets
+  alias LedgersBuckets.Schemas.Buckets.BucketForExpand
+
 
     @moduledoc """
     The Buckets context.
@@ -82,16 +84,16 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
     end
 
 
-    def map do
-      %{
-        "owner_to" => "",
-        "wallet_to" => "",
-        "amount" => "",
-        "asset" => "",
-        "lock_4_tx" => "",
-        "is_spent" => ""
-      }
+    def validate_struct_for_bucket_destination(list_attrs_bucket) do
+      for attrs_bucket <- list_attrs_bucket do
+        if %BucketForExpand{} == attrs_bucket do
+          attrs_bucket
+        end
+      end
+
     end
+
+
 
     def test_new_bucket_swap do
       map = %{
@@ -112,6 +114,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
         "is_spent" => 0,
         "locket_4_tx" => 1,
       }
+
 
       create_new_buckets_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
 

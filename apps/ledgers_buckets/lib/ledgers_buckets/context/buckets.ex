@@ -570,6 +570,16 @@ defmodule LedgersBuckets.Buckets do
     |> Repo.insert()
   end
 
+  def create_many_buckets(list_buckets) do
+    Multi.new()
+    |> Multi.insert_all(:bucket, Bucket, list_buckets)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{bucket: bucket}} -> {:ok, bucket}
+      {:error, :bucket, changeset, _} -> {:error, changeset}
+    end
+  end
+
   @doc """
   Updates a bucket.
 
