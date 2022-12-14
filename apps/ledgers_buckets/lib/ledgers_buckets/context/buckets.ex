@@ -607,9 +607,9 @@ defmodule LedgersBuckets.Buckets do
     query = from b in Bucket,
     where: b.owner == ^owner and b.wallet == ^wallet,
     where: b.is_spent == 0 and b.lock_4_tx == 0,
-    group_by: [b.wallet, b.owner],
+    group_by: [b.wallet, b.owner, b.asset],
     select: %{
-      amount: b.amount,
+      amount: sum(b.amount),
       owner: b.owner,
       wallet: b.wallet,
       asset: b.asset
