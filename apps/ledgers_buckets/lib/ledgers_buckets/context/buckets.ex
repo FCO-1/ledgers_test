@@ -240,7 +240,7 @@ defmodule LedgersBuckets.Buckets do
       asset_type: params["type"],
       bucket_at: NaiveDateTime.local_now(),
       bucket_id: generate_bucket_serial(),
-      bucket_tx_id: tx.id ,
+      bucket_tx_id: tx.bucket_id ,
       is_spent: params["is_spent"],
       lock_4_tx: params["locket_4_tx"],
       locked_at: NaiveDateTime.local_now(),
