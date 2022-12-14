@@ -617,6 +617,20 @@ defmodule LedgersBuckets.Buckets do
     Repo.all(query)
   end
 
+  def get_account_balance_by_owner(owner) do
+    query = from b in Bucket,
+    where: b.owner == ^owner,
+    where: b.is_spent == 0 and b.lock_4_tx == 0,
+    group_by: [b.wallet, b.owner, b.asset],
+    select: %{
+      amount: sum(b.amount),
+      owner: b.owner,
+      wallet: b.wallet,
+      asset: b.asset
+    }
+    Repo.all(query)
+  end
+
 
   def search_and_get_free_buckets(bucket_tx_id) do
     query =  from b in Bucket,
