@@ -603,6 +603,21 @@ defmodule LedgersBuckets.Buckets do
   def get_bucket!(id), do: Repo.get!(Bucket, id)
 
 
+  def get_account_balance_by_owner_and_wallet(owner, wallet) do
+    query = from b in Bucket,
+    where: b.owner == ^owner and b.wallet == ^wallet,
+    where: b.is_spent == 0 and b.lock_4_tx == 0,
+    group_by: [b.wallet, b.owner],
+    select: %{
+      amount: b.amount,
+      owner: b.owner,
+      wallet: b.wallet,
+      asset: b.asset
+    }
+    Repo.all(query)
+  end
+
+
   def search_and_get_free_buckets(bucket_tx_id) do
     query =  from b in Bucket,
     where: b.is_spent == 0 and b.lock_4_tx == 0 and b.bucket_tx_id == ^bucket_tx_id
