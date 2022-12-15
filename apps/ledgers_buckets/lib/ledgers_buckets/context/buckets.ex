@@ -130,7 +130,6 @@ defmodule LedgersBuckets.Buckets do
 
 
   def create_transaction_new_buckets_for_transfer_one_to_one(attrs, bucket_in, attrs_bucket) do
-
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
