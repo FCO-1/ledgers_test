@@ -3,6 +3,8 @@ defmodule LedgersBuckets.BucketsFixtures do
   This module defines test helpers for creating
   entities via the `LedgersBuckets.Buckets` context.
   """
+alias String.Chars.NaiveDateTime
+alias NaiveDateTime, as: TimeLocal
 
   @doc """
   Generate a bucket_txs.
@@ -12,17 +14,17 @@ defmodule LedgersBuckets.BucketsFixtures do
       attrs
       |> Enum.into(%{
         amount: "120.5",
-        asset: "some asset",
-        bucket_tx_at: "some bucket_tx_at",
-        bucket_tx_id: "some bucket_tx_id",
-        hash: "some hash",
+        asset: "MXN",
+        bucket_tx_at: TimeLocal.local_now(),
+        bucket_tx_id: "bucket_txs_1000",
+        hash: "pfDSEwew34234efsdfDFSGhh664534gsgfh547534342fsgdg",
         note: "some note",
-        reference_id: "some reference_id",
-        reference_type: "some reference_type",
+        reference_id: "111232",
+        reference_type: "order",
         request_id: "some request_id",
-        state: "some state",
-        status: "some status",
-        type: "some type"
+        state: "complete",
+        status: "close",
+        type: "complete"
       })
       |> LedgersBuckets.Buckets.create_bucket_txs()
 
@@ -112,4 +114,67 @@ defmodule LedgersBuckets.BucketsFixtures do
 
     bucket_flow
   end
+
+  def bucket_transaction_for_expand_fixture do
+      map = %{
+        "amount" => "800",
+        "asset" => "MXN",
+        "bucket_tx_at" => "2022-12-06T21:43",
+        "note" => "cliente cliente",
+        "owner_from" => "cliente25",
+        "owner_to" => "cliente25",
+        "reference_id" => "Or221",
+        "reference_type" => "order",
+        "request_id" => "1224123",
+        "state" => "pending",
+        "status" => "open",
+        "type" => "expand",
+        "wallet_from" => "iri.efectivo",
+        "wallet_to" => "irl.efectivo"
+      }
+
+      list = [
+        %{
+          "amount" => 200,
+          "asset" => "MXN",
+          "is_spent" => 0,
+          "lock_4_tx" => 0,
+          "owner_to" => "cliente 25",
+          "wallet_to" => "ilr.cash"
+        },
+        %{
+          "amount" => 800,
+          "asset" => "MXN",
+          "is_spent" => 0,
+          "lock_4_tx" => 0,
+          "owner_to" => "cliente 25",
+          "wallet_to" => "ilr.cash"
+        },
+
+      ]
+      bucket_in = LedgersBuckets.Buckets.get_bucket!("51daa1bc-96a4-4183-8ef7-454f8d8272c3")
+      LedgersBuckets.Domain.BucketsDomain.create_new_bucket_transaction_for_expand(map, bucket_in, list)
+
+    end
+
+  def bucket_transaction_new_bucket do
+      map = %{
+        "amount" => "800",
+        "asset" => "MXN",
+        "bucket_tx_at" => "2022-12-06T21:43",
+        "note" => "cliente cliente",
+        "owner_from" => "cliente25",
+        "owner_to" => "cliente25",
+        "reference_id" => "Or221",
+        "reference_type" => "order",
+        "request_id" => "1224123",
+        "state" => "pending",
+        "status" => "open",
+        "type" => "expand",
+        "wallet_from" => "iri.efectivo",
+        "wallet_to" => "irl.efectivo"
+      }
+      LedgersBuckets.Domain.BucketsDomain.create_new_bucket_transaction(map)
+
+    end
 end
