@@ -72,7 +72,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
       if amount <= sum_from_buckets do
          remain = sum_from_buckets - amount
-        Buckets.create_new_bucket_transaction_for_new_buckets(attrs, amount, remain, list_buckets_ids)
+        Buckets.create_new_bucket_transaction_for_new_buckets(Map.merge(attrs, %{"amount" => amount}), amount, remain, list_buckets_ids)
       else
         {:error, %{"message" => "El monto es superior a lo que tiene en cuenta"} }
       end
@@ -80,9 +80,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
 
     def create_new_bucket_transaction_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination) do
-
       amount = Enum.reduce(list_attrs_for_buckets_destination, fn x, acc -> x["amount"] + acc["amount"] end) |> Decimal.new()
-
       IO.inspect(Decimal.compare(bucket_in.amount, amount))
       if Decimal.compare(bucket_in.amount, amount) == :gt do
         Buckets.create_new_bucket_transaction_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination)
