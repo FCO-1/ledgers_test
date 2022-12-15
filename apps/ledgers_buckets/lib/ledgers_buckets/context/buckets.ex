@@ -134,9 +134,16 @@ defmodule LedgersBuckets.Buckets do
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
-      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to() do
-
-      end
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
+      {:ok, created_new_bucket} <- build_bucket(attrs_bucket, bucket_txs) |> create_bucket(),
+      {:ok, _buckets_deleted} <- delete_bucket(bucket_in),
+      {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_in.bucket_id, created_new_bucket) |> create_bucket_flow() do
+        bucket_txs
+      else
+        {:error, changeset} ->
+          changeset
+          |> Repo.rollback()
+        end
     end)
   end
 
