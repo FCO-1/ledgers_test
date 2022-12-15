@@ -148,8 +148,9 @@ defmodule LedgersBuckets.Buckets do
 
 
   def create_new_bucket_transaction_for_new_buckets(attrs, amount, remain, list_ids) do
+    last_bucket = List.last(list_ids)
     map = Map.merge(attrs, %{"amount" => amount})
-    map_remain = Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0, "amount" => remain})
+    map_remain = Map.merge(last_bucket, %{"is_spent" => 0, "locket_4_tx" => 0, "amount" => remain})
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(map) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(map) |> create_bucket_tx_from(),
