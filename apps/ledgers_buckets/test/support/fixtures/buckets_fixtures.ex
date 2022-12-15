@@ -177,4 +177,29 @@ alias NaiveDateTime, as: TimeLocal
       LedgersBuckets.Domain.BucketsDomain.create_new_bucket_transaction(map)
 
     end
+
+    def test_new_bucket_swap do
+      map = %{
+        "amount" => "",
+        "asset" => "MXN",
+        "bucket_tx_at" => "2022-12-06T21:43",
+        "note" => "cliente cliente",
+        "owner_from" => "cliente25",
+        "owner_to" => "cliente25",
+        "reference_id" => "Or221",
+        "reference_type" => "order",
+        "request_id" => "1224123",
+        "state" => "pending",
+        "status" => "open",
+        "type" => "swap",
+        "wallet_from" => "cmd.mint",
+        "wallet_to" => "irl.efectivo",
+        "is_spent" => 0,
+        "locket_4_tx" => 1,
+      }
+
+
+      LedgersBuckets.Domain.BucketsDomain.create_new_buckets_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
+
+    end
 end
