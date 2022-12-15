@@ -80,7 +80,16 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
 
     def create_new_bucket_transaction_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination) do
-      Buckets.create_new_bucket_transaction_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination)
+
+      amount = Enum.reduce(list_attrs_for_buckets_destination, fn x, acc -> x["amount"] + acc["amount"] end) |> Decimal.new()
+
+      IO.inspect(Decimal.compare(bucket_in.amount, amount))
+      if Decimal.compare(bucket_in.amount, amount) == :gt do
+        Buckets.create_new_bucket_transaction_for_expand(attrs, bucket_in, list_attrs_for_buckets_destination)
+      else
+        {:error, %{"message" => "No se puede realizar la transacción por que el monto es superior al origen"}}
+      end
+
     end
 
 
@@ -122,7 +131,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
           "wallet_to" => "ilr.cash"
         },
         %{
-          "amount" => 600,
+          "amount" => 800,
           "asset" => "MXN",
           "is_spent" => 0,
           "lock_4_tx" => 0,
@@ -132,7 +141,9 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
 
       ]
 
-      bucket_in = get_bucket!("e4dbd949-b267-454e-87f1-f296e055e52e")
+      bucket_in = get_bucket!("51daa1bc-96a4-4183-8ef7-454f8d8272c3")
+
+
 
       create_new_bucket_transaction_for_expand(map, bucket_in, list)
 

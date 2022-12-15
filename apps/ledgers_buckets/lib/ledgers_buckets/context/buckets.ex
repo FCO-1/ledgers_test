@@ -96,7 +96,6 @@ defmodule LedgersBuckets.Buckets do
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, _buckets_deleted} <- delete_bucket(bucket_in),
       {:ok, {_, created_new_bucket}} <- build_many_bucket_for_expand(bucket_txs, bucket_in, list_buckets) |> create_many_buckets(),
-      {:ok, _list} <- inspsect_return(created_new_bucket),
       {:ok, _created_new_bucket} <- build_many_bucket_flow_for_expand(bucket_txs, bucket_in, created_new_bucket) |>  create_many_buckets_flows() do
         bucket_txs
       else
@@ -129,6 +128,19 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
+
+  def create_transaction_new_buckets_for_transfer_one_to_one(attrs, bucket_in, attrs_bucket) do
+
+    Repo.transaction(fn ->
+      with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
+      {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
+      {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to() do
+
+      end
+    end)
+  end
+
+
   def create_new_bucket_transaction_for_new_buckets(attrs, amount, remain, list_ids) do
     map = Map.merge(attrs, %{"amount" => amount})
     map_remain = Map.merge(attrs, %{"is_spent" => 0, "locket_4_tx" => 0, "amount" => remain})
@@ -144,9 +156,9 @@ defmodule LedgersBuckets.Buckets do
         {:error, changeset} ->
           changeset
           |> Repo.rollback()
-      end
-    end)
-  end
+        end
+      end)
+    end
 
   def generate_deposit_transaction(attrs, list_buckets) do
     Repo.transaction(fn ->
@@ -163,6 +175,10 @@ defmodule LedgersBuckets.Buckets do
           |> Repo.rollback()
       end
     end)
+  end
+
+  def create_transaction_buckets_for_witdrawal(attrs, bucket_origin, list_bucket_origin) do
+
   end
 
   def test_new_bucket_swap do
