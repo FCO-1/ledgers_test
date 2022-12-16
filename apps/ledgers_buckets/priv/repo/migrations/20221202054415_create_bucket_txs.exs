@@ -4,7 +4,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBucketTxs do
   def change do
     schema = "buckets"
     table = "bucket_txs"
-    execute "CREATE SCHEMA IF NOT EXISTS #{schema}", "DROP SCHEMA IF EXISTS #{schema}"
+    execute "CREATE SCHEMA IF NOT EXISTS #{schema}", "DROP SCHEMA IF EXISTS #{schema} CASCADE"
 
     create table(:bucket_txs, primary_key: false, prefix: schema) do
       add :id, :binary_id, primary_key: true
