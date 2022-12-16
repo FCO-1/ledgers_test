@@ -1,4 +1,5 @@
 defmodule LedgersBucketsWeb.Router do
+  alias Orders.PersonLive
   use LedgersBucketsWeb, :router
 
   pipeline :browser do
@@ -18,6 +19,20 @@ defmodule LedgersBucketsWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    live "/persons", PersonLive.Index, :index
+    live "/persons/new", PersonLive.Index, :new
+    live "/persons/:id/edit", PersonLive.Index, :edit
+
+    live "/persons/:id", PersonLive.Show, :show
+    live "/persons/:id/show/edit", PersonLive.Show, :edit
+
+    live "/wallets", WalletLive.Index, :index
+    live "/wallets/new", WalletLive.Index, :new
+    live "/wallets/:id/edit", WalletLive.Index, :edit
+
+    live "/wallets/:id", WalletLive.Show, :show
+    live "/wallets/:id/show/edit", WalletLive.Show, :edit
 
     live "/orders", OrderLive.Index, :index
     live "/orders/new", OrderLive.Index, :new
