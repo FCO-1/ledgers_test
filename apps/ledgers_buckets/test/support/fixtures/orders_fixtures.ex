@@ -24,4 +24,20 @@ defmodule LedgersBuckets.OrdersFixtures do
 
     order
   end
+
+  @doc """
+  Generate a order_bucket_txs.
+  """
+  def order_bucket_txs_fixture(attrs \\ %{}) do
+    {:ok, order_bucket_txs} =
+      attrs
+      |> Enum.into(%{
+        order_id: "some order_id",
+        reference_id: "some reference_id",
+        reference_type: "some reference_type"
+      })
+      |> LedgersBuckets.Orders.create_order_bucket_txs()
+
+    order_bucket_txs
+  end
 end

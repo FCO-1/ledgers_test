@@ -1,0 +1,36 @@
+<h1>Show Order bucket txs</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.order_bucket_txs_show_path(@socket, :show, @order_bucket_txs)}>
+    <.live_component
+      module={LedgersBucketsWeb.OrderBucketTxsLive.FormComponent}
+      id={@order_bucket_txs.id}
+      title={@page_title}
+      action={@live_action}
+      order_bucket_txs={@order_bucket_txs}
+      return_to={Routes.order_bucket_txs_show_path(@socket, :show, @order_bucket_txs)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Order:</strong>
+    <%= @order_bucket_txs.order_id %>
+  </li>
+
+  <li>
+    <strong>Reference type:</strong>
+    <%= @order_bucket_txs.reference_type %>
+  </li>
+
+  <li>
+    <strong>Reference:</strong>
+    <%= @order_bucket_txs.reference_id %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.order_bucket_txs_show_path(@socket, :edit, @order_bucket_txs), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.order_bucket_txs_index_path(@socket, :index) %></span>
