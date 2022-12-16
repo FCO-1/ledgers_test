@@ -23,7 +23,6 @@
       <th>State</th>
       <th>Owner</th>
       <th>Destination</th>
-      <th>Extras</th>
 
       <th></th>
     </tr>
@@ -31,14 +30,14 @@
   <tbody id="orders">
     <%= for order <- @orders do %>
       <tr id={"order-#{order.id}"}>
-        <td><%= order.origin %></td>
+        <td><%= order.from %></td>
+        <td><%= order.to %></td>
         <td><%= order.amount %></td>
         <td><%= order.type %></td>
         <td><%= order.status %></td>
         <td><%= order.state %></td>
         <td><%= order.owner %></td>
-        <td><%= order.destination %></td>
-        <td><%= order.extras %></td>
+        <td><%= order.flags %></td>
 
         <td>
           <span><%= live_redirect "Show", to: Routes.order_show_path(@socket, :show, order) %></span>

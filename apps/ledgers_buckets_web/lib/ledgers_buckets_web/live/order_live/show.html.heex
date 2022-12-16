@@ -16,8 +16,13 @@
 <ul>
 
   <li>
-    <strong>Origin:</strong>
-    <%= @order.origin %>
+    <strong>From:</strong>
+    <%= @order.from %>
+  </li>
+
+  <li>
+    <strong>to:</strong>
+    <%= @order.to %>
   </li>
 
   <li>
@@ -46,14 +51,10 @@
   </li>
 
   <li>
-    <strong>Destination:</strong>
-    <%= @order.destination %>
+    <strong>Flags:</strong>
+    <%= @order.flags %>
   </li>
 
-  <li>
-    <strong>Extras:</strong>
-    <%= @order.extras %>
-  </li>
 
 </ul>
 
