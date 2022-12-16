@@ -9,7 +9,7 @@ defmodule LedgersBuckets.Orders.OrderBucketTxs do
     field :reference_id, :string
     field :reference_type, :string
 
-    timestamps()
+    timestamps(type: :integer, autogenerate: {:erlang,:system_time,[:millisecond]})
   end
 
   @doc false
