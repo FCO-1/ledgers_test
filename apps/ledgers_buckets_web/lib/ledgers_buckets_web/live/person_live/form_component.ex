@@ -1,5 +1,5 @@
-defmodule Orders.PersonLive.FormComponent do
-  use Orders, :live_component
+defmodule LedgersBucketsWeb.PersonLive.FormComponent do
+  use LedgersBucketsWeb, :live_component
 
   alias Core.Persons
 

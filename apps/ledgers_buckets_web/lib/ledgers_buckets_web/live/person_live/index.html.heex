@@ -3,7 +3,7 @@
 <%= if @live_action in [:new, :edit] do %>
   <.modal return_to={Routes.person_index_path(@socket, :index)}>
     <.live_component
-      module={Orders.PersonLive.FormComponent}
+      module={LedgersBucketsWeb.PersonLive.FormComponent}
       id={@person.id || :new}
       title={@page_title}
       action={@live_action}

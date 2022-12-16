@@ -2,6 +2,7 @@ defmodule LedgersBuckets.Orders.Order do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @schema_prefix "buckets"
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "orders" do

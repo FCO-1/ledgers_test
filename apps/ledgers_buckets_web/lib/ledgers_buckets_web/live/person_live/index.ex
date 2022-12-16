@@ -1,5 +1,5 @@
-defmodule Orders.PersonLive.Index do
-  use Orders, :live_view
+defmodule LedgersBucketsWeb.PersonLive.Index do
+  use LedgersBucketsWeb, :live_view
 
   alias Core.Persons
   alias Core.Persons.Person

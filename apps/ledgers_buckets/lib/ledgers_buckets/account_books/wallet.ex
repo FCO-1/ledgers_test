@@ -2,6 +2,7 @@ defmodule LedgersBuckets.AccountBooks.Wallet do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @schema_prefix "account_book"
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "wallets" do

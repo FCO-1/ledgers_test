@@ -1,5 +1,4 @@
 defmodule LedgersBucketsWeb.Router do
-  alias Orders.PersonLive
   use LedgersBucketsWeb, :router
 
   pipeline :browser do

@@ -1,5 +1,5 @@
-defmodule Orders.PersonLive.Show do
-  use Orders, :live_view
+defmodule LedgersBucketsWeb.PersonLive.Show do
+  use LedgersBucketsWeb, :live_view
 
   alias Core.Persons
 
