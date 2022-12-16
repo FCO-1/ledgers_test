@@ -11,6 +11,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBucketFlows do
       add :amount, :numeric
       add :bucket_in, :citext
       add :bucket_out, :citext
+      add :asset, :citext
 
 
       timestamps(type: :bigint, autogenerate: {:erlang,:system_time,[:millisecond]})
