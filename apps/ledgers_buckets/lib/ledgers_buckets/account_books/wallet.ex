@@ -13,13 +13,13 @@ defmodule LedgersBuckets.AccountBooks.Wallet do
     field :state, :string
     field :weight, :integer
 
-    timestamps()
+    timestamps(type: :integer, autogenerate: {:erlang,:system_time,[:millisecond]})
   end
 
   @doc false
   def changeset(wallet, attrs) do
     wallet
     |> cast(attrs, [:path, :node, :name, :state, :weight, :extras])
-    |> validate_required([:path, :node, :name, :state, :weight])
+    |> validate_required([:path, :node, :name, :state])
   end
 end
