@@ -15,11 +15,13 @@ defmodule LedgersBuckets.Repo.Migrations.CreateOrders do
       add :owner, :citext
       add :from, :citext
       add :to, :citext
+      add :reference_id, :citext
+      add :reference_type, :citext
       add :extras, :jsonb, default: "{}"
 
       timestamps(type: :bigint, autogenerate: {:erlang,:system_time,[:millisecond]})
     end
-    execute "CREATE SEQUENCE #{schema}.order_sequence start with 1000;", "DROP SEQUENCE IF EXISTS #{schema}.bucket_flow_sequence;"
+    execute "CREATE SEQUENCE #{schema}.order_sequence start with 1000;", "DROP SEQUENCE IF EXISTS #{schema}.order_sequence;"
 
     execute("ALTER TABLE #{schema}.#{table} ALTER COLUMN id SET DEFAULT uuid_generate_v4();","")
     execute("ALTER TABLE #{schema}.#{table} ALTER COLUMN inserted_at SET DEFAULT ((date_part('epoch'::text, CURRENT_TIMESTAMP) * (1000)::double precision))::bigint","")
