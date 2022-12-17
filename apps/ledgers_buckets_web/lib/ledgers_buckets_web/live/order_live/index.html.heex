@@ -8,6 +8,7 @@
       title={@page_title}
       action={@live_action}
       order={@order}
+      list_person={@list_person}
       return_to={Routes.order_index_path(@socket, :index)}
     />
   </.modal>
@@ -16,13 +17,14 @@
 <table>
   <thead>
     <tr>
-      <th>Origin</th>
+      <th>From</th>
+      <th>To</th>
       <th>Amount</th>
       <th>Type</th>
       <th>Status</th>
       <th>State</th>
       <th>Owner</th>
-      <th>Destination</th>
+      <th>Flags</th>
 
       <th></th>
     </tr>

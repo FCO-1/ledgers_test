@@ -10,19 +10,19 @@
     phx-submit="save">
 
     <%= label f, :from %>
-    <%= text_input f, :from %>
+     <%= select f, :from, Enum.map(@list_person, &{&1.name, &1.alias}), required: "required" %>
     <%= error_tag f, :from %>
 
     <%= label f, :to %>
-    <%= text_input f, :to %>
+     <%= select f, :to, Enum.map(@list_person, &{&1.name, &1.alias}), required: "required" %>
     <%= error_tag f, :to %>
 
     <%= label f, :owner %>
-    <%= text_input f, :owner %>
+     <%= select f, :owner, Enum.map(@list_person, &{&1.name, &1.alias}), required: "required" %>
     <%= error_tag f, :owner %>
 
     <%= label f, :amount %>
-    <%= text_input f, :amount %>
+    <%= number_input f, :amount %>
     <%= error_tag f, :amount %>
 
     <%= label f, :type %>
@@ -31,10 +31,11 @@
 
     <%= label f, :status %>
     <%= text_input f, :status %>
+    <%= select f, :notificaciones, ["Pending": "pending", "Complete": "complete", "Process": "processs"], prompt: "Seleccione"  %>
     <%= error_tag f, :status %>
 
     <%= label f, :state %>
-    <%= text_input f, :state %>
+    <%= select f, :notificaciones, ["Open": "open", "Close": "Close"], prompt: "Seleccione"  %>
     <%= error_tag f, :state %>
 
     <%= label f, :flags %>

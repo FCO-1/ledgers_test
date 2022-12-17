@@ -3,6 +3,7 @@ defmodule LedgersBucketsWeb.OrderLive.Index do
 
   alias LedgersBuckets.Orders
   alias LedgersBuckets.Orders.Order
+  alias Core.Persons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -23,6 +24,7 @@ defmodule LedgersBucketsWeb.OrderLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Order")
+    |> assign(:list_person, list_persons())
     |> assign(:order, %Order{})
   end
 
@@ -42,5 +44,9 @@ defmodule LedgersBucketsWeb.OrderLive.Index do
 
   defp list_orders do
     Orders.list_orders()
+  end
+
+  defp list_persons do
+    Persons.list_persons()
   end
 end
