@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.OrderLive.FormComponent do
   use LedgersBucketsWeb, :live_component
 
-  alias LedgersBuckets.Orders
+  alias LedgersBuckets.Context.Orders
 
   @impl true
   def update(%{order: order} = assigns, socket) do
@@ -15,7 +15,7 @@ defmodule LedgersBucketsWeb.OrderLive.FormComponent do
 
   @impl true
   def handle_event("validate", %{"order" => order_params}, socket) do
-    #IO.inspect order_params
+    IO.inspect order_params
     changeset =
       socket.assigns.order
       |> Orders.change_order(order_params)

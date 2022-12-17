@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.OrderLive.Index do
   use LedgersBucketsWeb, :live_view
 
-  alias LedgersBuckets.Orders
+  alias LedgersBuckets.Context.Orders
   alias LedgersBuckets.Orders.Order
   alias Core.Persons
 

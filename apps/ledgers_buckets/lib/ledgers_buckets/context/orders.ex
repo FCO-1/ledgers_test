@@ -4,10 +4,15 @@ defmodule LedgersBuckets.Context.Orders do
   """
 
   import Ecto.Query, warn: false
+  alias LedgersBuckets.Schemas.Buckets
+  alias Mix.Tasks.Compile.Leex
+  alias JasonVendored.Encoder.ElixirLS.LanguageServer
   alias LedgersBuckets.Repo
 
   alias LedgersBuckets.Orders.Order
   alias LedgersBuckets.Orders.OrderBucketTxs
+  alias LedgersBuckets.Domain.BucketsDomain
+  alias LedgersBuckets.Context.AccountBooks
 
 
   @doc """
@@ -55,6 +60,77 @@ defmodule LedgersBuckets.Context.Orders do
     %Order{}
     |> Order.changeset(attrs)
     |> Repo.insert()
+  end
+
+
+  def create_new_order_for_new_client(attrs, wallet_to , wallet_from) do
+
+    Repo.transaction(fn ->
+      with {:ok, order} <- build_order(attrs) |> create_order(),
+      {:ok, bucket_txs} <- build_new_bucket_for_order_mint(attrs, order, wallet_from, wallet_to ) |> BucketsDomain.create_new_bucket_transaction() do
+        order
+      end
+
+      end)
+  end
+
+
+  def build_order(params) do
+    %{
+      amount: params["amount"],
+      extras: params["extras"],
+      flags: params["flags"],
+      from: params["from"],
+      order_id: params["order_id"],
+      owner: params["owner"],
+      state: params["state"],
+      status: params["status"],
+      to: params["to"],
+      type: params["type"],
+    }
+  end
+
+
+  def build_order_tx(order, type \\ "ledger_buckets", bucket_txs) do
+    %{
+      order_id: order.order_id,
+      reference_id: bucket_txs.id,
+      reference_type: type,
+    }
+  end
+
+  def build_new_bucket_for_order_mint(params, order, wallet_from \\ nil, wallet_to \\ AccountBooks.get_default_account_mint_for_clients() ) do
+    %{
+      "amount" => params["amount"],
+      "asset" => params["asset"],
+      "bucket_tx_at" => NaiveDateTime.local_now(),
+      "note" => "cliente a cliente",
+      "owner_from" => params["from"],
+      "owner_to" => params["to"],
+      "reference_id" => order.order_id,
+      "reference_type" => "order",
+      "request_id" => params["reference_origin_id"],
+      "state" => "complete",
+      "status" => "open",
+      "type" => "mint",
+      "wallet_from" => wallet_from,
+      "wallet_to" => wallet_to,
+      "is_spent" => 0,
+      "locket_4_tx" => 1,
+    }
+  end
+
+  def map do
+    %{
+      "amount" => "100",
+      "flags" => "block",
+      "from" => "cliente 1",
+      "owner" => "cliente 1",
+      "state" => "open",
+      "status" => "complete",
+      "to" => "cliente 1",
+      "type" => "deposit"
+    }
   end
 
   @doc """

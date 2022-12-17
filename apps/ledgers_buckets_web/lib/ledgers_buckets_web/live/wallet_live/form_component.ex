@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.WalletLive.FormComponent do
   use LedgersBucketsWeb, :live_component
 
-  alias LedgersBuckets.AccountBooks
+  alias LedgersBuckets.Context.AccountBooks
 
   @impl true
   def update(%{wallet: wallet} = assigns, socket) do

@@ -21,6 +21,8 @@ defmodule LedgersBuckets.Context.AccountBooks do
     Repo.all(Wallet)
   end
 
+
+
   @doc """
   Gets a single wallet.
 
@@ -37,6 +39,19 @@ defmodule LedgersBuckets.Context.AccountBooks do
   """
   def get_wallet!(id), do: Repo.get!(Wallet, id)
 
+  def get_default_account_for_new_clients do
+    Wallet
+    |> where([s], s.path == "money.client.funding")
+    |> Repo.all()
+    |> List.first()
+  end
+
+  def get_default_account_mint_for_clients do
+    Wallet
+    |> where([s], s.path == "money..client.cash.mint")
+    |> Repo.all()
+    |> List.first()
+  end
   @doc """
   Creates a wallet.
 
@@ -54,6 +69,8 @@ defmodule LedgersBuckets.Context.AccountBooks do
     |> Wallet.changeset(attrs)
     |> Repo.insert()
   end
+
+
 
   @doc """
   Updates a wallet.

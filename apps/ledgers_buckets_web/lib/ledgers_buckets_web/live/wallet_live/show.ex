@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.WalletLive.Show do
   use LedgersBucketsWeb, :live_view
 
-  alias LedgersBuckets.AccountBooks
+  alias LedgersBuckets.Context.AccountBooks
 
   @impl true
   def mount(_params, _session, socket) do

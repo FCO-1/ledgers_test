@@ -1,7 +1,7 @@
 defmodule LedgersBucketsWeb.WalletLive.Index do
   use LedgersBucketsWeb, :live_view
 
-  alias LedgersBuckets.AccountBooks
+  alias LedgersBuckets.Context.AccountBooks
   alias LedgersBuckets.AccountBooks.Wallet
 
   @impl true
