@@ -15,7 +15,7 @@ defmodule LedgersBucketsWeb.OrderLive.FormComponent do
 
   @impl true
   def handle_event("validate", %{"order" => order_params}, socket) do
-    IO.inspect order_params
+    #IO.inspect order_params
     changeset =
       socket.assigns.order
       |> Orders.change_order(order_params)
