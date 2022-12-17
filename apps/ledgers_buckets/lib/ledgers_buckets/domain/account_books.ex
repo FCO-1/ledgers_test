@@ -14,7 +14,7 @@ defmodule LedgersBuckets.Domain.AccountBooks do
 
   """
   def list_wallets do
-    AccountBooks.list_wallets
+    AccountBooks.list_wallets()
   end
 
   @doc """
