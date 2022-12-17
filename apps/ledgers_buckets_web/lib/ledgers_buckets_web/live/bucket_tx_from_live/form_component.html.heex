@@ -1,0 +1,44 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="bucket_tx_from-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+    <%= label f, :bucket_tx_from_id %>
+    <%= text_input f, :bucket_tx_from_id %>
+    <%= error_tag f, :bucket_tx_from_id %>
+  
+    <%= label f, :owner %>
+    <%= text_input f, :owner %>
+    <%= error_tag f, :owner %>
+  
+    <%= label f, :wallet %>
+    <%= text_input f, :wallet %>
+    <%= error_tag f, :wallet %>
+  
+    <%= label f, :weight %>
+    <%= number_input f, :weight %>
+    <%= error_tag f, :weight %>
+  
+    <%= label f, :type %>
+    <%= text_input f, :type %>
+    <%= error_tag f, :type %>
+  
+    <%= label f, :amount %>
+    <%= number_input f, :amount, step: "any" %>
+    <%= error_tag f, :amount %>
+  
+    <%= label f, :asset %>
+    <%= text_input f, :asset %>
+    <%= error_tag f, :asset %>
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>

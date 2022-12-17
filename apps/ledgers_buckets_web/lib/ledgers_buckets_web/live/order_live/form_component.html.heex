@@ -1,0 +1,48 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="order-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <%= label f, :from %>
+     <%= select f, :from, Enum.map(@list_person, &{&1.name, &1.alias}), required: "required" %>
+    <%= error_tag f, :from %>
+
+    <%= label f, :to %>
+     <%= select f, :to, Enum.map(@list_person, &{&1.name, &1.alias}), required: "required" %>
+    <%= error_tag f, :to %>
+
+    <%= label f, :owner %>
+     <%= select f, :owner, Enum.map(@list_person, &{&1.name, &1.alias}), required: "required" %>
+    <%= error_tag f, :owner %>
+
+    <%= label f, :amount %>
+    <%= number_input f, :amount %>
+    <%= error_tag f, :amount %>
+
+    <%= label f, :type %>
+    <%= text_input f, :type %>
+    <%= error_tag f, :type %>
+
+    <%= label f, :status %>
+    <%= select f, :status, ["Pending": "pending", "Complete": "complete", "Process": "processs"], prompt: "Seleccione"  %>
+    <%= error_tag f, :status %>
+
+    <%= label f, :state %>
+    <%= select f, :state, ["Open": "open", "Close": "Close"], prompt: "Seleccione"  %>
+    <%= error_tag f, :state %>
+
+    <%= label f, :flags %>
+    <%= text_input f, :flags %>
+    <%= error_tag f, :flags %>
+
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>

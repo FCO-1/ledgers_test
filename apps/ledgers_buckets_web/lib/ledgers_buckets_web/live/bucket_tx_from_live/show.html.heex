@@ -1,0 +1,56 @@
+<h1>Show Bucket tx from</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.bucket_tx_from_show_path(@socket, :show, @bucket_tx_from)}>
+    <.live_component
+      module={LedgersBucketsWeb.BucketTxFromLive.FormComponent}
+      id={@bucket_tx_from.id}
+      title={@page_title}
+      action={@live_action}
+      bucket_tx_from={@bucket_tx_from}
+      return_to={Routes.bucket_tx_from_show_path(@socket, :show, @bucket_tx_from)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Bucket tx from:</strong>
+    <%= @bucket_tx_from.bucket_tx_from_id %>
+  </li>
+
+  <li>
+    <strong>Owner:</strong>
+    <%= @bucket_tx_from.owner %>
+  </li>
+
+  <li>
+    <strong>Wallet:</strong>
+    <%= @bucket_tx_from.wallet %>
+  </li>
+
+  <li>
+    <strong>Weight:</strong>
+    <%= @bucket_tx_from.weight %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @bucket_tx_from.type %>
+  </li>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @bucket_tx_from.amount %>
+  </li>
+
+  <li>
+    <strong>Asset:</strong>
+    <%= @bucket_tx_from.asset %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.bucket_tx_from_show_path(@socket, :edit, @bucket_tx_from), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.bucket_tx_from_index_path(@socket, :index) %></span>

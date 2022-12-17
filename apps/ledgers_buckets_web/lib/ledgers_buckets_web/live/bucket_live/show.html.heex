@@ -1,0 +1,96 @@
+<h1>Show Bucket</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.bucket_show_path(@socket, :show, @bucket)}>
+    <.live_component
+      module={LedgersBucketsWeb.BucketLive.FormComponent}
+      id={@bucket.id}
+      title={@page_title}
+      action={@live_action}
+      bucket={@bucket}
+      return_to={Routes.bucket_show_path(@socket, :show, @bucket)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Bucket:</strong>
+    <%= @bucket.bucket_id %>
+  </li>
+
+  <li>
+    <strong>Bucket at:</strong>
+    <%= @bucket.bucket_at %>
+  </li>
+
+  <li>
+    <strong>Bucket tx:</strong>
+    <%= @bucket.bucket_tx_id %>
+  </li>
+
+  <li>
+    <strong>Owner:</strong>
+    <%= @bucket.owner %>
+  </li>
+
+  <li>
+    <strong>Wallet:</strong>
+    <%= @bucket.wallet %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @bucket.type %>
+  </li>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @bucket.amount %>
+  </li>
+
+  <li>
+    <strong>Asset:</strong>
+    <%= @bucket.asset %>
+  </li>
+
+  <li>
+    <strong>Asset type:</strong>
+    <%= @bucket.asset_type %>
+  </li>
+
+  <li>
+    <strong>Asset reference:</strong>
+    <%= @bucket.asset_reference %>
+  </li>
+
+  <li>
+    <strong>Is spent:</strong>
+    <%= @bucket.is_spent %>
+  </li>
+
+  <li>
+    <strong>Lock 4 tx:</strong>
+    <%= @bucket.lock_4_tx %>
+  </li>
+
+  <li>
+    <strong>Locked by tx:</strong>
+    <%= @bucket.locked_by_tx_id %>
+  </li>
+
+  <li>
+    <strong>Locked at:</strong>
+    <%= @bucket.locked_at %>
+  </li>
+
+  <li>
+    <strong>Spent at:</strong>
+    <%= @bucket.spent_at %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.bucket_show_path(@socket, :edit, @bucket), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.bucket_index_path(@socket, :index) %></span>

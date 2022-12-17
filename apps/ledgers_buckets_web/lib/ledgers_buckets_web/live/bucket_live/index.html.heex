@@ -1,0 +1,67 @@
+<h1>Listing Buckets</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.bucket_index_path(@socket, :index)}>
+    <.live_component
+      module={LedgersBucketsWeb.BucketLive.FormComponent}
+      id={@bucket.id || :new}
+      title={@page_title}
+      action={@live_action}
+      bucket={@bucket}
+      return_to={Routes.bucket_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bucket</th>
+      <th>Bucket at</th>
+      <th>Bucket tx</th>
+      <th>Owner</th>
+      <th>Wallet</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Asset</th>
+      <th>Asset type</th>
+      <th>Asset reference</th>
+      <th>Is spent</th>
+      <th>Lock 4 tx</th>
+      <th>Locked by tx</th>
+      <th>Locked at</th>
+      <th>Spent at</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="buckets">
+    <%= for bucket <- @buckets do %>
+      <tr id={"bucket-#{bucket.id}"}>
+        <td><%= bucket.bucket_id %></td>
+        <td><%= bucket.bucket_at %></td>
+        <td><%= bucket.bucket_tx_id %></td>
+        <td><%= bucket.owner %></td>
+        <td><%= bucket.wallet %></td>
+        <td><%= bucket.type %></td>
+        <td><%= bucket.amount %></td>
+        <td><%= bucket.asset %></td>
+        <td><%= bucket.asset_type %></td>
+        <td><%= bucket.asset_reference %></td>
+        <td><%= bucket.is_spent %></td>
+        <td><%= bucket.lock_4_tx %></td>
+        <td><%= bucket.locked_by_tx_id %></td>
+        <td><%= bucket.locked_at %></td>
+        <td><%= bucket.spent_at %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.bucket_show_path(@socket, :show, bucket) %></span>
+          <span><%= live_patch "Edit", to: Routes.bucket_index_path(@socket, :edit, bucket) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: bucket.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Bucket", to: Routes.bucket_index_path(@socket, :new) %></span>

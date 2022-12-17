@@ -1,0 +1,28 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="order_bucket_txs-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+    <%= label f, :order_id %>
+    <%= text_input f, :order_id %>
+    <%= error_tag f, :order_id %>
+  
+    <%= label f, :reference_type %>
+    <%= text_input f, :reference_type %>
+    <%= error_tag f, :reference_type %>
+  
+    <%= label f, :reference_id %>
+    <%= text_input f, :reference_id %>
+    <%= error_tag f, :reference_id %>
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>

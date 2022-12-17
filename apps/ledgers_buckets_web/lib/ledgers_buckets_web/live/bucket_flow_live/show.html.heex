@@ -1,0 +1,46 @@
+<h1>Show Bucket flow</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.bucket_flow_show_path(@socket, :show, @bucket_flow)}>
+    <.live_component
+      module={LedgersBucketsWeb.BucketFlowLive.FormComponent}
+      id={@bucket_flow.id}
+      title={@page_title}
+      action={@live_action}
+      bucket_flow={@bucket_flow}
+      return_to={Routes.bucket_flow_show_path(@socket, :show, @bucket_flow)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Bucket flow:</strong>
+    <%= @bucket_flow.bucket_flow_id %>
+  </li>
+
+  <li>
+    <strong>Bucket tx:</strong>
+    <%= @bucket_flow.bucket_tx_id %>
+  </li>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @bucket_flow.amount %>
+  </li>
+
+  <li>
+    <strong>Bucket in:</strong>
+    <%= @bucket_flow.bucket_in %>
+  </li>
+
+  <li>
+    <strong>Bucket out:</strong>
+    <%= @bucket_flow.bucket_out %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.bucket_flow_show_path(@socket, :edit, @bucket_flow), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.bucket_flow_index_path(@socket, :index) %></span>

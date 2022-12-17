@@ -1,0 +1,43 @@
+<h1>Listing Order bucket txs</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.order_bucket_txs_index_path(@socket, :index)}>
+    <.live_component
+      module={LedgersBucketsWeb.OrderBucketTxsLive.FormComponent}
+      id={@order_bucket_txs.id || :new}
+      title={@page_title}
+      action={@live_action}
+      order_bucket_txs={@order_bucket_txs}
+      return_to={Routes.order_bucket_txs_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Order</th>
+      <th>Reference type</th>
+      <th>Reference</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="order_bucket_txs">
+    <%= for order_bucket_txs <- @order_bucket_txs_collection do %>
+      <tr id={"order_bucket_txs-#{order_bucket_txs.id}"}>
+        <td><%= order_bucket_txs.order_id %></td>
+        <td><%= order_bucket_txs.reference_type %></td>
+        <td><%= order_bucket_txs.reference_id %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.order_bucket_txs_show_path(@socket, :show, order_bucket_txs) %></span>
+          <span><%= live_patch "Edit", to: Routes.order_bucket_txs_index_path(@socket, :edit, order_bucket_txs) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: order_bucket_txs.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Order bucket txs", to: Routes.order_bucket_txs_index_path(@socket, :new) %></span>

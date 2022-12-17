@@ -15,8 +15,8 @@ config :ledgers_buckets_web, LedgersBucketsWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "dOOFtPrT+f+JUTorV9EHaWSqwC8Aqm6PYFHqj9DKdTZLa/mnVwwNURQ7bGspdhPP",
   watchers: [
-    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    # Start the esbuild watcher by calling Esbuild.install_and_run(:ledger_bucket_assets, args)
+    esbuild: {Esbuild, :install_and_run, [:ledger_bucket_assets, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support

@@ -49,7 +49,9 @@ defmodule LedgersBucketsWeb.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:ledgers_buckets, in_umbrella: true},
+      {:edge_gateway, in_umbrella: true},
     ]
   end
 
@@ -60,7 +62,7 @@ defmodule LedgersBucketsWeb.MixProject do
     [
       setup: ["deps.get"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["esbuild ledger_bucket_assets --minify", "phx.digest"]
     ]
   end
 end
