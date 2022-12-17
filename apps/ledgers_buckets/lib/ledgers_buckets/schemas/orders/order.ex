@@ -16,14 +16,15 @@ defmodule LedgersBuckets.Orders.Order do
     field :state, :string
     field :status, :string
     field :type, :string
-
+    field :reference_id, :string
+    field :reference_type, :string
     timestamps(type: :integer, autogenerate: {:erlang,:system_time,[:millisecond]})
   end
 
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:order_id, :flags, :from, :to, :amount, :type, :status, :state, :owner, :extras])
-    |> validate_required([:order_id, :flags, :from, :to, :amount, :type, :status, :state, :owner, :extras])
+    |> cast(attrs, [:order_id, :flags, :from, :to, :amount, :type, :status, :state, :owner, :extras, :reference_id, :reference_type])
+    |> validate_required([:order_id, :flags, :from, :to, :amount, :type, :status, :state, :owner, :extras, :reference_id, :reference_type])
   end
 end
