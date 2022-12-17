@@ -1,12 +1,8 @@
-defmodule LedgersBuckets.Context.AccountBooks do
+defmodule LedgersBuckets.Domain.AccountBooks do
   @moduledoc """
   The AccountBooks context.
   """
-
-  import Ecto.Query, warn: false
-  alias LedgersBuckets.Repo
-
-  alias LedgersBuckets.AccountBooks.Wallet
+  alias LedgersBuckets.Context.AccountBooks
 
   @doc """
   Returns the list of wallets.
@@ -18,7 +14,7 @@ defmodule LedgersBuckets.Context.AccountBooks do
 
   """
   def list_wallets do
-    Repo.all(Wallet)
+    AccountBooks.list_wallets
   end
 
   @doc """
@@ -35,7 +31,7 @@ defmodule LedgersBuckets.Context.AccountBooks do
       ** (Ecto.NoResultsError)
 
   """
-  def get_wallet!(id), do: Repo.get!(Wallet, id)
+  def get_wallet!(id), do: AccountBooks.get_wallet!(id)
 
   @doc """
   Creates a wallet.
@@ -49,10 +45,8 @@ defmodule LedgersBuckets.Context.AccountBooks do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_wallet(attrs \\ %{}) do
-    %Wallet{}
-    |> Wallet.changeset(attrs)
-    |> Repo.insert()
+  def create_wallet(attrs) do
+    AccountBooks.create_wallet(attrs)
   end
 
   @doc """
@@ -67,10 +61,8 @@ defmodule LedgersBuckets.Context.AccountBooks do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_wallet(%Wallet{} = wallet, attrs) do
-    wallet
-    |> Wallet.changeset(attrs)
-    |> Repo.update()
+  def update_wallet(wallet, attrs) do
+    AccountBooks.update_wallet(wallet, attrs)
   end
 
   @doc """
@@ -85,8 +77,8 @@ defmodule LedgersBuckets.Context.AccountBooks do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_wallet(%Wallet{} = wallet) do
-    Repo.delete(wallet)
+  def delete_wallet(wallet) do
+    AccountBooks.delete_wallet(wallet)
   end
 
   @doc """
@@ -98,7 +90,10 @@ defmodule LedgersBuckets.Context.AccountBooks do
       %Ecto.Changeset{data: %Wallet{}}
 
   """
-  def change_wallet(%Wallet{} = wallet, attrs \\ %{}) do
-    Wallet.changeset(wallet, attrs)
+  def change_wallet(wallet) do
+    AccountBooks.change_wallet(wallet)
+  end
+  def change_wallet(wallet, attrs) do
+    AccountBooks.change_wallet(wallet, attrs)
   end
 end
