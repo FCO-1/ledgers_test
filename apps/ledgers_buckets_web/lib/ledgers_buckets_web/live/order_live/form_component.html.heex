@@ -30,12 +30,11 @@
     <%= error_tag f, :type %>
 
     <%= label f, :status %>
-    <%= text_input f, :status %>
-    <%= select f, :notificaciones, ["Pending": "pending", "Complete": "complete", "Process": "processs"], prompt: "Seleccione"  %>
+    <%= select f, :status, ["Pending": "pending", "Complete": "complete", "Process": "processs"], prompt: "Seleccione"  %>
     <%= error_tag f, :status %>
 
     <%= label f, :state %>
-    <%= select f, :notificaciones, ["Open": "open", "Close": "Close"], prompt: "Seleccione"  %>
+    <%= select f, :state, ["Open": "open", "Close": "Close"], prompt: "Seleccione"  %>
     <%= error_tag f, :state %>
 
     <%= label f, :flags %>
