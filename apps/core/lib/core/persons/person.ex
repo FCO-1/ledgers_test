@@ -2,7 +2,7 @@ defmodule Core.Persons.Person do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @schema_prefix "persons"
+  @schema_prefix "entities"
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "persons" do

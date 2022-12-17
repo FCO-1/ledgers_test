@@ -6,7 +6,7 @@ defmodule LedgersBuckets.AccountBooks.Wallet do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "wallets" do
-    field :extras, :map
+    field :extras, :map, default: %{}
     field :name, :string
     field :node, :string
     field :path, :string
@@ -20,6 +20,6 @@ defmodule LedgersBuckets.AccountBooks.Wallet do
   def changeset(wallet, attrs) do
     wallet
     |> cast(attrs, [:path, :node, :name, :state, :weight, :extras])
-    |> validate_required([:path, :node, :name, :state, :weight, :extras])
+    |> validate_required([:path, :node, :name, :state, :weight])
   end
 end

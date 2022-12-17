@@ -40,11 +40,6 @@
     <%= @wallet.weight %>
   </li>
 
-  <li>
-    <strong>Extras:</strong>
-    <%= @wallet.extras %>
-  </li>
-
 </ul>
 
 <span><%= live_patch "Edit", to: Routes.wallet_show_path(@socket, :edit, @wallet), class: "button" %></span> |
