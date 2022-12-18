@@ -52,6 +52,20 @@ defmodule LedgersBuckets.Context.AccountBooks do
     |> Repo.all()
     |> List.first()
   end
+
+  def get_default_pre_account_for_clients do
+    Wallet
+    |> where([s], s.path == "money..client.cash.irl")
+    |> Repo.all()
+    |> List.first()
+  end
+
+  def get_default_account_for_sellers do
+    Wallet
+    |> where([s], s.path == "money.seller.cash.deposit")
+    |> Repo.all()
+    |> List.first()
+  end
   @doc """
   Creates a wallet.
 

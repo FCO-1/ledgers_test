@@ -64,12 +64,16 @@ defmodule LedgersBuckets.Context.Orders do
 
 
   def create_new_order_for_new_client(attrs, wallet_to , wallet_from) do
-
+    wallet_mint = AccountBooks.get_default_account_mint_for_clients()
+    wallet_client_irl = AccountBooks.get_default_pre_account_for_clients()
+    seller = attrs["owner_to"]
     Repo.transaction(fn ->
       with {:ok, order} <- build_order(attrs) |> create_order(),
-      {:ok, bucket_txs} <- build_new_bucket_for_order_mint(attrs, order, wallet_from, wallet_to ) |> BucketsDomain.create_new_bucket_transaction() do
-        order
-      end
+      {:ok, _bucket_txs} <- build_new_bucket_for_order_mint(attrs, order, nil, wallet_mint ) |> BucketsDomain.create_new_bucket_transaction(),
+      {:ok, _bucket_transacction1} <- build_new_bucket_for_order_mint(attrs, order, wallet_mint, wallet_client_irl) |> BucketsDomain.create_new_bucket_transaction(),
+      {:ok, _bucket_transacction2} <- build_new_bucket_for_order_mint(params, order, wallet_client_irl, wallet_to) |> BucketsDomain.create_new_buckets_for_partitions() do
+      order
+    end
 
       end)
   end
@@ -129,7 +133,9 @@ defmodule LedgersBuckets.Context.Orders do
       "state" => "open",
       "status" => "complete",
       "to" => "cliente 1",
-      "type" => "deposit"
+      "type" => "deposit",
+      "reference_id" => "43b06b6c-787e-4c18-abb0-f31c11eb19aa",
+      "reference_type" => "ask_document"
     }
   end
 

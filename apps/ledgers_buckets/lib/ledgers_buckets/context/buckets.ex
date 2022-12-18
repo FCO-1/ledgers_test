@@ -63,7 +63,7 @@ defmodule LedgersBuckets.Buckets do
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, bucket_grm} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
       {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_grm.bucket_id, nil) |> create_bucket_flow() do
-        bucket_txs
+        %{bucket_txs: bucket_txs, bucket: [bucket_grm]}
       else
         {:error, changeset} ->
           changeset
@@ -79,8 +79,8 @@ defmodule LedgersBuckets.Buckets do
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, _bucketsdeleted} <- delete_many_buckets(list_buckets),
       {:ok, created_new_bucket} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
-      {:ok, _created_new_bucket} <- build_many_bucket_flow_for_swap(bucket_txs, created_new_bucket.bucket_id, list_buckets) |>  create_many_buckets_flows() do
-        bucket_txs
+      {:ok, _created_new_flow} <- build_many_bucket_flow_for_swap(bucket_txs, created_new_bucket.bucket_id, list_buckets) |>  create_many_buckets_flows() do
+        %{bucket_txs: bucket_txs, bucket: [created_new_bucket]}
       else
         {:error, changeset} ->
           changeset
@@ -97,7 +97,7 @@ defmodule LedgersBuckets.Buckets do
       {:ok, _buckets_deleted} <- delete_bucket(bucket_in),
       {:ok, {_, created_new_bucket}} <- build_many_bucket_for_expand(bucket_txs, bucket_in, list_buckets) |> create_many_buckets(),
       {:ok, _created_new_bucket} <- build_many_bucket_flow_for_expand(bucket_txs, bucket_in, created_new_bucket) |>  create_many_buckets_flows() do
-        bucket_txs
+        %{bucket_txs: bucket_txs, bucket: [created_new_bucket]}
       else
         {:error, changeset} ->
           changeset
@@ -137,7 +137,7 @@ defmodule LedgersBuckets.Buckets do
       {:ok, created_new_bucket} <- build_bucket(attrs_bucket, bucket_txs) |> create_bucket(),
       {:ok, _buckets_deleted} <- delete_bucket(bucket_in),
       {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_in.bucket_id, created_new_bucket) |> create_bucket_flow() do
-        bucket_txs
+        %{bucket_txs: bucket_txs, bucket: [created_new_bucket]}
       else
         {:error, changeset} ->
           changeset
