@@ -209,6 +209,23 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
+  def create_new_debt_sellet_to_namaxa_for_deposit_client(attrs, order) do
+    waller_client_funding = AccountBooks.get_funding_account_for_clients().path
+    map_mint = Map.merge(attrs, %{"note" => "vendedor  a vendedor", "type" => "mint", "owner" => "vendedor", "owner_to" => "vendedor"})
+    map_transfer = Map.merge( attrs, %{"note" => "vendedor  a namaxa", "type" => "transfer", "owner" => "namaxa", "owner_to" => "namaxa", "owner_from" => "namaxa"})
+   Repo.transaction(fn ->
+     with {:ok, bucket_txs_mint} <- build_new_transaccion(map_mint, order, nil, "money.cash.mint") |> create_new_bucket_transaction(),
+     {:ok, bucket_txs_transfer} <- build_new_transaccion(map_transfer, order, "money.cash.mint", waller_client_funding) |> create_transaction_new_buckets_for_transfer_one_to_one(bucket_txs_mint.bucket |> List.first()) do
+       bucket_txs_transfer
+     else
+       {:error, changeset} ->
+         #IO.inspect(changeset, label: "en creacion de detp")
+         changeset
+         |> Repo.rollback()
+     end
+   end)
+ end
+
 
 
 
