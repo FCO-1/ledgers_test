@@ -195,7 +195,7 @@ defmodule LedgersBuckets.Buckets do
   def create_new_debt_namaxa_for_deposit_client(attrs, order) do
      waller_client_funding = AccountBooks.get_funding_account_for_clients().path
      map_mint = Map.merge(attrs, %{"note" => "namaxa a namaxa", "type" => "mint", "owner" => "namaxa", "owner_to" => "namaxa"})
-     map_transfer = Map.merge( attrs, %{"note" => "namaxa a namaxa", "type" => "mint", "owner" => attrs["owner_from"], "owner_to" => attrs["owner_from"], "owner_from" => "namaxa"})
+     map_transfer = Map.merge( attrs, %{"note" => "namaxa a namaxa", "type" => "transfer", "owner" => attrs["owner_from"], "owner_to" => attrs["owner_from"], "owner_from" => "namaxa"})
     Repo.transaction(fn ->
       with {:ok, bucket_txs_mint} <- build_new_transaccion(map_mint, order, nil, "money.cash.mint") |> create_new_bucket_transaction(),
       {:ok, bucket_txs_transfer} <- build_new_transaccion(map_transfer, order, "money.cash.mint", waller_client_funding) |> create_transaction_new_buckets_for_transfer_one_to_one(bucket_txs_mint.bucket |> List.first()) do
