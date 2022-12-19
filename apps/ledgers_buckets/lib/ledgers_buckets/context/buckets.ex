@@ -62,7 +62,7 @@ defmodule LedgersBuckets.Buckets do
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, bucket_grm} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
-      {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_grm.bucket_id, nil) |> create_bucket_flow() do
+      {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, nil,  bucket_grm.bucket_id) |> create_bucket_flow() do
         %{bucket_txs: bucket_txs, bucket: [bucket_grm]}
       else
         {:error, changeset} ->
@@ -131,13 +131,15 @@ defmodule LedgersBuckets.Buckets do
 
 
   def create_transaction_new_buckets_for_transfer_one_to_one(attrs, bucket_in) do
+    IO.inspect(bucket_in)
     Repo.transaction(fn ->
       with {:ok, bucket_txs} <- build_bucket_txs(attrs) |> create_bucket_txs(),
       {:ok, _bucket_tx_from} <- build_tx_from(attrs) |> create_bucket_tx_from(),
       {:ok, _bucket_tx_to} <- build_tx_to(attrs, bucket_txs) |> create_bucket_tx_to(),
       {:ok, created_new_bucket} <- build_bucket(attrs, bucket_txs) |> create_bucket(),
-      {:ok, _buckets_deleted} <- delete_bucket(bucket_in),
-      {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_in.bucket_id, created_new_bucket) |> create_bucket_flow() do
+      {:ok, _inspect_params} <- inspect_params(created_new_bucket),
+      {:ok, _bucket_flow} <- build_bucket_flow(attrs, bucket_txs, bucket_in.bucket_id, created_new_bucket.bucket_id) |> create_bucket_flow(),
+      {:ok, _buckets_deleted} <- delete_bucket(bucket_in) do
         %{bucket_txs: bucket_txs, bucket: [created_new_bucket]}
       else
         {:error, changeset} ->
@@ -264,7 +266,7 @@ defmodule LedgersBuckets.Buckets do
       asset_type: params["type"],
       bucket_at: NaiveDateTime.local_now(),
       bucket_id: generate_bucket_serial(),
-      bucket_tx_id: tx.bucket_id ,
+      bucket_tx_id: tx.bucket_tx_id ,
       is_spent: params["is_spent"],
       lock_4_tx: params["locket_4_tx"],
       locked_at: NaiveDateTime.local_now(),
@@ -323,7 +325,7 @@ defmodule LedgersBuckets.Buckets do
     end
   end
 
-  def build_bucket_flow(params, bucket_tx, bucket_out, bucket_in \\ nil ) do
+  def build_bucket_flow(params, bucket_tx, bucket_in \\ nil, bucket_out ) do
     %{
       amount: params["amount"],
       bucket_flow_id: generate_bucket_flow_serial(),
@@ -331,6 +333,11 @@ defmodule LedgersBuckets.Buckets do
       bucket_out: bucket_out,
       bucket_tx_id: bucket_tx.bucket_tx_id,
     }
+  end
+
+  def inspect_params(params) do
+    IO.inspect params, label: "inpect params, por debug"
+    {:ok, params}
   end
 
   @doc """
