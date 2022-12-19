@@ -66,7 +66,7 @@ defmodule LedgersBuckets.Buckets do
         %{bucket_txs: bucket_txs, bucket: [bucket_grm]}
       else
         {:error, changeset} ->
-          IO.inspect(changeset, label: "en new transaction")
+          #IO.inspect(changeset, label: "en new transaction")
           changeset
           |> Repo.rollback()
       end
@@ -143,7 +143,7 @@ defmodule LedgersBuckets.Buckets do
         %{bucket_txs: bucket_txs, bucket: [created_new_bucket]}
       else
         {:error, changeset} ->
-          IO.inspect(changeset, label: "en create_transaction_new_buckets_for_transfer_one_to_one")
+          #IO.inspect(changeset, label: "en create_transaction_new_buckets_for_transfer_one_to_one")
           changeset
           |> Repo.rollback()
         end
