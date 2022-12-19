@@ -14,6 +14,7 @@ defmodule LedgersBuckets.Context.Orders do
   alias LedgersBuckets.Context.AccountBooks
 
 
+
   @doc """
   Returns the list of orders.
 
@@ -60,6 +61,7 @@ defmodule LedgersBuckets.Context.Orders do
     |> Order.changeset(attrs)
     |> Repo.insert()
   end
+
 
 
   #def create_new_order_for_new_client(attrs, wallet_to , wallet_from) do
@@ -123,20 +125,12 @@ defmodule LedgersBuckets.Context.Orders do
     }
   end
 
-  def map do
-    %{
-      "amount" => "100",
-      "flags" => "block",
-      "from" => "cliente 1",
-      "owner" => "cliente 1",
-      "state" => "open",
-      "status" => "complete",
-      "to" => "cliente 1",
-      "type" => "deposit",
-      "reference_id" => "43b06b6c-787e-4c18-abb0-f31c11eb19aa",
-      "reference_type" => "ask_document"
-    }
-  end
+ def build_map_from_other_map(params) do
+  %{
+    foo: Map.get(params, :foo, "foo"),
+    bar: Map.get(params, :bar, "bar")
+  }
+end
 
   @doc """
   Updates a order.
