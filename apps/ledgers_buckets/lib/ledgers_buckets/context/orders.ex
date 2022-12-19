@@ -12,7 +12,7 @@ defmodule LedgersBuckets.Context.Orders do
   alias LedgersBuckets.Domain.BucketsDomain
   alias LedgersBuckets.Buckets
   alias LedgersBuckets.Context.AccountBooks
-
+  alias LedgersBuckets.Context.FunctionsCommons
 
 
   @doc """
@@ -64,23 +64,24 @@ defmodule LedgersBuckets.Context.Orders do
 
 
 
-  #def create_new_order_for_new_client(attrs, wallet_to , wallet_from) do
-  #  wallet_mint = AccountBooks.get_default_account_mint_for_clients()
-  #  wallet_client_irl = AccountBooks.get_default_pre_account_for_clients()
-  #  seller = attrs["owner_to"]
-  #  Repo.transaction(fn ->
-  #    with {:ok, order} <- build_order(attrs) |> create_order(),
-  #    {:ok, bucket_tx} <- build_new_bucket_for_order_mint(attrs, order, nil, wallet_mint ) |> BucketsDomain.create_new_bucket_transaction(),
-  #    {:ok, _bucket_transacction1} <- build_new_bucket_for_order_mint(attrs, order, wallet_mint, wallet_client_irl) |> Buckets.create_transaction_new_buckets_for_transfer_one_to_one(bucket_tx.bucket |> List.first(), )
-  #    {:ok, _bucket_transacction2} <- build_new_bucket_for_order_mint(params, order, wallet_client_irl, wallet_to) |> BucketsDomain.create_new_buckets_for_partitions() do
-  #    order
-  #  end
-#
-  #    end)
-  #end
+  def create_new_order_for_new_client(attrs,wallet_from, wallet_to ) do
+   attrs =  FunctionsCommons.convert_params(attrs)
+    wallet_mint = AccountBooks.get_default_account_mint_for_clients().path
+    wallet_client_irl = AccountBooks.get_default_pre_account_for_clients().path
+    Repo.transaction(fn ->
+      with {:ok, order} <- build_order(attrs) |> create_order(),
+      {:ok, bucket_tx} <- build_new_bucket_for_order(Map.merge(attrs, %{"type" => "mint"}), order, nil, wallet_mint ) |> BucketsDomain.create_new_bucket_transaction(),
+      {:ok, bucket_transacction1} <- build_new_bucket_for_order(attrs, order, wallet_mint, wallet_client_irl) |> Buckets.create_transaction_new_buckets_for_transfer_one_to_one(bucket_tx.bucket |> List.first() ),
+      {:ok, _bucket_transacction2} <- build_new_bucket_for_order(attrs, order, wallet_client_irl, wallet_to) |> Buckets.create_transaction_new_buckets_for_transfer_one_to_one(bucket_transacction1.bucket |> List.first()) do
+      order
+    end
+
+      end)
+  end
 
 
   def build_order(params) do
+    params = FunctionsCommons.convert_params(params)
     %{
       amount: params["amount"],
       extras: params["extras"],
@@ -92,6 +93,7 @@ defmodule LedgersBuckets.Context.Orders do
       status: params["status"],
       to: params["to"],
       type: params["type"],
+      wallet_to: params["wallet_to"]
     }
   end
 
@@ -104,20 +106,22 @@ defmodule LedgersBuckets.Context.Orders do
     }
   end
 
-  def build_new_bucket_for_order_mint(params, order, wallet_from \\ nil, wallet_to \\ AccountBooks.get_default_account_mint_for_clients() ) do
+  def build_new_bucket_for_order(params, order, wallet_from \\ nil, wallet_to) do
+     new_params = FunctionsCommons.convert_params(params)
+     new_order = Map.from_struct(order) |>  FunctionsCommons.convert_params()
     %{
-      "amount" => params["amount"],
-      "asset" => params["asset"],
+      "amount" => new_params["amount"],
+      "asset" => new_params["asset"],
       "bucket_tx_at" => NaiveDateTime.local_now(),
       "note" => "cliente a cliente",
-      "owner_from" => params["from"],
-      "owner_to" => params["to"],
-      "reference_id" => order.order_id,
+      "owner_from" => new_params["from"],
+      "owner_to" => new_params["to"],
+      "reference_id" => new_order["order_id"],
       "reference_type" => "order",
-      "request_id" => params["reference_origin_id"],
+      "request_id" => new_params["reference_id"],
       "state" => "complete",
       "status" => "open",
-      "type" => params["type"],
+      "type" => new_params["type"],
       "wallet_from" => wallet_from,
       "wallet_to" => wallet_to,
       "is_spent" => 0,
@@ -125,12 +129,28 @@ defmodule LedgersBuckets.Context.Orders do
     }
   end
 
- def build_map_from_other_map(params) do
-  %{
-    foo: Map.get(params, :foo, "foo"),
-    bar: Map.get(params, :bar, "bar")
-  }
-end
+
+
+  def test_create_new_order do
+    map = %{
+      amount: 200,
+      extras: %{},
+      flags: "complete",
+      from: "cliente",
+      order_id: "order_001",
+      reference_id: Ecto.UUID.autogenerate(),
+      reference_type: "document",
+      state: "complete",
+      status: "open",
+      to: "vendedor1",
+      type: "deposit",
+      asset: "MXN",
+      owner: "vendedor1",
+      wallet_to: "money.seller.cash.deposit"
+    }
+
+    create_new_order_for_new_client(map, nil, "money.seller.cash.deposit")
+  end
 
   @doc """
   Updates a order.

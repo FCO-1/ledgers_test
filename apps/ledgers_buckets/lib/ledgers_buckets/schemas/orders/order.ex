@@ -25,6 +25,6 @@ defmodule LedgersBuckets.Orders.Order do
   def changeset(order, attrs) do
     order
     |> cast(attrs, [:order_id, :flags, :from, :to, :amount, :type, :status, :state, :owner, :extras, :reference_id, :reference_type])
-    |> validate_required([:order_id, :flags, :from, :to, :amount, :type, :status, :state, :owner, :extras, :reference_id, :reference_type])
+    |> validate_required([:order_id, :flags, :from, :to, :amount, :type, :status, :state, :owner, :extras])
   end
 end
