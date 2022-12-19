@@ -5,8 +5,6 @@ defmodule LedgersBuckets.Context.Orders do
 
   import Ecto.Query, warn: false
   alias LedgersBuckets.Schemas.Buckets
-  alias Mix.Tasks.Compile.Leex
-  alias JasonVendored.Encoder.ElixirLS.LanguageServer
   alias LedgersBuckets.Repo
 
   alias LedgersBuckets.Orders.Order
