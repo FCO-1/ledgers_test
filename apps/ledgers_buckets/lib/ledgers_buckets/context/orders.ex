@@ -12,6 +12,7 @@ defmodule LedgersBuckets.Context.Orders do
   alias LedgersBuckets.Orders.Order
   alias LedgersBuckets.Orders.OrderBucketTxs
   alias LedgersBuckets.Domain.BucketsDomain
+  alias LedgersBuckets.Buckets
   alias LedgersBuckets.Context.AccountBooks
 
 
@@ -63,20 +64,20 @@ defmodule LedgersBuckets.Context.Orders do
   end
 
 
-  def create_new_order_for_new_client(attrs, wallet_to , wallet_from) do
-    wallet_mint = AccountBooks.get_default_account_mint_for_clients()
-    wallet_client_irl = AccountBooks.get_default_pre_account_for_clients()
-    seller = attrs["owner_to"]
-    Repo.transaction(fn ->
-      with {:ok, order} <- build_order(attrs) |> create_order(),
-      {:ok, _bucket_txs} <- build_new_bucket_for_order_mint(attrs, order, nil, wallet_mint ) |> BucketsDomain.create_new_bucket_transaction(),
-      {:ok, _bucket_transacction1} <- build_new_bucket_for_order_mint(attrs, order, wallet_mint, wallet_client_irl) |> BucketsDomain.create_new_bucket_transaction(),
-      {:ok, _bucket_transacction2} <- build_new_bucket_for_order_mint(params, order, wallet_client_irl, wallet_to) |> BucketsDomain.create_new_buckets_for_partitions() do
-      order
-    end
-
-      end)
-  end
+  #def create_new_order_for_new_client(attrs, wallet_to , wallet_from) do
+  #  wallet_mint = AccountBooks.get_default_account_mint_for_clients()
+  #  wallet_client_irl = AccountBooks.get_default_pre_account_for_clients()
+  #  seller = attrs["owner_to"]
+  #  Repo.transaction(fn ->
+  #    with {:ok, order} <- build_order(attrs) |> create_order(),
+  #    {:ok, bucket_tx} <- build_new_bucket_for_order_mint(attrs, order, nil, wallet_mint ) |> BucketsDomain.create_new_bucket_transaction(),
+  #    {:ok, _bucket_transacction1} <- build_new_bucket_for_order_mint(attrs, order, wallet_mint, wallet_client_irl) |> Buckets.create_transaction_new_buckets_for_transfer_one_to_one(bucket_tx.bucket |> List.first(), )
+  #    {:ok, _bucket_transacction2} <- build_new_bucket_for_order_mint(params, order, wallet_client_irl, wallet_to) |> BucketsDomain.create_new_buckets_for_partitions() do
+  #    order
+  #  end
+#
+  #    end)
+  #end
 
 
   def build_order(params) do
@@ -116,7 +117,7 @@ defmodule LedgersBuckets.Context.Orders do
       "request_id" => params["reference_origin_id"],
       "state" => "complete",
       "status" => "open",
-      "type" => "mint",
+      "type" => params["type"],
       "wallet_from" => wallet_from,
       "wallet_to" => wallet_to,
       "is_spent" => 0,
