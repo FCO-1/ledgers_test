@@ -4,10 +4,13 @@ defmodule LedgersBuckets.Buckets do
   """
 
   import Ecto.Query, warn: false
+  alias LedgersBuckets.Domain.AccountBooks
   alias Ecto.Multi
   alias LedgersBuckets.Repo
 
   alias LedgersBuckets.Buckets.BucketTxs
+  alias LedgersBuckets.Context.AccountBooks
+  alias LedgersBuckets.Context.FunctionsCommons
 
   @doc """
   Returns the list of bucket_txs.
@@ -143,7 +146,7 @@ defmodule LedgersBuckets.Buckets do
         %{bucket_txs: bucket_txs, bucket: [created_new_bucket]}
       else
         {:error, changeset} ->
-          #IO.inspect(changeset, label: "en create_transaction_new_buckets_for_transfer_one_to_one")
+          IO.inspect(changeset, label: "en create_transaction_new_buckets_for_transfer_one_to_one")
           changeset
           |> Repo.rollback()
         end
@@ -189,6 +192,24 @@ defmodule LedgersBuckets.Buckets do
     end)
   end
 
+  def create_new_debt_namaxa_for_deposit_client(attrs, order) do
+     waller_client_funding = AccountBooks.get_funding_account_for_clients().path
+     map_mint = Map.merge(attrs, %{"note" => "namaxa a namaxa", "type" => "mint", "owner" => "namaxa", "owner_to" => "namaxa"})
+     map_transfer = Map.merge( attrs, %{"note" => "namaxa a namaxa", "type" => "mint", "owner" => attrs["owner_from"], "owner_to" => attrs["owner_from"], "owner_from" => "namaxa"})
+    Repo.transaction(fn ->
+      with {:ok, bucket_txs_mint} <- build_new_transaccion(map_mint, order, nil, "money.cash.mint") |> create_new_bucket_transaction(),
+      {:ok, bucket_txs_transfer} <- build_new_transaccion(map_transfer, order, "money.cash.mint", waller_client_funding) |> create_transaction_new_buckets_for_transfer_one_to_one(bucket_txs_mint.bucket |> List.first()) do
+        bucket_txs_transfer
+      else
+        {:error, changeset} ->
+          #IO.inspect(changeset, label: "en creacion de detp")
+          changeset
+          |> Repo.rollback()
+      end
+    end)
+  end
+
+
 
 
   def test_new_bucket_swap do
@@ -212,6 +233,33 @@ defmodule LedgersBuckets.Buckets do
     create_new_bucket_transaction_for_swap(map, ["bucket_1002", "bucket_1003", "bucket_1004"])
 
   end
+
+
+
+  def build_new_transaccion(params, order, wallet_from \\ nil, wallet_to) do
+    IO.inspect(wallet_from)
+    IO.inspect(wallet_to)
+    new_params = FunctionsCommons.convert_params(params)
+    new_order = Map.from_struct(order) |>  FunctionsCommons.convert_params()
+   %{
+     "amount" => new_params["amount"],
+     "asset" => new_params["asset"],
+     "bucket_tx_at" => NaiveDateTime.local_now(),
+     "note" => "cliente a cliente",
+     "owner_from" => new_params["from"],
+     "owner_to" => new_params["to"],
+     "reference_id" => new_order["order_id"],
+     "reference_type" => "order",
+     "request_id" => new_params["reference_id"],
+     "state" => "complete",
+     "status" => "open",
+     "type" => new_params["type"],
+     "wallet_from" => wallet_from,
+     "wallet_to" => wallet_to,
+     "is_spent" => 0,
+     "locket_4_tx" => 1,
+   }
+ end
 
   def build_bucket_txs(params) do
     map = %{

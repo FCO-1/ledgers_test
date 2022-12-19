@@ -72,12 +72,23 @@ defmodule LedgersBuckets.Context.Orders do
       with {:ok, order} <- build_order(attrs) |> create_order(),
       {:ok, bucket_tx} <- build_new_bucket_for_order(Map.merge(attrs, %{"type" => "mint"}), order, nil, wallet_mint ) |> BucketsDomain.create_new_bucket_transaction(),
       {:ok, bucket_transacction1} <- build_new_bucket_for_order(attrs, order, wallet_mint, wallet_client_irl) |> Buckets.create_transaction_new_buckets_for_transfer_one_to_one(bucket_tx.bucket |> List.first() ),
-      {:ok, _bucket_transacction2} <- build_new_bucket_for_order(attrs, order, wallet_client_irl, wallet_to) |> Buckets.create_transaction_new_buckets_for_transfer_one_to_one(bucket_transacction1.bucket |> List.first()) do
-      order
-    end
+      {:ok, _bucket_transacction2} <- build_new_bucket_for_order(attrs, order, wallet_client_irl, wallet_to) |> Buckets.create_transaction_new_buckets_for_transfer_one_to_one(bucket_transacction1.bucket |> List.first()),
+      {:ok, _bucket_debt} <-  Buckets.create_new_debt_namaxa_for_deposit_client(attrs, order) do
+        order
+      else
+        {:error, changeset} ->
+          changeset
+          |> Repo.rollback()
+      end
 
       end)
   end
+
+
+
+
+
+
 
 
   def build_order(params) do

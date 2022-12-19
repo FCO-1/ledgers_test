@@ -60,6 +60,13 @@ defmodule LedgersBuckets.Context.AccountBooks do
     |> List.first()
   end
 
+  def get_funding_account_for_clients do
+    Wallet
+    |> where([s], s.path == "money.client.funding")
+    |> Repo.all()
+    |> List.first()
+  end
+
   def get_default_account_for_sellers do
     Wallet
     |> where([s], s.path == "money.seller.cash.deposit")
