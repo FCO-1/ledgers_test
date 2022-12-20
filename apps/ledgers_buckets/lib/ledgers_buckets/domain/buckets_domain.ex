@@ -67,6 +67,10 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
       Buckets.create_transaction_burn_buckets(attrs, list_bucket_ids)
     end
 
+    def create_transaction_new_buckets_for_transfer_one_to_one(attrs, bucket_in) do
+      Buckets.create_transaction_new_buckets_for_transfer_one_to_one(attrs, bucket_in)
+    end
+
     def create_new_buckets_for_partitions(attrs, amount, list_buckets_ids) do
       sum_from_buckets = Buckets.get_sum_buckets_by_list_ids(list_buckets_ids)
       list_buckets = Buckets.list_buckets_by_list_ids(list_buckets_ids)
