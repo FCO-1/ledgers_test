@@ -50,6 +50,10 @@ defmodule LedgersBuckets.Domaim.Orders do
     Orders.create_order(attrs)
   end
 
+  def create_new_order_for_new_client(attrs, wallet_from, wallet_to ) do
+    Orders.create_new_order_for_new_client(attrs, wallet_from, wallet_to)
+  end
+
   @doc """
   Updates a order.
 

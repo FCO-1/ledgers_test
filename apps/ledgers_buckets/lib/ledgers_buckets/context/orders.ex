@@ -64,7 +64,8 @@ defmodule LedgersBuckets.Context.Orders do
 
 
 
-  def create_new_order_for_new_client(attrs,wallet_from, wallet_to ) do
+
+  def create_new_order_for_new_client(attrs,_wallet_from, wallet_to ) do
    attrs =  FunctionsCommons.convert_params(attrs)
     wallet_mint = AccountBooks.get_default_account_mint_for_clients().path
     wallet_client_irl = AccountBooks.get_default_pre_account_for_clients().path
@@ -84,6 +85,8 @@ defmodule LedgersBuckets.Context.Orders do
 
       end)
   end
+
+
 
 
 
