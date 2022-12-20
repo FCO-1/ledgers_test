@@ -62,7 +62,16 @@ defmodule LedgersBuckets.Context.Orders do
     |> Repo.insert()
   end
 
+  def create_order_for_document(attrs, bucket_in, bucket_out) do
+    transform_bucket_in = FunctionsCommons.convert_params(bucket_in)
+    transform_bucket_out = FunctionsCommons.convert_params(bucket_out)
+    Repo.transaction(fn ->
+      with {:ok, order} <- build_order(attrs) |> create_order(),
+      {:ok, _bucket_transacction1} <- build_new_bucket_for_order(attrs, order, transform_bucket_in["wallet"], transform_bucket_out["wallet"]) |> Buckets.create_transaction_new_buckets_for_transfer_one_to_one(bucket_in) do
 
+      end
+    end)
+  end
 
 
 
