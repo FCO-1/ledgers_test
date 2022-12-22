@@ -2,8 +2,9 @@ defmodule LedgersBuckets.Repo.Migrations.CreateOrders do
   use Ecto.Migration
 
   def change do
-    schema = "buckets"
+    schema = "ledger_buckets_00_account_book"
     table = "orders"
+
     create table(:orders, primary_key: false, prefix: schema) do
       add :id, :binary_id, primary_key: true
       add :order_id, :citext

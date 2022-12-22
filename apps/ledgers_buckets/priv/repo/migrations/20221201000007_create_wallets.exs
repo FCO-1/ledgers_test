@@ -2,7 +2,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateWallets do
   use Ecto.Migration
 
   def change do
-    schema = "account_book"
+    schema = "ledger_buckets_00_account_book"
     table = "wallets"
     execute "CREATE SCHEMA IF NOT EXISTS #{schema}", "DROP SCHEMA IF EXISTS #{schema} CASCADE"
     create table(:wallets, primary_key: false, prefix: schema) do

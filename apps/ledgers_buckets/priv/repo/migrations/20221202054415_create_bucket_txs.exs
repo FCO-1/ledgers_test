@@ -2,7 +2,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBucketTxs do
   use Ecto.Migration
 
   def change do
-    schema = "buckets"
+    schema = "ledger_buckets_00_account_book"
     table = "bucket_txs"
     execute "CREATE SCHEMA IF NOT EXISTS #{schema}", "DROP SCHEMA IF EXISTS #{schema} CASCADE"
 
