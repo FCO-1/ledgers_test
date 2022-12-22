@@ -16,7 +16,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateOrders do
       add :owner, :citext
       add :from, :citext
       add :to, :citext
-      add :reference_id, :citext
+      add :reference_id, :binary_id
       add :reference_type, :citext
       add :extras, :jsonb, default: "{}"
 
