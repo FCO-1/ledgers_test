@@ -2,7 +2,7 @@ defmodule LedgersBuckets.Buckets.BucketTxFrom do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @schema_prefix "buckets"
+  @schema_prefix "ledger_buckets_00_account_book"
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "bucket_tx_from" do
