@@ -6,8 +6,8 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBucketTxTo do
     table = "bucket_tx_to"
     create table(:bucket_tx_to, primary_key: false, prefix: schema) do
       add :id, :binary_id, primary_key: true
-      add :bucket_tx_id, :citext
-      add :onwer, :citext
+      add :bucket_tx_id, references(:bucket_txs, prefix: schema, type: :binary_id, on_delete: :delete_all), null: false
+      add :onwer, :binary_id
       add :wallet, :citext
       add :amount, :numeric
       add :assets, :string

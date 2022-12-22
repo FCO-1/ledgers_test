@@ -17,7 +17,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBucketTxs do
       add :status, :citext
       add :note, :text
       add :request_id, :string
-      add :reference_id, :string
+      add :reference_id, :binary_id
       add :reference_type, :string
       add :hash, :binary
 

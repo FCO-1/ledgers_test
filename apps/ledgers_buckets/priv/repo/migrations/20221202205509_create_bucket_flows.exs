@@ -7,10 +7,10 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBucketFlows do
     create table(:bucket_flows, primary_key: false, prefix: schema) do
       add :id, :binary_id, primary_key: true
       add :bucket_flow_id, :citext
-      add :bucket_tx_id, :citext
+      add :bucket_tx_id, references(:bucket_txs, prefix: schema, type: :binary_id, on_delete: :delete_all), null: false
       add :amount, :numeric
-      add :bucket_in, :citext
-      add :bucket_out, :citext
+      add :bucket_in, :binary_id
+      add :bucket_out, :binary_id
       add :asset, :citext
 
 

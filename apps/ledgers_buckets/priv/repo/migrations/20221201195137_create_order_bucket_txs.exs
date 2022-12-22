@@ -8,7 +8,7 @@ defmodule LedgersBuckets.Repo.Migrations.CreateOrderBucketTxs do
       add :id, :binary_id, primary_key: true
       add :order_id, :string
       add :reference_type, :string
-      add :reference_id, :string
+      add :reference_id, :binary_id
 
       timestamps(type: :bigint, autogenerate: {:erlang,:system_time,[:millisecond]})
     end

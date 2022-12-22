@@ -8,8 +8,8 @@ defmodule LedgersBuckets.Repo.Migrations.CreateBuckets do
       add :id, :binary_id, primary_key: true
       add :bucket_id, :string
       add :bucket_at, :naive_datetime
-      add :bucket_tx_id, :string
-      add :owner, :citext
+      add :bucket_tx_id, references(:bucket_txs, prefix: schema, type: :binary_id, on_delete: :delete_all), null: false
+      add :owner, :binary_id
       add :wallet, :citext
       add :type, :citext
       add :amount, :numeric
