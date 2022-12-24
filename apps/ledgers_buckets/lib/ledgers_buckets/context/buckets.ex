@@ -41,6 +41,9 @@ defmodule LedgersBuckets.Buckets do
   """
   def get_bucket_txs!(id), do: Repo.get!(BucketTxs, id)
 
+
+
+
   @doc """
   Creates a bucket_txs.
 
@@ -731,6 +734,14 @@ defmodule LedgersBuckets.Buckets do
   def search_and_get_free_buckets(bucket_tx_id) do
     query =  from b in Bucket,
     where: b.is_spent == 0 and b.lock_4_tx == 0 and b.bucket_tx_id == ^bucket_tx_id
+    Repo.all(query)
+  end
+
+  def check_available_balance(owner, list_wallets) do
+    query = from b in Buckets,
+    where: b.owner == ^owner  and b.wallet in ^list_wallets,
+    where: b.is_spend == 0 and b.lock_4_tx == 0
+
     Repo.all(query)
   end
 
