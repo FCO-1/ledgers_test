@@ -478,18 +478,15 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
       Buckets.check_available_balance(owner, list_wallets)
     end
 
-    def validate_avaliable_balance(owner, amount) do
-      amount = Decimal.new(amount)
-      list_buckets = check_avaliable_balance_for_ask_document(owner)
-      amount_buckets = Enum.reduce(list_buckets, fn x, acc -> x["amount"] + acc["amount"] end)
-      if Decimal.compare(amount_buckets, amount) == :gt do
-        Enum.reduce(list_buckets, fn x, acc -> if Decimal.compare(x["amount"], acc["amount"]) == :gt, do: [x] ++ [acc] end)
-      else
-        raise ArithmeticError, "El monto especificado para la operación supera el limite disponible por el usuario"
+    def validar_saldo_de_lista(lista, monto) do
+      monto = Decimal.new(monto)
+      list_buckets = lista
+      amount_buckets = Enum.reduce(list_buckets, fn x, acc -> x.monto + acc.monto end)
+      if Decimal.compare(amount_buckets, monto) == :gt do
+        Enum.reduce(list_buckets, fn x, acc ->
+          monto_actual = x.monto + acc.monto
+          if Decimal.compare(monto, monto_actual) == :gt, do: [x] ++ [acc] end)
       end
-
-
-
     end
 
 
