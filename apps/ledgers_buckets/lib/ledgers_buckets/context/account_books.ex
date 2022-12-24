@@ -67,12 +67,33 @@ defmodule LedgersBuckets.Context.AccountBooks do
     |> List.first()
   end
 
-  def get_default_account_for_sellers do
+  def get_funding_account_for_clients do
     Wallet
-    |> where([s], s.path == "money.seller.cash.deposit")
+    |> where([s], s.path == "cliente.funding.disponible")
     |> Repo.all()
     |> List.first()
   end
+
+
+  #############################################
+  # Funciones para obtener wallets de docuemtos
+  ############################################
+
+  def get_default_documents_credits do
+    Wallet
+    |> where([s], s.path == "documents.credit")
+    |> Repo.all()
+    |> List.first()
+  end
+
+  def get_default_documents_funding do
+    Wallet
+    |> where([s], s.path == "documents.funding")
+    |> Repo.all()
+    |> List.first()
+  end
+
+
   @doc """
   Creates a wallet.
 
