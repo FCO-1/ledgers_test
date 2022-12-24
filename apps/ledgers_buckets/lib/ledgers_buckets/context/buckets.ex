@@ -5,6 +5,7 @@ defmodule LedgersBuckets.Buckets do
 
   import Ecto.Query, warn: false
   alias LedgersBuckets.Domain.AccountBooks
+  alias LedgersBuckets.Domain.AccountBooks
   alias Ecto.Multi
   alias LedgersBuckets.Repo
 
@@ -735,6 +736,16 @@ defmodule LedgersBuckets.Buckets do
     query =  from b in Bucket,
     where: b.is_spent == 0 and b.lock_4_tx == 0 and b.bucket_tx_id == ^bucket_tx_id
     Repo.all(query)
+  end
+
+  def check_avaliable_balance_for_ask_document(owner) do
+    document_funding= AccountBooks.get_default_documents_funding()
+    document_credit = AccountBooks.get_default_documents_credits()
+    fundign = AccountBooks.get_funding_account_for_clients()
+
+    list = [document_funding.wallet, document_credit.wallet, fundign.wallet]
+
+    check_available_balance(owner, list)
   end
 
   def check_available_balance(owner, list_wallets) do
