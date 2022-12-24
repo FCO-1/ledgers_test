@@ -481,9 +481,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
     def validate_avaliable_balance(owner, amount) do
       amount = Decimal.new(amount)
       list_buckets = check_avaliable_balance_for_ask_document(owner)
-
       amount_buckets = Enum.reduce(list_buckets, fn x, acc -> x["amount"] + acc["amount"] end)
-
       if Decimal.compare(amount_buckets, amount) == :gt do
         list_buckets
       else
