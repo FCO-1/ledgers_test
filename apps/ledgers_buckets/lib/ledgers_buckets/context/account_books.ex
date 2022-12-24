@@ -67,14 +67,6 @@ defmodule LedgersBuckets.Context.AccountBooks do
     |> List.first()
   end
 
-  def get_funding_account_for_clients do
-    Wallet
-    |> where([s], s.path == "cliente.funding.disponible")
-    |> Repo.all()
-    |> List.first()
-  end
-
-
   #############################################
   # Funciones para obtener wallets de docuemtos
   ############################################
