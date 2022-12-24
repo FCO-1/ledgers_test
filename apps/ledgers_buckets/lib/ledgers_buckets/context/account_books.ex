@@ -41,28 +41,28 @@ defmodule LedgersBuckets.Context.AccountBooks do
 
   def get_default_account_for_new_clients do
     Wallet
-    |> where([s], s.path == "money.client.funding")
+    |> where([s], s.path == "cliente.funding.disponible")
     |> Repo.all()
     |> List.first()
   end
 
   def get_default_account_mint_for_clients do
     Wallet
-    |> where([s], s.path == "money.client.cash.mint")
+    |> where([s], s.path == "cmd.mint")
     |> Repo.all()
     |> List.first()
   end
 
   def get_default_pre_account_for_clients do
     Wallet
-    |> where([s], s.path == "money.client.cash.irl")
+    |> where([s], s.path == "irl.cash")
     |> Repo.all()
     |> List.first()
   end
 
   def get_funding_account_for_clients do
     Wallet
-    |> where([s], s.path == "money.client.funding")
+    |> where([s], s.path == "cliente.funding.disponible")
     |> Repo.all()
     |> List.first()
   end
