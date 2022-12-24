@@ -738,7 +738,7 @@ defmodule LedgersBuckets.Buckets do
   end
 
   def check_available_balance(owner, list_wallets) do
-    query = from b in Buckets,
+    query = from b in Bucket,
     where: b.owner == ^owner  and b.wallet in ^list_wallets,
     where: b.is_spend == 0 and b.lock_4_tx == 0
 
