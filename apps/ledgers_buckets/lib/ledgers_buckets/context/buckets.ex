@@ -756,6 +756,7 @@ defmodule LedgersBuckets.Buckets do
     Repo.all(query)
   end
 
+
   @doc """
   Creates a bucket.
 
