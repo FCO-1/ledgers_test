@@ -483,14 +483,37 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
       list_buckets = check_avaliable_balance_for_ask_document(owner)
       amount_buckets = Enum.reduce(list_buckets, fn x, acc -> x["amount"] + acc["amount"] end)
       if Decimal.compare(amount_buckets, amount) == :gt do
-        list_buckets
+        Enum.reduce(list_buckets, fn x, acc -> if Decimal.compare(x["amount"], acc["amount"]) == :gt, do: [x] ++ [acc] end)
       else
         raise ArithmeticError, "El monto especificado para la operación supera el limite disponible por el usuario"
       end
 
 
+
     end
 
+
+    def list do
+
+      [
+        %{
+          "monto" => 23,
+          "moneda" => "MXN"
+        },
+        %{
+          "monto" => 40,
+          "moneda" => "MXN"
+        },
+        %{
+          "monto" => 12,
+          "moneda" => "MXN"
+        },
+        %{
+          "monto" => 100,
+          "moneda" => "MXN"
+        }
+      ]
+    end
     @doc """
     Creates a bucket.
 
