@@ -3,6 +3,7 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
   alias LedgersBuckets.Schemas.Buckets.BucketForExpand
 
 
+
     @moduledoc """
     The Buckets context.
     """
@@ -479,35 +480,41 @@ defmodule LedgersBuckets.Domain.BucketsDomain do
     end
 
     def validar_saldo_de_lista(lista, monto) do
-      monto = Decimal.new(monto)
-      list_buckets = lista
-      amount_buckets = Enum.reduce(list_buckets, fn x, acc -> x.monto + acc.monto end)
-      if Decimal.compare(amount_buckets, monto) == :gt do
-        Enum.reduce(list_buckets, fn x, acc ->
-          monto_actual = x.monto + acc.monto
-          if Decimal.compare(monto, monto_actual) == :gt, do: [x] ++ [acc] end)
-      end
+        list_buckets = lista
+        amount_buckets = Enum.reduce(list_buckets, fn x, acc -> x[:monto] + acc[:monto] end)
+        IO.inspect(amount_buckets)
+
+        #if amount_buckets >= monto  do
+#
+        #  Enum.reduce(list_buckets, fn x, acc ->
+        #    monto_actual = x[:monto] + acc[:monto]
+        #    if monto <= monto_actual,  do: [x] ++ [acc] end)
+        #end
     end
+
+
+
+
 
 
     def list do
 
       [
         %{
-          "monto" => 23,
-          "moneda" => "MXN"
+          monto: 23,
+          moneda: "MXN"
         },
         %{
-          "monto" => 40,
-          "moneda" => "MXN"
+          monto: 40,
+          moneda: "MXN"
         },
         %{
-          "monto" => 12,
-          "moneda" => "MXN"
+          monto: 12,
+          moneda: "MXN"
         },
         %{
-          "monto" => 100,
-          "moneda" => "MXN"
+          monto: 100,
+          moneda: "MXN"
         }
       ]
     end
